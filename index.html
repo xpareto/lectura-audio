@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>lectura audio </title>
-<link rel="manifest" href="manifest.json?v=6">
+<title>Lectură audio v7</title>
+<link rel="manifest" href="manifest.json?v=7">
 <meta name="theme-color" content="#059669">
 <link rel="icon" href="icon-192.png">
 <link rel="apple-touch-icon" href="icon-192.png">
@@ -61,7 +61,7 @@
   main {
     width: 100%;
     max-width: 640px;
-    padding: 14px 16px;
+    padding: 12px 14px;
     display: flex;
     flex-direction: column;
     flex: 1;
@@ -70,18 +70,18 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 12px;
-    gap: 8px;
+    margin-bottom: 10px;
+    gap: 6px;
   }
   .title-group {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 7px;
     min-width: 0;
   }
   .app-icon {
-    width: 32px;
-    height: 32px;
+    width: 30px;
+    height: 30px;
     border-radius: 8px;
     background: var(--acc);
     color: var(--accfg);
@@ -89,11 +89,11 @@
     align-items: center;
     justify-content: center;
     font-weight: bold;
-    font-size: 15px;
+    font-size: 14px;
     flex-shrink: 0;
   }
   h1 {
-    font-size: 1.15rem;
+    font-size: 1.05rem;
     font-weight: 700;
     white-space: nowrap;
     overflow: hidden;
@@ -104,23 +104,23 @@
     background-color: #059669 !important;
     color: #ffffff !important;
     font-weight: 800 !important;
-    font-size: 0.8rem !important;
-    padding: 3px 8px !important;
+    font-size: 0.78rem !important;
+    padding: 2px 7px !important;
     border-radius: 6px !important;
     letter-spacing: 0.5px !important;
     box-shadow: 0 1px 2px rgba(0,0,0,0.2) !important;
     vertical-align: middle;
-    margin-left: 4px;
+    margin-left: 3px;
   }
   .header-actions {
     display: flex;
-    gap: 6px;
+    gap: 5px;
     flex-shrink: 0;
   }
   .btn-sm {
-    min-height: 36px;
-    padding: 0 10px;
-    font-size: 0.8rem;
+    min-height: 34px;
+    padding: 0 8px;
+    font-size: 0.78rem;
     font-weight: 600;
     border-radius: 8px;
     border: 1px solid var(--line);
@@ -132,24 +132,29 @@
     gap: 4px;
     transition: background 0.15s;
   }
+  .btn-sm.on {
+    background: var(--acc);
+    color: var(--accfg);
+    border-color: var(--acc);
+  }
   .btn-sm:hover { filter: brightness(0.97); }
   .btn-sm:active { transform: scale(0.97); }
 
-  /* Download Panel Directly on Screen */
+  /* Download Panel */
   .dl-panel {
     background: var(--card);
     border: 2px solid #059669;
-    border-radius: 12px;
-    padding: 10px 12px;
-    margin-bottom: 12px;
+    border-radius: 10px;
+    padding: 8px 10px;
+    margin-bottom: 10px;
     box-shadow: var(--card-shadow);
   }
   .dl-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 8px;
-    font-size: 0.8rem;
+    margin-bottom: 6px;
+    font-size: 0.76rem;
     font-weight: 700;
     color: #059669;
   }
@@ -159,10 +164,10 @@
     gap: 6px;
   }
   .dl-btn {
-    padding: 8px 4px;
-    font-size: 0.75rem;
+    padding: 7px 4px;
+    font-size: 0.74rem;
     font-weight: 700;
-    border-radius: 8px;
+    border-radius: 7px;
     border: none;
     cursor: pointer;
     text-align: center;
@@ -171,46 +176,133 @@
     align-items: center;
     justify-content: center;
     gap: 4px;
-    transition: transform 0.1s, filter 0.15s;
+    transition: transform 0.1s;
   }
   .dl-btn:active { transform: scale(0.96); }
   .dl-btn-green { background: #059669; color: #fff; }
   .dl-btn-blue { background: #2563eb; color: #fff; }
   .dl-btn-gray { background: #374151; color: #fff; }
 
-  #helpbox {
+  /* Help & Settings Panels */
+  .panel-box {
     background: var(--card);
     border: 1px solid var(--line);
     border-radius: 12px;
-    padding: 12px 16px;
-    margin-bottom: 12px;
-    font-size: 0.86rem;
+    padding: 12px 14px;
+    margin-bottom: 10px;
+    font-size: 0.84rem;
     box-shadow: var(--card-shadow);
   }
-  #helpbox h2 {
-    font-size: 0.92rem;
+  .panel-box h2 {
+    font-size: 0.9rem;
     color: var(--acc);
-    margin: 8px 0 4px;
+    margin: 6px 0 6px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
   }
+  .panel-box h2:first-child { margin-top: 0; }
   #helpbox ol, #helpbox ul {
-    padding-left: 20px;
+    padding-left: 18px;
     margin: 4px 0 8px;
     color: var(--mut);
-    line-height: 1.45;
+    line-height: 1.42;
   }
   #helpbox li { margin-bottom: 4px; }
 
-  /* Tab Navigation */
-  #tabs {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+  .setting-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 7px 0;
+    border-bottom: 1px solid var(--line);
+    font-size: 0.8rem;
+    cursor: pointer;
+  }
+  .setting-toggle:last-of-type { border-bottom: none; }
+  .setting-toggle input[type=checkbox] {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--acc);
+    flex-shrink: 0;
+  }
+
+  .hist-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    align-items: center;
+    justify-content: space-between;
+    margin: 8px 0;
+    padding-top: 8px;
+    border-top: 1px solid var(--line);
+  }
+  .hist-btns { display: flex; gap: 5px; flex-wrap: wrap; }
+  .hist-btn {
+    padding: 4px 8px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    border-radius: 6px;
+    border: 1px solid var(--line);
+    background: var(--bg);
+    color: var(--fg);
+    cursor: pointer;
+  }
+  .hist-btn:hover { filter: brightness(0.95); }
+  .hist-btn-danger { color: var(--stop); border-color: #fca5a5; }
+  #hist-items {
+    max-height: 210px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  .hist-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 7px 9px;
+    border-radius: 8px;
+    border: 1px solid var(--line);
+    background: var(--bg);
+    font-size: 0.78rem;
+    cursor: pointer;
+  }
+  .hist-item:hover { border-color: var(--acc); }
+  .hist-meta {
+    font-size: 0.68rem;
+    color: var(--mut);
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    margin-bottom: 2px;
+  }
+  .hist-title {
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* X10: Compact Tabs + Reading Time Estimation on Same Row */
+  .tabs-dur-row {
+    display: flex;
+    align-items: stretch;
     gap: 8px;
     margin-bottom: 10px;
   }
+  #tabs {
+    display: flex;
+    gap: 5px;
+    flex-shrink: 0;
+  }
   .tab-btn {
     min-height: 42px;
+    padding: 0 10px;
     border-radius: 10px;
-    font-size: 0.88rem;
+    font-size: 0.82rem;
     font-weight: 600;
     border: 1px solid var(--line);
     background: var(--card);
@@ -219,7 +311,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 6px;
+    gap: 4px;
+    white-space: nowrap;
     transition: all 0.15s;
   }
   .tab-btn.on {
@@ -228,36 +321,52 @@
     border-color: var(--acc);
     box-shadow: 0 2px 4px rgba(11, 110, 138, 0.2);
   }
+  #dur {
+    flex: 1;
+    min-width: 0;
+    padding: 5px 9px;
+    border-radius: 10px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    font-size: 0.72rem;
+    line-height: 1.3;
+    color: var(--mut);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    box-shadow: var(--card-shadow);
+    overflow: hidden;
+  }
 
-  /* Control Panel (Immediately under tabs) */
+  /* Control Panel */
   .control-card {
     background: var(--card);
     border: 1px solid var(--line);
     border-radius: 12px;
-    padding: 12px;
+    padding: 10px 12px;
     margin-bottom: 10px;
     box-shadow: var(--card-shadow);
   }
   .main-controls {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
-    gap: 8px;
-    margin-bottom: 12px;
+    gap: 7px;
+    margin-bottom: 10px;
   }
   .ctrl-btn {
-    min-height: 52px;
+    min-height: 50px;
     border-radius: 10px;
     border: 1px solid var(--line);
     background: var(--card);
     color: var(--fg);
-    font-size: 0.82rem;
+    font-size: 0.8rem;
     font-weight: 700;
     cursor: pointer;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 3px;
+    gap: 2px;
     transition: transform 0.1s, filter 0.15s;
     user-select: none;
   }
@@ -289,31 +398,31 @@
 
   /* Sliders & Presets */
   .setting-row {
-    padding-top: 8px;
+    padding-top: 7px;
     border-top: 1px solid var(--line);
   }
-  .setting-row + .setting-row { margin-top: 8px; }
+  .setting-row + .setting-row { margin-top: 7px; }
   .setting-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: 0.78rem;
+    font-size: 0.76rem;
     font-weight: 600;
     color: var(--mut);
-    margin-bottom: 6px;
+    margin-bottom: 5px;
   }
   .val-highlight {
     font-weight: 700;
     color: var(--acc);
-    font-size: 0.85rem;
+    font-size: 0.82rem;
   }
   .preset-row {
     display: flex;
     gap: 4px;
   }
   .preset-pill {
-    padding: 2px 7px;
-    font-size: 0.72rem;
+    padding: 2px 6px;
+    font-size: 0.71rem;
     font-weight: 600;
     border-radius: 6px;
     border: 1px solid var(--line);
@@ -336,8 +445,8 @@
   /* Input Textarea */
   #txt {
     width: 100%;
-    height: 48px;
-    min-height: 48px;
+    height: 46px;
+    min-height: 46px;
     padding: 10px 12px;
     border-radius: 10px;
     border: 1px solid var(--line);
@@ -403,7 +512,7 @@
     border-radius: 8px;
     border: 1px solid var(--line);
     background: var(--card);
-    font-size: 0.85rem;
+    font-size: 0.84rem;
     transition: background 0.15s;
   }
   .list-item.now {
@@ -429,7 +538,7 @@
     gap: 6px;
   }
   .badge-tag {
-    font-size: 0.65rem;
+    font-size: 0.64rem;
     padding: 1px 4px;
     border-radius: 4px;
     background: var(--bg);
@@ -452,7 +561,7 @@
   /* Sentence View */
   #view {
     width: 100%;
-    height: 32vh;
+    height: 34vh;
     border-radius: 12px;
     border: 1px solid var(--line);
     background: var(--card);
@@ -461,7 +570,7 @@
     line-height: 1.6;
     overflow-y: auto;
     overflow-wrap: anywhere;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
     box-shadow: var(--card-shadow);
   }
   #view span {
@@ -478,20 +587,10 @@
     box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.4);
   }
 
-  /* Duration & Message */
+  /* Message Footer */
   footer {
     font-size: 0.78rem;
     color: var(--mut);
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
-  #dur {
-    padding: 10px 12px;
-    border-radius: 8px;
-    background: rgba(0, 0, 0, 0.03);
-    border: 1px solid var(--line);
-    font-weight: 500;
   }
   #msg {
     min-height: 1.4em;
@@ -499,33 +598,105 @@
     font-weight: 600;
     color: var(--acc);
   }
+
+  /* X8 Silent Share Mini Card (când sistemul nu permite window.close automat) */
+  #share-mini {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 18px;
+    background: rgba(16, 23, 29, 0.45);
+    z-index: 9999;
+  }
+  .share-mini-card {
+    width: 100%;
+    max-width: 360px;
+    background: var(--card);
+    color: var(--fg);
+    border: 2px solid #059669;
+    border-radius: 14px;
+    padding: 14px 16px;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.25);
+    text-align: center;
+  }
+  .share-mini-ok {
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: #059669;
+    margin-bottom: 6px;
+  }
+  .share-mini-sub {
+    font-size: 0.78rem;
+    color: var(--mut);
+    margin-bottom: 12px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .share-mini-actions {
+    display: flex;
+    gap: 8px;
+  }
+  .share-mini-actions button {
+    flex: 1;
+    padding: 9px 10px;
+    border-radius: 9px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    cursor: pointer;
+    border: 1px solid var(--line);
+    background: var(--bg);
+    color: var(--fg);
+  }
+  .share-mini-actions button.primary {
+    background: #059669;
+    color: #fff;
+    border-color: #059669;
+  }
   [hidden] { display: none !important; }
 </style>
 <script src="/_aistudio-iframe.js?v=1f94f900"></script></head>
 <body>
 
-<main>
-  <!-- 1. Antet cu Titlu v6 (Insignă Verde Mare), Șterge și Help -->
+<!-- X8: Fereastră minimală Share silențios (afișată doar dacă window.close e blocat de OS) -->
+<div id="share-mini" hidden>
+  <div class="share-mini-card">
+    <div class="share-mini-ok">✓ Salvat în Listă &amp; Istoric</div>
+    <div id="share-mini-title" class="share-mini-sub">Conținut adăugat</div>
+    <div class="share-mini-actions">
+      <button id="share-close-btn" type="button" class="primary">✕ Închide / Înapoi</button>
+      <button id="share-open-btn" type="button">▶ Deschide aplicația</button>
+    </div>
+  </div>
+</div>
+
+<main id="main-app">
+  <!-- 1. Antet cu Titlu v7 (Insignă Verde Mare), Settings, Șterge și Help -->
   <header>
     <div class="title-group">
       <div class="app-icon">▶</div>
-      <h1>Citește clipboard <span class="v-badge-green">v6</span></h1>
+      <h1>Lectură audio <span class="v-badge-green">v7</span></h1>
     </div>
     <div class="header-actions">
+      <button id="settings-btn" type="button" class="btn-sm" aria-expanded="false" title="Setări &amp; Istoric">
+        <span>⚙ Settings</span>
+      </button>
       <button id="clear" type="button" class="btn-sm" aria-label="Șterge textul">
-        <span>🗑 Șterge</span>
+        <span>🗑</span>
       </button>
       <button id="help" type="button" class="btn-sm" aria-expanded="false">
-        <span>? Help</span>
+        <span>?</span>
       </button>
     </div>
   </header>
 
-  <!-- Panou Descărcare Fișiere GitHub v6 -->
+  <!-- Panou Descărcare Fișiere GitHub v7 -->
   <div class="dl-panel">
     <div class="dl-header">
-      <span>📥 Descarcă fișierele v6 pentru GitHub:</span>
-      <span style="font-size:0.7rem;color:var(--mut);">Gata de urcat pe pareto.github.io</span>
+      <span>📥 Descarcă fișierele v7 pentru GitHub:</span>
+      <span style="font-size:0.68rem;color:var(--mut);">pareto.github.io/lectura-audio</span>
     </div>
     <div class="dl-grid">
       <button id="btn-dl-index" type="button" class="dl-btn dl-btn-green" title="Descarcă index.html">1. index.html</button>
@@ -534,38 +705,66 @@
     </div>
   </div>
 
+  <!-- X11: Panou Settings + Fișier Istoric -->
+  <div id="settingsbox" class="panel-box" hidden>
+    <h2>
+      <span>⚙ Setări aplicație (v7)</span>
+      <button id="settings-close" type="button" class="hist-btn">Închide ✕</button>
+    </h2>
+    <label class="setting-toggle">
+      <span>Pornire automată imediat la inserare text/link (Clipboard)</span>
+      <input id="opt-autoplay" type="checkbox" checked>
+    </label>
+    <label class="setting-toggle">
+      <span>Share silențios (nu afișa fereastra completă la Share)</span>
+      <input id="opt-sharesilent" type="checkbox" checked>
+    </label>
+    <label class="setting-toggle">
+      <span>Continuă citirea în background / ecran stins (Audio Keep-Alive)</span>
+      <input id="opt-bgaudio" type="checkbox" checked>
+    </label>
+    <label class="setting-toggle">
+      <span>Menține ecranul aprins cât timp citește (WakeLock)</span>
+      <input id="opt-wakelock" type="checkbox">
+    </label>
+
+    <div class="hist-toolbar">
+      <strong id="hist-count" style="color:var(--acc);font-size:0.84rem;">📜 Istoric Clipboard &amp; Share (0)</strong>
+      <div class="hist-btns">
+        <button id="hist-dl-txt" type="button" class="hist-btn" title="Descarcă fișier istoric text">📥 .txt</button>
+        <button id="hist-dl-json" type="button" class="hist-btn" title="Descarcă fișier istoric JSON">📥 .json</button>
+        <button id="hist-clear" type="button" class="hist-btn hist-btn-danger">🗑 Golește</button>
+      </div>
+    </div>
+    <div id="hist-items"></div>
+  </div>
+
   <!-- Help Accordion Box -->
-  <div id="helpbox" hidden>
-    <h2>Instrucțiuni de utilizare (v6)</h2>
+  <div id="helpbox" class="panel-box" hidden>
+    <h2>Instrucțiuni de utilizare (v7)</h2>
     <ol>
-      <li><b>Text sau Link</b>: lipește un articol sau URL direct în casetă.</li>
-      <li><b>Listă (linkuri și texte)</b>: poți partaja (Share) din Chrome, WhatsApp sau Notes atât linkuri cât și texte selectate direct în listă.</li>
-      <li><b>Controale de redare sus</b>: butoanele Start, Pauză, Skip și Stop sunt plasate direct sub taburi.</li>
-      <li><b>Viteză</b>: reglează viteza din slider sau scurtăturile rapide (1.0×, 1.2×, 1.5×, 1.8×, 2.0×).</li>
-      <li><b>Skip (⏭)</b>: sare instant la următorul articol din listă (sau sare 5 propoziții).</li>
+      <li><b>Clipboard automat</b>: în modul <b>Text</b>, citirea pornește imediat după ce lipești textul sau linkul.</li>
+      <li><b>Background &amp; Ecran stins</b>: folosește MediaSession + audio de menținere. Pe Android, setează bateria Chrome pe <i>„Neîngrădit” (Unrestricted)</i> pentru redare continuă în fundal.</li>
+      <li><b>Share silențios</b>: când dai Share dintr-o altă aplicație, articolul intră direct în Listă și Istoric fără să-ți acopere ecranul.</li>
+      <li><b>Settings &amp; Istoric</b>: toate textele și linkurile din Clipboard/Share sunt salvate în istoric și pot fi descărcate ca fișier <code>.txt</code> sau <code>.json</code>.</li>
     </ol>
-    <h2>Estimare timp de lectură</h2>
-    <ul>
-      <li><b>Citire vizuală</b>: în gând, calculat la circa 220 de cuvinte/minut.</li>
-      <li><b>Audio</b>: timpul la viteza aleasă (baza vocală este ~155 cuv/min la 1.0×).</li>
-      <li><b>Economie / Mai lent</b>: diferența de timp economisit sau adăugat.</li>
-      <li><b>Rămas</b>: durata audio rămasă de la poziția curentă până la final.</li>
-    </ul>
   </div>
 
-  <!-- 2. Navigare Taburi: Text/Link vs Listă -->
-  <div id="tabs">
-    <button id="m1" type="button" class="tab-btn on">
-      <span>📄 Text / Link</span>
-    </button>
-    <button id="m2" type="button" class="tab-btn">
-      <span>📋 Listă (0)</span>
-    </button>
+  <!-- X10: Taburi compacte în stânga + Estimare timp citire în dreapta pe același rând -->
+  <div class="tabs-dur-row">
+    <div id="tabs">
+      <button id="m1" type="button" class="tab-btn on">
+        <span>📄 Text</span>
+      </button>
+      <button id="m2" type="button" class="tab-btn">
+        <span>📋 Listă (0)</span>
+      </button>
+    </div>
+    <div id="dur">Vizual: – · Audio: –</div>
   </div>
 
-  <!-- 3. CONTROALELE DE REDARE + VITEZA + POZIȚIA (IMEDIAT SUB TABURI) -->
+  <!-- Controale Redare + Viteză + Poziție -->
   <div class="control-card">
-    <!-- Rândul de butoane: Start, Pauză, Skip, Stop -->
     <div class="main-controls">
       <button id="play" type="button" class="ctrl-btn btn-play" title="Pornește lectura">
         <span style="font-size:1.15rem">▶</span>
@@ -591,7 +790,7 @@
     <!-- Secțiunea Viteză -->
     <div class="setting-row">
       <div class="setting-header">
-        <span>Viteză redare: <span id="rv" class="val-highlight">1.0</span>×</span>
+        <span>Viteză: <span id="rv" class="val-highlight">1.0</span>×</span>
         <div class="preset-row">
           <button type="button" class="preset-pill active" data-val="1.0">1.0×</button>
           <button type="button" class="preset-pill" data-val="1.2">1.2×</button>
@@ -603,7 +802,7 @@
       <input id="rate" type="range" min="0.6" max="2" step="0.1" value="1">
     </div>
 
-    <!-- Secțiunea Poziție (Începe de la) -->
+    <!-- Secțiunea Poziție -->
     <div class="setting-row">
       <div class="setting-header">
         <span>Începe de la:</span>
@@ -613,13 +812,13 @@
     </div>
   </div>
 
-  <!-- 4. Textarea de introducere (Mod 1) -->
-  <textarea id="txt" rows="1" placeholder="Apasă lung aici → Lipește text sau link"></textarea>
+  <!-- Textarea (Mod 1) -->
+  <textarea id="txt" rows="1" placeholder="Apasă lung aici → Lipește text sau link (pornește automat)"></textarea>
 
-  <!-- 5. Caseta Listă articole & texte (Mod 2) -->
+  <!-- Listă articole & texte (Mod 2) -->
   <div id="listbox" hidden>
     <div class="list-head">
-      <span>Coada de articole & texte</span>
+      <span>Coada de articole &amp; texte</span>
       <div class="list-actions">
         <button id="delread" type="button">Șterge citite</button>
         <button id="delall" type="button">Șterge tot</button>
@@ -628,12 +827,11 @@
     <div id="items"></div>
   </div>
 
-  <!-- 6. Vizualizator propoziții -->
+  <!-- Vizualizator propoziții -->
   <div id="view" hidden></div>
 
-  <!-- 7. Estimare durată & status -->
+  <!-- Status -->
   <footer>
-    <div id="dur">Citire vizuală: – · Audio: –</div>
     <div id="msg"></div>
   </footer>
 </main>
@@ -644,22 +842,145 @@ var synth=window.speechSynthesis;
 var $=function(id){return document.getElementById(id)};
 var txt=$('txt'),view=$('view'),pos=$('pos'),rate=$('rate'),msg=$('msg'),durEl=$('dur');
 var chunks=[],spans=[],idx=0,token=0,state='idle',roVoice=null,wake=null,keep=null,mode=1,items=[],cur=-1,listRun=false;
+var audioCtx=null,bgTimer=null,utterStart=0,silentTicks=0,lastInputLen=0;
+var bc=(typeof BroadcastChannel!=='undefined')?new BroadcastChannel('lectura_audio_sync'):null;
 
+// Settings (X7, X8, X9, X11)
+var settings={autoPlay:true,shareSilent:true,bgAudio:true,wakeLock:false};
 try{
-  var raw=JSON.parse(localStorage.getItem('cc_list')||'[]');
-  items=raw.map(function(it){
-    return {
-      type: it.type || (it.text && !it.url ? 'text' : 'link'),
-      url: it.url || '',
-      text: it.text || '',
-      title: it.title || it.url || 'Articol',
-      read: !!it.read,
-      err: !!it.err
-    };
+  var st=JSON.parse(localStorage.getItem('cc_settings')||'{}');
+  if(typeof st.autoPlay==='boolean')settings.autoPlay=st.autoPlay;
+  if(typeof st.shareSilent==='boolean')settings.shareSilent=st.shareSilent;
+  if(typeof st.bgAudio==='boolean')settings.bgAudio=st.bgAudio;
+  if(typeof st.wakeLock==='boolean')settings.wakeLock=st.wakeLock;
+}catch(e){}
+function saveSettings(){try{localStorage.setItem('cc_settings',JSON.stringify(settings))}catch(e){}}
+
+// Istoric (X11)
+var historyList=[];
+try{historyList=JSON.parse(localStorage.getItem('cc_history')||'[]')}catch(e){historyList=[]}
+function saveHistory(){try{localStorage.setItem('cc_history',JSON.stringify(historyList.slice(0,200)))}catch(e){}}
+
+function addHistory(entry){
+  var cleanTitle=(entry.title||'').trim()||(entry.url||'').replace(/^https?:\/\/(www\.)?/,'').slice(0,80)||(entry.text||'').slice(0,80)||'Articol';
+  var top=historyList[0];
+  if(top && top.type===entry.type && ((entry.url && top.url===entry.url) || (entry.text && top.text===entry.text))){
+    top.ts=Date.now();
+    if(entry.title)top.title=cleanTitle;
+    saveHistory();renderHistory();return;
+  }
+  historyList.unshift({
+    id:'h_'+Date.now()+'_'+Math.random().toString(36).slice(2,6),
+    ts:Date.now(),
+    source:entry.source||'clipboard',
+    type:entry.type||'text',
+    title:cleanTitle,
+    url:entry.url||'',
+    text:(entry.text||'').slice(0,25000)
   });
-}catch(e){items=[]}
+  if(historyList.length>200)historyList.length=200;
+  saveHistory();
+  renderHistory();
+}
+
+function loadList(){
+  try{
+    var raw=JSON.parse(localStorage.getItem('cc_list')||'[]');
+    items=raw.map(function(it){
+      return {
+        type: it.type || (it.text && !it.url ? 'text' : 'link'),
+        url: it.url || '',
+        text: it.text || '',
+        title: it.title || it.url || 'Articol',
+        read: !!it.read,
+        err: !!it.err
+      };
+    });
+  }catch(e){items=[]}
+}
+loadList();
 
 function say(t){if(msg)msg.textContent=t||''}
+
+function save(){
+  try{localStorage.setItem('cc_list',JSON.stringify(items))}catch(e){}
+  if(bc)try{bc.postMessage({type:'sync_list'})}catch(e){}
+}
+
+function addItem(u, title, textContent, sourceTag){
+  if(textContent){
+    var itemTitle=title||textContent.split('\n')[0].slice(0,60)||'Text partajat';
+    items.push({type:'text',url:'',title:itemTitle,text:textContent,read:false});
+    addHistory({source:sourceTag||'share',type:'text',title:itemTitle,text:textContent});
+    save();renderList();return itemTitle;
+  }
+  u=u.replace(/[)\].,;]+$/,'');
+  var linkTitle=title||u.replace(/^https?:\/\/(www\.)?/,'').slice(0,60);
+  if(!items.some(function(it){return it.url===u})){
+    items.push({type:'link',url:u,title:title||'',read:false});
+    save();
+  }
+  addHistory({source:sourceTag||'share',type:'link',title:linkTitle,url:u});
+  renderList();
+  return linkTitle;
+}
+
+// X8: Interceptăm Share IMEDIAT înainte să afișăm interfața
+(function handleIncomingShare(){
+  var q=new URLSearchParams(location.search);
+  if(!q.has('url')&&!q.has('text')&&!q.has('title'))return;
+  var rawUrl=q.get('url')||'',rawText=q.get('text')||'',rawTitle=q.get('title')||'';
+  var m=[rawUrl,rawText,rawTitle].join(' ').match(/https?:\/\/[^\s]+/);
+  try{history.replaceState(null,'',location.pathname)}catch(e){}
+
+  var savedLabel='';
+  if(m){
+    savedLabel=addItem(m[0], rawTitle, '', 'share');
+  }else if(rawText.trim()||rawTitle.trim()){
+    savedLabel=addItem('', rawTitle.trim(), rawText.trim()||rawTitle.trim(), 'share');
+  }
+  if(!savedLabel)return;
+
+  if(settings.shareSilent){
+    $('main-app').hidden=true;
+    // Încearcă închiderea imediată a ferestrei WebAPK pentru a nu întrerupe aplicația sursă
+    try{window.close()}catch(e){}
+    setTimeout(function(){
+      $('share-mini-title').textContent=savedLabel;
+      $('share-mini').hidden=false;
+    },180);
+  }else{
+    mode=2;
+  }
+})();
+
+$('share-close-btn').onclick=function(){
+  try{window.close()}catch(e){}
+  setTimeout(function(){
+    if(history.length>1)history.back();
+    else{$('share-mini').hidden=true;$('main-app').hidden=false;setMode(2)}
+  },120);
+};
+$('share-open-btn').onclick=function(){
+  $('share-mini').hidden=true;
+  $('main-app').hidden=false;
+  setMode(2);
+};
+
+// Sincronizare live când un alt Share silențios rulează în paralel
+if(bc){
+  bc.onmessage=function(ev){
+    if(ev.data&&ev.data.type==='sync_list'){
+      loadList();renderList();
+      try{historyList=JSON.parse(localStorage.getItem('cc_history')||'[]');renderHistory()}catch(e){}
+    }
+  };
+}
+window.addEventListener('storage',function(e){
+  if(e.key==='cc_list'){loadList();renderList()}
+  if(e.key==='cc_history'){try{historyList=JSON.parse(e.newValue||'[]');renderHistory()}catch(err){}}
+});
+
 if(!synth){say('Browserul nu suportă citirea vocală.');return}
 
 function loadVoices(){
@@ -696,12 +1017,12 @@ document.querySelectorAll('.preset-pill').forEach(function(btn){
 
 function split(t){
   var parts=t.replace(/\r/g,'').match(/[^.!?\n]+[.!?]*/g)||[];
-  var out=[],cur='';
+  var out=[],c='';
   parts.forEach(function(p){
     p=p.trim();if(!p)return;
-    if((cur+' '+p).length>180&&cur){out.push(cur);cur=p}else cur=cur?cur+' '+p:p;
+    if((c+' '+p).length>180&&c){out.push(c);c=p}else c=c?c+' '+p:p;
   });
-  if(cur)out.push(cur);
+  if(c)out.push(c);
   return out;
 }
 
@@ -719,22 +1040,20 @@ function render(t){
   mark();
 }
 
-function fmt(sec){sec=Math.round(sec);var m=Math.floor(sec/60),r=sec%60;return m?(m+' min '+r+' s'):(r+' s')}
+function fmt(sec){sec=Math.round(sec);var m=Math.floor(sec/60),r=sec%60;return m?(m+'m '+r+'s'):(r+'s')}
 
 function dur(){
   var r=Number(rate.value)||1,vis=220,tts=155;
   function words(a){return a.reduce(function(n,c){return n+c.split(/\s+/).filter(Boolean).length},0)}
-  if(!chunks.length){durEl.innerHTML='Citire vizuală: – · Audio: –';return}
+  if(!chunks.length){durEl.innerHTML='<span>Vizual: – · Audio: –</span>';return}
   var w=words(chunks),v=w/vis*60,t=w/tts*60/r,left=words(chunks.slice(idx))/tts*60/r,d=v-t;
-  var diffStr=d>=1?('Economie: '+fmt(d)):d<=-1?('Mai lent cu: '+fmt(-d)):'La fel';
-  durEl.innerHTML='Citire vizuală: <b>'+fmt(v)+'</b> · Audio '+r.toFixed(1)+'×: <b>'+fmt(t)+'</b><br><span style="color:var(--acc);font-weight:600">'+diffStr+' · Rămas audio: '+fmt(left)+'</span>';
+  var diffStr=d>=1?('Econ: '+fmt(d)):d<=-1?('+'+fmt(-d)+' lent'):'Egal';
+  durEl.innerHTML='<div>Viz: <b>'+fmt(v)+'</b> · Aud '+r.toFixed(1)+'×: <b>'+fmt(t)+'</b></div><div style="color:var(--acc);font-weight:700">'+diffStr+' · Rămas: '+fmt(left)+'</div>';
 }
 
 function mark(){
   dur();
-  spans.forEach(function(sp,i){
-    sp.classList.toggle('cur', i===idx);
-  });
+  spans.forEach(function(sp,i){sp.classList.toggle('cur', i===idx)});
   pos.value=idx;
   $('pv').textContent=chunks.length?('propoziția '+(idx+1)+' din '+chunks.length):'–';
   if(spans[idx]){var sp=spans[idx];view.scrollTop=sp.offsetTop-view.offsetTop-view.clientHeight/3}
@@ -747,35 +1066,99 @@ function goTo(i,restart){
 pos.oninput=function(){goTo(Number(pos.value),false)};
 pos.onchange=function(){goTo(Number(pos.value),true)};
 
+// X7: WAV 4 secunde cu oscilație 1-LSB (+/-1 din 128) la volum 0.015 (inaudibil, dar păstrează MediaFocus activ cu ecranul stins!)
 function silentWav(){
-  var n=8000,b=new Uint8Array(44+n),d=new DataView(b.buffer);
+  var sr=8000,n=32000,b=new Uint8Array(44+n),d=new DataView(b.buffer);
   function w(o,str){for(var i=0;i<str.length;i++)b[o+i]=str.charCodeAt(i)}
   w(0,'RIFF');d.setUint32(4,36+n,true);w(8,'WAVEfmt ');d.setUint32(16,16,true);d.setUint16(20,1,true);d.setUint16(22,1,true);
-  d.setUint32(24,8000,true);d.setUint32(28,8000,true);d.setUint16(32,1,true);d.setUint16(34,8,true);w(36,'data');d.setUint32(40,n,true);
-  for(var i=0;i<n;i++)b[44+i]=128;
+  d.setUint32(24,sr,true);d.setUint32(28,sr,true);d.setUint16(32,1,true);d.setUint16(34,8,true);w(36,'data');d.setUint32(40,n,true);
+  for(var i=0;i<n;i++)b[44+i]=(i%2===0)?129:127;
   return URL.createObjectURL(new Blob([b],{type:'audio/wav'}));
 }
 
+function updateMediaMeta(){
+  try{
+    if('mediaSession' in navigator){
+      var tTitle=(listRun&&items[cur]&&items[cur].title)?items[cur].title:'Lectură audio v7';
+      navigator.mediaSession.metadata=new MediaMetadata({
+        title:tTitle,
+        artist:chunks.length?('Propoziția '+(idx+1)+' / '+chunks.length):'Lectură Audio',
+        album:'Lectură audio'
+      });
+      navigator.mediaSession.playbackState=(state==='playing')?'playing':(state==='paused')?'paused':'none';
+    }
+  }catch(e){}
+}
+
+function startWatchdog(){
+  if(bgTimer)clearInterval(bgTimer);
+  silentTicks=0;
+  bgTimer=setInterval(function(){
+    if(state!=='playing')return;
+    if(settings.bgAudio && keep && keep.paused){try{keep.play().catch(function(){})}catch(e){}}
+    if(synth.paused){try{synth.resume()}catch(e){}}
+    // Fallback pentru situațiile în care Android oprește onend când ecranul e stins
+    if(!synth.speaking && !synth.pending && (Date.now()-utterStart)>1500){
+      silentTicks++;
+      if(silentTicks>=2){
+        silentTicks=0;
+        idx++;
+        speak();
+      }
+    }else{
+      silentTicks=0;
+    }
+  },1000);
+}
+
+function stopWatchdog(){
+  if(bgTimer){clearInterval(bgTimer);bgTimer=null}
+  silentTicks=0;
+}
+
 async function hold(){
-  try{if(navigator.wakeLock)wake=await navigator.wakeLock.request('screen')}catch(e){}
-  try{if(!keep){keep=new Audio(silentWav());keep.loop=true;keep.volume=0.05}keep.play().catch(function(){})}catch(e){}
+  if(settings.wakeLock){
+    try{if(navigator.wakeLock)wake=await navigator.wakeLock.request('screen')}catch(e){}
+  }
+  if(settings.bgAudio){
+    try{
+      if(!keep){keep=new Audio(silentWav());keep.loop=true;keep.volume=0.015}
+      keep.play().catch(function(){});
+    }catch(e){}
+    try{
+      if(!audioCtx&&(window.AudioContext||window.webkitAudioContext)){
+        var AC=window.AudioContext||window.webkitAudioContext;
+        audioCtx=new AC();
+        var osc=audioCtx.createOscillator(),g=audioCtx.createGain();
+        g.gain.value=0.0001;osc.connect(g);g.connect(audioCtx.destination);osc.start();
+      }
+      if(audioCtx&&audioCtx.state==='suspended')audioCtx.resume().catch(function(){});
+    }catch(e){}
+  }
   try{if('mediaSession' in navigator){
-    navigator.mediaSession.metadata=new MediaMetadata({title:'Citește clipboard v6',artist:'Lectură Audio'});
-    navigator.mediaSession.setActionHandler('play',function(){pause()});
-    navigator.mediaSession.setActionHandler('pause',function(){pause()});
+    updateMediaMeta();
+    navigator.mediaSession.setActionHandler('play',function(){if(state==='paused')pause();else start()});
+    navigator.mediaSession.setActionHandler('pause',function(){if(state==='playing')pause()});
     navigator.mediaSession.setActionHandler('stop',function(){stop()});
     navigator.mediaSession.setActionHandler('nexttrack',function(){skip()});
+    navigator.mediaSession.setActionHandler('previoustrack',function(){if(chunks.length)goTo(idx-1,state==='playing')});
   }}catch(e){}
+  startWatchdog();
 }
+
 function release(){
+  stopWatchdog();
   try{if(wake){wake.release();wake=null}}catch(e){}
   try{if(keep)keep.pause()}catch(e){}
+  try{if('mediaSession' in navigator)navigator.mediaSession.playbackState='none'}catch(e){}
 }
 
 document.addEventListener('visibilitychange',function(){
   if(document.visibilityState==='visible'&&state==='playing'){
-    if(navigator.wakeLock)navigator.wakeLock.request('screen').then(function(w){wake=w}).catch(function(){});
-    if(!synth.speaking){token++;speak()}
+    if(settings.wakeLock&&navigator.wakeLock)navigator.wakeLock.request('screen').then(function(w){wake=w}).catch(function(){});
+    if(settings.bgAudio&&keep&&keep.paused)keep.play().catch(function(){});
+    if(synth.paused)synth.resume();
+    if(!synth.speaking&&!synth.pending){token++;speak()}
   }
 });
 
@@ -783,6 +1166,9 @@ function speak(){
   var my=token;
   if(idx>=chunks.length){if(listRun){finishItem();return}state='idle';idx=0;mark();release();$('pause').querySelector('span:last-child').textContent='Pauză';say('Gata.');return}
   mark();
+  updateMediaMeta();
+  silentTicks=0;
+  utterStart=Date.now();
   var u=new SpeechSynthesisUtterance(chunks[idx]);
   if(roVoice){u.voice=roVoice;u.lang=roVoice.lang}else u.lang='ro-RO';
   u.rate=Number(rate.value);
@@ -800,8 +1186,8 @@ function start(){
 }
 
 function pause(){
-  if(state==='playing'){token++;synth.cancel();state='paused';$('pause').querySelector('span:last-child').textContent='Reia';say('În pauză.')}
-  else if(state==='paused'){token++;$('pause').querySelector('span:last-child').textContent='Pauză';speak()}
+  if(state==='playing'){token++;synth.cancel();state='paused';updateMediaMeta();$('pause').querySelector('span:last-child').textContent='Reia';say('În pauză.')}
+  else if(state==='paused'){token++;$('pause').querySelector('span:last-child').textContent='Pauză';hold();speak()}
 }
 
 function stop(){token++;listRun=false;synth.cancel();state='idle';idx=0;mark();release();$('pause').querySelector('span:last-child').textContent='Pauză';say('Oprit.')}
@@ -860,22 +1246,14 @@ async function getText(u){
   }finally{clearTimeout(to)}
 }
 
-async function loadUrl(u){
+async function loadUrl(u, autoStart){
   note('Se încarcă articolul…');
   var t;try{t=await getText(u)}catch(e){note('Nu am putut încărca linkul. Verifică conexiunea la internet sau lipește textul.');return}
-  txt.value=t;render();
-}
-
-function save(){try{localStorage.setItem('cc_list',JSON.stringify(items))}catch(e){}}
-
-function addItem(u, title, textContent){
-  if(textContent){
-    items.push({type:'text',url:'',title:title||textContent.slice(0,60),text:textContent,read:false});
-    save();renderList();return;
-  }
-  u=u.replace(/[)\].,;]+$/,'');
-  if(!items.some(function(it){return it.url===u})){items.push({type:'link',url:u,title:title||'',read:false});save()}
-  renderList();
+  txt.value=t;
+  lastInputLen=t.length;
+  addHistory({source:'clipboard',type:'link',title:t.split('\n')[0].slice(0,80)||u,url:u,text:t});
+  render();
+  if(autoStart && settings.autoPlay){start()}
 }
 
 function renderList(){
@@ -901,7 +1279,7 @@ function renderList(){
 
     d.appendChild(t);d.appendChild(x);box.appendChild(d);
   });
-  if(!items.length)box.innerHTML='<div style="padding:16px 0;text-align:center;color:var(--mut);font-size:0.8rem">Lista e goală. Distribuie un link sau text din altă aplicație către „Citește clipboard”.</div>';
+  if(!items.length)box.innerHTML='<div style="padding:14px 0;text-align:center;color:var(--mut);font-size:0.8rem">Lista e goală. Distribuie un link sau text din altă aplicație către „Lectură v7”.</div>';
   $('m2').querySelector('span').textContent='📋 Listă ('+items.filter(function(it){return !it.read}).length+')';
 }
 
@@ -941,27 +1319,124 @@ function setMode(m){
   txt.hidden = m===2;
   $('listbox').hidden = m!==2;
   $('clear').hidden = m===2;
-  view.style.height = m===2 ? '24vh' : '32vh';
+  view.style.height = m===2 ? '24vh' : '34vh';
 
   var v=txt.value.trim();
   if(m===1&&v&&!/^https?:\/\/\S+$/i.test(v))render();else render('');
   renderList();
 }
 
-var tm;
-txt.addEventListener('input',function(){
-  clearTimeout(tm);
-  tm=setTimeout(function(){
-    stop();
-    var v=txt.value.trim();
-    if(/^https?:\/\/\S+$/i.test(v)){loadUrl(v)}
-    else if(v){render()}
-    else{chunks=[];render()}
-  },300);
+// X9: Pornire imediată în modul Clipboard (la paste sau inserare din tastatură)
+var tm, pastedFlag=false;
+txt.addEventListener('paste',function(){
+  pastedFlag=true;
 });
 
-$('clear').onclick=function(){stop();clearTimeout(tm);txt.value='';chunks=[];render();txt.focus()};
-$('help').onclick=function(){var h=$('helpbox');h.hidden=!h.hidden;$('help').setAttribute('aria-expanded',String(!h.hidden))};
+function handleTxtInsert(auto){
+  stop();
+  var v=txt.value.trim();
+  if(!v){chunks=[];render();return}
+  if(/^https?:\/\/\S+$/i.test(v)){
+    loadUrl(v, auto);
+  }else{
+    addHistory({source:'clipboard',type:'text',title:v.split('\n')[0].slice(0,80),text:v});
+    render();
+    if(auto && settings.autoPlay){start()}
+  }
+}
+
+txt.addEventListener('input',function(e){
+  clearTimeout(tm);
+  var curLen=txt.value.length;
+  var delta=curLen-lastInputLen;
+  lastInputLen=curLen;
+  var isBulk=pastedFlag || (e&&e.inputType==='insertFromPaste') || delta>=4;
+  pastedFlag=false;
+  tm=setTimeout(function(){
+    handleTxtInsert(isBulk);
+  }, isBulk ? 80 : 450);
+});
+
+// Render Settings & History (X11)
+$('opt-autoplay').checked=settings.autoPlay;
+$('opt-sharesilent').checked=settings.shareSilent;
+$('opt-bgaudio').checked=settings.bgAudio;
+$('opt-wakelock').checked=settings.wakeLock;
+
+$('opt-autoplay').onchange=function(){settings.autoPlay=this.checked;saveSettings()};
+$('opt-sharesilent').onchange=function(){settings.shareSilent=this.checked;saveSettings()};
+$('opt-bgaudio').onchange=function(){settings.bgAudio=this.checked;saveSettings()};
+$('opt-wakelock').onchange=function(){settings.wakeLock=this.checked;saveSettings()};
+
+function renderHistory(){
+  var box=$('hist-items');
+  $('hist-count').textContent='📜 Istoric Clipboard & Share ('+historyList.length+')';
+  box.textContent='';
+  if(!historyList.length){
+    box.innerHTML='<div style="padding:12px 0;text-align:center;color:var(--mut);font-size:0.78rem">Istoricul este gol. Orice text sau link din Clipboard sau Share va fi salvat automat aici.</div>';
+    return;
+  }
+  historyList.forEach(function(h){
+    var d=document.createElement('div');
+    d.className='hist-item';
+    var dt=new Date(h.ts);
+    var dtStr=dt.toLocaleDateString('ro-RO',{day:'2-digit',month:'2-digit'})+' '+dt.toLocaleTimeString('ro-RO',{hour:'2-digit',minute:'2-digit'});
+    var srcLabel=h.source==='share'?'Share':'Clipboard';
+    var typeLabel=h.type==='link'?'Link':'Text';
+
+    var info=document.createElement('div');
+    info.style.cssText='flex:1;min-width:0;';
+    info.innerHTML='<div class="hist-meta"><span>'+dtStr+'</span><span>·</span><b>'+srcLabel+'</b><span>·</span><span>'+typeLabel+'</span></div><div class="hist-title"></div>';
+    info.querySelector('.hist-title').textContent=h.title||h.url||'(fără titlu)';
+
+    d.onclick=function(){
+      $('settingsbox').hidden=true;
+      $('settings-btn').classList.remove('on');
+      setMode(1);
+      if(h.text){
+        txt.value=h.text;lastInputLen=h.text.length;render();if(settings.autoPlay)start();
+      }else if(h.url){
+        txt.value=h.url;lastInputLen=h.url.length;loadUrl(h.url,true);
+      }
+    };
+    d.appendChild(info);
+    box.appendChild(d);
+  });
+}
+
+$('hist-dl-txt').onclick=function(){
+  if(!historyList.length){say('Istoricul este gol.');return}
+  var lines=historyList.map(function(h,i){
+    var d=new Date(h.ts).toLocaleString('ro-RO');
+    return '['+(i+1)+'] '+d+' | '+h.source.toUpperCase()+' | '+h.type.toUpperCase()+'\nTitlu: '+h.title+(h.url?'\nURL: '+h.url:'')+(h.text?'\nText: '+h.text.slice(0,500):'')+'\n----------------------------------------';
+  }).join('\n\n');
+  saveLocal('istoric-lectura.txt', lines, 'text/plain;charset=utf-8');
+};
+$('hist-dl-json').onclick=function(){
+  saveLocal('istoric-lectura.json', JSON.stringify(historyList, null, 2), 'application/json;charset=utf-8');
+};
+$('hist-clear').onclick=function(){
+  if(confirm('Golești întreg istoricul?')){historyList=[];saveHistory();renderHistory()}
+};
+
+$('settings-btn').onclick=function(){
+  var sb=$('settingsbox'),hb=$('helpbox');
+  hb.hidden=true;$('help').classList.remove('on');
+  sb.hidden=!sb.hidden;
+  $('settings-btn').classList.toggle('on',!sb.hidden);
+  $('settings-btn').setAttribute('aria-expanded',String(!sb.hidden));
+  if(!sb.hidden)renderHistory();
+};
+$('settings-close').onclick=function(){
+  $('settingsbox').hidden=true;$('settings-btn').classList.remove('on');
+};
+
+$('clear').onclick=function(){stop();clearTimeout(tm);txt.value='';lastInputLen=0;chunks=[];render();txt.focus()};
+$('help').onclick=function(){
+  var h=$('helpbox');
+  $('settingsbox').hidden=true;$('settings-btn').classList.remove('on');
+  h.hidden=!h.hidden;$('help').classList.toggle('on',!h.hidden);$('help').setAttribute('aria-expanded',String(!h.hidden));
+};
 $('m1').onclick=function(){setMode(1)};
 $('m2').onclick=function(){setMode(2)};
 $('delread').onclick=function(){if(listRun)stop();items=items.filter(function(it){return !it.read});save();renderList()};
@@ -970,9 +1445,9 @@ $('play').onclick=start;
 $('pause').onclick=pause;
 $('skip').onclick=skip;
 $('stop').onclick=stop;
-window.addEventListener('pagehide',function(){synth.cancel()});
+window.addEventListener('beforeunload',function(){synth.cancel();release()});
 
-// Download buttons functionality
+// Download buttons
 function saveLocal(filename, data, type){
   var b=new Blob([data],{type:type});
   var a=document.createElement('a');
@@ -984,44 +1459,36 @@ function saveLocal(filename, data, type){
 }
 
 $('btn-dl-index').onclick=function(){
-  fetch(location.pathname.endsWith('lectura-v6.html') ? 'lectura-v6.html' : 'index.html')
+  fetch(location.pathname.endsWith('lectura-v7.html') ? 'lectura-v7.html' : 'index.html')
     .then(function(r){ return r.text(); })
     .then(function(t){
-      saveLocal('index.html', t, 'text/html;charset=utf-8');
+      var cleanHtml=t.replace(/<script[^>]*_aistudio-iframe\.js[^>]*><\/script>/gi,'');
+      saveLocal('index.html', cleanHtml, 'text/html;charset=utf-8');
     })
     .catch(function(){
-      saveLocal('index.html', '<!DOCTYPE html>\n' + document.documentElement.outerHTML, 'text/html;charset=utf-8');
+      var cleanHtml=('<!DOCTYPE html>\n' + document.documentElement.outerHTML).replace(/<script[^>]*_aistudio-iframe\.js[^>]*><\/script>/gi,'');
+      saveLocal('index.html', cleanHtml, 'text/html;charset=utf-8');
     });
 };
 $('btn-dl-manifest').onclick=function(){
-  fetch('manifest.json?v=6').then(function(r){return r.text()}).then(function(t){
+  fetch('manifest.json?v=7').then(function(r){return r.text()}).then(function(t){
     saveLocal('manifest.json', t, 'application/json;charset=utf-8');
   }).catch(function(){
-    saveLocal('manifest.json', '{\\n  "id": "lectura-audio-v6",\\n  "name": "Lectură articole v6",\\n  "short_name": "Lectură v6",\\n  "start_url": "./index.html?v=6",\\n  "scope": "./",\\n  "display": "standalone"\\n}', 'application/json');
+    saveLocal('manifest.json', '{\n  "id": "https://pareto.github.io/lectura-audio/",\n  "name": "Lectură articole v7",\n  "short_name": "Lectură v7",\n  "start_url": "./index.html?v=7",\n  "scope": "./",\n  "display": "standalone"\n}', 'application/json');
   });
 };
 $('btn-dl-sw').onclick=function(){
-  fetch('sw.js?v=6').then(function(r){return r.text()}).then(function(t){
+  fetch('sw.js?v=7').then(function(r){return r.text()}).then(function(t){
     saveLocal('sw.js', t, 'application/javascript;charset=utf-8');
   }).catch(function(){
-    saveLocal('sw.js', 'var CACHE="lectura-articole-v6";', 'application/javascript');
+    saveLocal('sw.js', "var CACHE='lectura-articole-v7';", 'application/javascript');
   });
 };
 
 renderList();
 render('');
-
-(function(){
-  var q=new URLSearchParams(location.search);
-  if(!q.has('url')&&!q.has('text')&&!q.has('title'))return;
-  var m=[q.get('url'),q.get('text'),q.get('title')].join(' ').match(/https?:\/\/[^\s]+/);
-  try{history.replaceState(null,'',location.pathname)}catch(e){}
-  if(m){addItem(m[0]);setMode(2)}
-  else if((q.get('text')||'').trim()){
-    addItem('', q.get('title')||'', q.get('text').trim());
-    setMode(2);
-  }
-})();
+renderHistory();
+if(mode===2)setMode(2);
 
 try{if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(function(){})}catch(e){}
 })();
