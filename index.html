@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>lectura audio </title>
+<link rel="manifest" href="manifest.json?v=6">
+<meta name="theme-color" content="#059669">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<style>
+  :root {
+    --bg: #f3f5f7;
+    --fg: #14202b;
+    --mut: #5b6b78;
+    --card: #ffffff;
+    --line: #d5dde3;
+    --acc: #0b6e8a;
+    --acc-hover: #085369;
+    --accfg: #ffffff;
+    --green: #059669;
+    --stop: #b3372b;
+    --stop-bg: #fdf2f2;
+    --hl: #ffe08a;
+    --hlfg: #222222;
+    --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #10171d;
+      --fg: #e6edf2;
+      --mut: #93a4b1;
+      --card: #18222a;
+      --line: #2b3a45;
+      --acc: #4cb8d6;
+      --acc-hover: #38a5c2;
+      --accfg: #06232d;
+      --green: #10b981;
+      --stop: #e5675b;
+      --stop-bg: #2d1818;
+      --hl: #7a5f00;
+      --hlfg: #ffffff;
+      --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    background: var(--bg);
+    color: var(--fg);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+  }
+  main {
+    width: 100%;
+    max-width: 640px;
+    padding: 14px 16px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    gap: 8px;
+  }
+  .title-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+  }
+  .app-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: var(--acc);
+    color: var(--accfg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 15px;
+    flex-shrink: 0;
+  }
+  h1 {
+    font-size: 1.15rem;
+    font-weight: 700;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .v-badge-green {
+    display: inline-block;
+    background-color: #059669 !important;
+    color: #ffffff !important;
+    font-weight: 800 !important;
+    font-size: 0.8rem !important;
+    padding: 3px 8px !important;
+    border-radius: 6px !important;
+    letter-spacing: 0.5px !important;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.2) !important;
+    vertical-align: middle;
+    margin-left: 4px;
+  }
+  .header-actions {
+    display: flex;
+    gap: 6px;
+    flex-shrink: 0;
+  }
+  .btn-sm {
+    min-height: 36px;
+    padding: 0 10px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    border-radius: 8px;
+    border: 1px solid var(--line);
+    background: var(--card);
+    color: var(--fg);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    transition: background 0.15s;
+  }
+  .btn-sm:hover { filter: brightness(0.97); }
+  .btn-sm:active { transform: scale(0.97); }
+
+  /* Download Panel Directly on Screen */
+  .dl-panel {
+    background: var(--card);
+    border: 2px solid #059669;
+    border-radius: 12px;
+    padding: 10px 12px;
+    margin-bottom: 12px;
+    box-shadow: var(--card-shadow);
+  }
+  .dl-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #059669;
+  }
+  .dl-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 6px;
+  }
+  .dl-btn {
+    padding: 8px 4px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    transition: transform 0.1s, filter 0.15s;
+  }
+  .dl-btn:active { transform: scale(0.96); }
+  .dl-btn-green { background: #059669; color: #fff; }
+  .dl-btn-blue { background: #2563eb; color: #fff; }
+  .dl-btn-gray { background: #374151; color: #fff; }
+
+  #helpbox {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 12px 16px;
+    margin-bottom: 12px;
+    font-size: 0.86rem;
+    box-shadow: var(--card-shadow);
+  }
+  #helpbox h2 {
+    font-size: 0.92rem;
+    color: var(--acc);
+    margin: 8px 0 4px;
+  }
+  #helpbox ol, #helpbox ul {
+    padding-left: 20px;
+    margin: 4px 0 8px;
+    color: var(--mut);
+    line-height: 1.45;
+  }
+  #helpbox li { margin-bottom: 4px; }
+
+  /* Tab Navigation */
+  #tabs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+  .tab-btn {
+    min-height: 42px;
+    border-radius: 10px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    border: 1px solid var(--line);
+    background: var(--card);
+    color: var(--mut);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    transition: all 0.15s;
+  }
+  .tab-btn.on {
+    background: var(--acc);
+    color: var(--accfg);
+    border-color: var(--acc);
+    box-shadow: 0 2px 4px rgba(11, 110, 138, 0.2);
+  }
+
+  /* Control Panel (Immediately under tabs) */
+  .control-card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 12px;
+    margin-bottom: 10px;
+    box-shadow: var(--card-shadow);
+  }
+  .main-controls {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+  .ctrl-btn {
+    min-height: 52px;
+    border-radius: 10px;
+    border: 1px solid var(--line);
+    background: var(--card);
+    color: var(--fg);
+    font-size: 0.82rem;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    transition: transform 0.1s, filter 0.15s;
+    user-select: none;
+  }
+  .ctrl-btn:active { transform: scale(0.96); }
+  .ctrl-btn.btn-play {
+    background: var(--acc);
+    color: var(--accfg);
+    border-color: var(--acc);
+    box-shadow: 0 2px 4px rgba(11, 110, 138, 0.25);
+  }
+  .ctrl-btn.btn-play:hover { filter: brightness(1.08); }
+  .ctrl-btn.btn-skip {
+    color: #b45309;
+    border-color: #fcd34d;
+    background: #fffbeb;
+  }
+  @media (prefers-color-scheme: dark) {
+    .ctrl-btn.btn-skip {
+      color: #fde68a;
+      border-color: #78350f;
+      background: #2b1d0c;
+    }
+  }
+  .ctrl-btn.btn-stop {
+    color: var(--stop);
+    border-color: #fca5a5;
+    background: var(--stop-bg);
+  }
+
+  /* Sliders & Presets */
+  .setting-row {
+    padding-top: 8px;
+    border-top: 1px solid var(--line);
+  }
+  .setting-row + .setting-row { margin-top: 8px; }
+  .setting-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--mut);
+    margin-bottom: 6px;
+  }
+  .val-highlight {
+    font-weight: 700;
+    color: var(--acc);
+    font-size: 0.85rem;
+  }
+  .preset-row {
+    display: flex;
+    gap: 4px;
+  }
+  .preset-pill {
+    padding: 2px 7px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    border-radius: 6px;
+    border: 1px solid var(--line);
+    background: var(--bg);
+    color: var(--mut);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .preset-pill.active {
+    background: var(--acc);
+    color: var(--accfg);
+    border-color: var(--acc);
+  }
+  input[type=range] {
+    width: 100%;
+    accent-color: var(--acc);
+    cursor: pointer;
+  }
+
+  /* Input Textarea */
+  #txt {
+    width: 100%;
+    height: 48px;
+    min-height: 48px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    border: 1px solid var(--line);
+    background: var(--card);
+    color: var(--fg);
+    font: inherit;
+    font-size: 0.9rem;
+    resize: none;
+    overflow: hidden;
+    white-space: nowrap;
+    margin-bottom: 10px;
+    box-shadow: var(--card-shadow);
+  }
+  #txt:focus {
+    outline: 2px solid var(--acc);
+    outline-offset: 1px;
+  }
+
+  /* List Container */
+  #listbox {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 10px 12px;
+    margin-bottom: 10px;
+    box-shadow: var(--card-shadow);
+  }
+  .list-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 8px;
+    margin-bottom: 8px;
+    border-bottom: 1px solid var(--line);
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--mut);
+  }
+  .list-actions { display: flex; gap: 6px; }
+  .list-actions button {
+    padding: 3px 8px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    border-radius: 6px;
+    border: 1px solid var(--line);
+    background: var(--bg);
+    color: var(--mut);
+    cursor: pointer;
+  }
+  #items {
+    max-height: 26vh;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .list-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 8px 10px;
+    border-radius: 8px;
+    border: 1px solid var(--line);
+    background: var(--card);
+    font-size: 0.85rem;
+    transition: background 0.15s;
+  }
+  .list-item.now {
+    background: var(--hl);
+    color: var(--hlfg);
+    border-color: #f59e0b;
+    font-weight: 600;
+  }
+  .list-item.rd {
+    opacity: 0.55;
+    background: var(--bg);
+    border-color: transparent;
+  }
+  .list-item-title {
+    flex: 1;
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .badge-tag {
+    font-size: 0.65rem;
+    padding: 1px 4px;
+    border-radius: 4px;
+    background: var(--bg);
+    color: var(--mut);
+    text-transform: uppercase;
+    font-weight: bold;
+    margin-left: auto;
+  }
+  .del-item {
+    background: none;
+    border: none;
+    color: var(--mut);
+    font-size: 0.9rem;
+    cursor: pointer;
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+  .del-item:hover { color: var(--stop); }
+
+  /* Sentence View */
+  #view {
+    width: 100%;
+    height: 32vh;
+    border-radius: 12px;
+    border: 1px solid var(--line);
+    background: var(--card);
+    padding: 12px 14px;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    overflow-y: auto;
+    overflow-wrap: anywhere;
+    margin-bottom: 10px;
+    box-shadow: var(--card-shadow);
+  }
+  #view span {
+    cursor: pointer;
+    border-radius: 4px;
+    padding: 2px 2px;
+    transition: background 0.1s;
+  }
+  #view span:hover { background: rgba(0, 0, 0, 0.05); }
+  #view span.cur {
+    background: var(--hl);
+    color: var(--hlfg);
+    font-weight: 600;
+    box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.4);
+  }
+
+  /* Duration & Message */
+  footer {
+    font-size: 0.78rem;
+    color: var(--mut);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  #dur {
+    padding: 10px 12px;
+    border-radius: 8px;
+    background: rgba(0, 0, 0, 0.03);
+    border: 1px solid var(--line);
+    font-weight: 500;
+  }
+  #msg {
+    min-height: 1.4em;
+    text-align: center;
+    font-weight: 600;
+    color: var(--acc);
+  }
+  [hidden] { display: none !important; }
+</style>
+<script src="/_aistudio-iframe.js?v=1f94f900"></script></head>
+<body>
+
+<main>
+  <!-- 1. Antet cu Titlu v6 (Insignă Verde Mare), Șterge și Help -->
+  <header>
+    <div class="title-group">
+      <div class="app-icon">▶</div>
+      <h1>Citește clipboard <span class="v-badge-green">v6</span></h1>
+    </div>
+    <div class="header-actions">
+      <button id="clear" type="button" class="btn-sm" aria-label="Șterge textul">
+        <span>🗑 Șterge</span>
+      </button>
+      <button id="help" type="button" class="btn-sm" aria-expanded="false">
+        <span>? Help</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Panou Descărcare Fișiere GitHub v6 -->
+  <div class="dl-panel">
+    <div class="dl-header">
+      <span>📥 Descarcă fișierele v6 pentru GitHub:</span>
+      <span style="font-size:0.7rem;color:var(--mut);">Gata de urcat pe pareto.github.io</span>
+    </div>
+    <div class="dl-grid">
+      <button id="btn-dl-index" type="button" class="dl-btn dl-btn-green" title="Descarcă index.html">1. index.html</button>
+      <button id="btn-dl-manifest" type="button" class="dl-btn dl-btn-blue" title="Descarcă manifest.json">2. manifest.json</button>
+      <button id="btn-dl-sw" type="button" class="dl-btn dl-btn-gray" title="Descarcă sw.js">3. sw.js</button>
+    </div>
+  </div>
+
+  <!-- Help Accordion Box -->
+  <div id="helpbox" hidden>
+    <h2>Instrucțiuni de utilizare (v6)</h2>
+    <ol>
+      <li><b>Text sau Link</b>: lipește un articol sau URL direct în casetă.</li>
+      <li><b>Listă (linkuri și texte)</b>: poți partaja (Share) din Chrome, WhatsApp sau Notes atât linkuri cât și texte selectate direct în listă.</li>
+      <li><b>Controale de redare sus</b>: butoanele Start, Pauză, Skip și Stop sunt plasate direct sub taburi.</li>
+      <li><b>Viteză</b>: reglează viteza din slider sau scurtăturile rapide (1.0×, 1.2×, 1.5×, 1.8×, 2.0×).</li>
+      <li><b>Skip (⏭)</b>: sare instant la următorul articol din listă (sau sare 5 propoziții).</li>
+    </ol>
+    <h2>Estimare timp de lectură</h2>
+    <ul>
+      <li><b>Citire vizuală</b>: în gând, calculat la circa 220 de cuvinte/minut.</li>
+      <li><b>Audio</b>: timpul la viteza aleasă (baza vocală este ~155 cuv/min la 1.0×).</li>
+      <li><b>Economie / Mai lent</b>: diferența de timp economisit sau adăugat.</li>
+      <li><b>Rămas</b>: durata audio rămasă de la poziția curentă până la final.</li>
+    </ul>
+  </div>
+
+  <!-- 2. Navigare Taburi: Text/Link vs Listă -->
+  <div id="tabs">
+    <button id="m1" type="button" class="tab-btn on">
+      <span>📄 Text / Link</span>
+    </button>
+    <button id="m2" type="button" class="tab-btn">
+      <span>📋 Listă (0)</span>
+    </button>
+  </div>
+
+  <!-- 3. CONTROALELE DE REDARE + VITEZA + POZIȚIA (IMEDIAT SUB TABURI) -->
+  <div class="control-card">
+    <!-- Rândul de butoane: Start, Pauză, Skip, Stop -->
+    <div class="main-controls">
+      <button id="play" type="button" class="ctrl-btn btn-play" title="Pornește lectura">
+        <span style="font-size:1.15rem">▶</span>
+        <span>Start</span>
+      </button>
+
+      <button id="pause" type="button" class="ctrl-btn" title="Pauză sau Reia">
+        <span style="font-size:1.15rem">⏸</span>
+        <span>Pauză</span>
+      </button>
+
+      <button id="skip" type="button" class="ctrl-btn btn-skip" title="Sari peste articolul curent sau 5 propoziții">
+        <span style="font-size:1.15rem">⏭</span>
+        <span>Skip</span>
+      </button>
+
+      <button id="stop" type="button" class="ctrl-btn btn-stop" title="Oprește și revino la început">
+        <span style="font-size:1.15rem">⏹</span>
+        <span>Stop</span>
+      </button>
+    </div>
+
+    <!-- Secțiunea Viteză -->
+    <div class="setting-row">
+      <div class="setting-header">
+        <span>Viteză redare: <span id="rv" class="val-highlight">1.0</span>×</span>
+        <div class="preset-row">
+          <button type="button" class="preset-pill active" data-val="1.0">1.0×</button>
+          <button type="button" class="preset-pill" data-val="1.2">1.2×</button>
+          <button type="button" class="preset-pill" data-val="1.5">1.5×</button>
+          <button type="button" class="preset-pill" data-val="1.8">1.8×</button>
+          <button type="button" class="preset-pill" data-val="2.0">2.0×</button>
+        </div>
+      </div>
+      <input id="rate" type="range" min="0.6" max="2" step="0.1" value="1">
+    </div>
+
+    <!-- Secțiunea Poziție (Începe de la) -->
+    <div class="setting-row">
+      <div class="setting-header">
+        <span>Începe de la:</span>
+        <span id="pv" class="val-highlight">–</span>
+      </div>
+      <input id="pos" type="range" min="0" max="0" step="1" value="0">
+    </div>
+  </div>
+
+  <!-- 4. Textarea de introducere (Mod 1) -->
+  <textarea id="txt" rows="1" placeholder="Apasă lung aici → Lipește text sau link"></textarea>
+
+  <!-- 5. Caseta Listă articole & texte (Mod 2) -->
+  <div id="listbox" hidden>
+    <div class="list-head">
+      <span>Coada de articole & texte</span>
+      <div class="list-actions">
+        <button id="delread" type="button">Șterge citite</button>
+        <button id="delall" type="button">Șterge tot</button>
+      </div>
+    </div>
+    <div id="items"></div>
+  </div>
+
+  <!-- 6. Vizualizator propoziții -->
+  <div id="view" hidden></div>
+
+  <!-- 7. Estimare durată & status -->
+  <footer>
+    <div id="dur">Citire vizuală: – · Audio: –</div>
+    <div id="msg"></div>
+  </footer>
+</main>
+
+<script>
+(function(){
+var synth=window.speechSynthesis;
+var $=function(id){return document.getElementById(id)};
+var txt=$('txt'),view=$('view'),pos=$('pos'),rate=$('rate'),msg=$('msg'),durEl=$('dur');
+var chunks=[],spans=[],idx=0,token=0,state='idle',roVoice=null,wake=null,keep=null,mode=1,items=[],cur=-1,listRun=false;
+
+try{
+  var raw=JSON.parse(localStorage.getItem('cc_list')||'[]');
+  items=raw.map(function(it){
+    return {
+      type: it.type || (it.text && !it.url ? 'text' : 'link'),
+      url: it.url || '',
+      text: it.text || '',
+      title: it.title || it.url || 'Articol',
+      read: !!it.read,
+      err: !!it.err
+    };
+  });
+}catch(e){items=[]}
+
+function say(t){if(msg)msg.textContent=t||''}
+if(!synth){say('Browserul nu suportă citirea vocală.');return}
+
+function loadVoices(){
+  var all=synth.getVoices();
+  roVoice=all.filter(function(v){return /^ro/i.test(v.lang.replace('_','-'))})[0]||null;
+  if(!roVoice&&all.length)say('Nu există voce românească. Instalează „Română" în Setări → Text-to-speech.');
+}
+loadVoices();synth.onvoiceschanged=loadVoices;
+
+try{var s=localStorage.getItem('rate');if(s){rate.value=s;$('rv').textContent=Number(s).toFixed(1)}}catch(e){}
+
+function updatePresets(){
+  var curVal=Number(rate.value).toFixed(1);
+  document.querySelectorAll('.preset-pill').forEach(function(b){
+    var on=Number(b.getAttribute('data-val')).toFixed(1)===curVal;
+    b.classList.toggle('active', on);
+  });
+}
+updatePresets();
+
+rate.oninput=function(){
+  $('rv').textContent=Number(rate.value).toFixed(1);
+  updatePresets();
+  dur();
+  try{localStorage.setItem('rate',rate.value)}catch(e){}
+};
+
+document.querySelectorAll('.preset-pill').forEach(function(btn){
+  btn.onclick=function(){
+    rate.value=btn.getAttribute('data-val');
+    rate.oninput();
+  };
+});
+
+function split(t){
+  var parts=t.replace(/\r/g,'').match(/[^.!?\n]+[.!?]*/g)||[];
+  var out=[],cur='';
+  parts.forEach(function(p){
+    p=p.trim();if(!p)return;
+    if((cur+' '+p).length>180&&cur){out.push(cur);cur=p}else cur=cur?cur+' '+p:p;
+  });
+  if(cur)out.push(cur);
+  return out;
+}
+
+function render(t){
+  if(t===undefined)t=txt.value;t=t.trim();
+  chunks=split(t);spans=[];view.textContent='';
+  chunks.forEach(function(c,i){
+    var sp=document.createElement('span');
+    sp.textContent=c+' ';
+    sp.onclick=function(){goTo(i,true)};
+    view.appendChild(sp);spans.push(sp);
+  });
+  idx=0;pos.max=Math.max(0,chunks.length-1);
+  view.hidden=!chunks.length;
+  mark();
+}
+
+function fmt(sec){sec=Math.round(sec);var m=Math.floor(sec/60),r=sec%60;return m?(m+' min '+r+' s'):(r+' s')}
+
+function dur(){
+  var r=Number(rate.value)||1,vis=220,tts=155;
+  function words(a){return a.reduce(function(n,c){return n+c.split(/\s+/).filter(Boolean).length},0)}
+  if(!chunks.length){durEl.innerHTML='Citire vizuală: – · Audio: –';return}
+  var w=words(chunks),v=w/vis*60,t=w/tts*60/r,left=words(chunks.slice(idx))/tts*60/r,d=v-t;
+  var diffStr=d>=1?('Economie: '+fmt(d)):d<=-1?('Mai lent cu: '+fmt(-d)):'La fel';
+  durEl.innerHTML='Citire vizuală: <b>'+fmt(v)+'</b> · Audio '+r.toFixed(1)+'×: <b>'+fmt(t)+'</b><br><span style="color:var(--acc);font-weight:600">'+diffStr+' · Rămas audio: '+fmt(left)+'</span>';
+}
+
+function mark(){
+  dur();
+  spans.forEach(function(sp,i){
+    sp.classList.toggle('cur', i===idx);
+  });
+  pos.value=idx;
+  $('pv').textContent=chunks.length?('propoziția '+(idx+1)+' din '+chunks.length):'–';
+  if(spans[idx]){var sp=spans[idx];view.scrollTop=sp.offsetTop-view.offsetTop-view.clientHeight/3}
+}
+
+function goTo(i,restart){
+  idx=Math.max(0,Math.min(i,chunks.length-1));mark();
+  if(restart&&state==='playing'){token++;synth.cancel();speak()}
+}
+pos.oninput=function(){goTo(Number(pos.value),false)};
+pos.onchange=function(){goTo(Number(pos.value),true)};
+
+function silentWav(){
+  var n=8000,b=new Uint8Array(44+n),d=new DataView(b.buffer);
+  function w(o,str){for(var i=0;i<str.length;i++)b[o+i]=str.charCodeAt(i)}
+  w(0,'RIFF');d.setUint32(4,36+n,true);w(8,'WAVEfmt ');d.setUint32(16,16,true);d.setUint16(20,1,true);d.setUint16(22,1,true);
+  d.setUint32(24,8000,true);d.setUint32(28,8000,true);d.setUint16(32,1,true);d.setUint16(34,8,true);w(36,'data');d.setUint32(40,n,true);
+  for(var i=0;i<n;i++)b[44+i]=128;
+  return URL.createObjectURL(new Blob([b],{type:'audio/wav'}));
+}
+
+async function hold(){
+  try{if(navigator.wakeLock)wake=await navigator.wakeLock.request('screen')}catch(e){}
+  try{if(!keep){keep=new Audio(silentWav());keep.loop=true;keep.volume=0.05}keep.play().catch(function(){})}catch(e){}
+  try{if('mediaSession' in navigator){
+    navigator.mediaSession.metadata=new MediaMetadata({title:'Citește clipboard v6',artist:'Lectură Audio'});
+    navigator.mediaSession.setActionHandler('play',function(){pause()});
+    navigator.mediaSession.setActionHandler('pause',function(){pause()});
+    navigator.mediaSession.setActionHandler('stop',function(){stop()});
+    navigator.mediaSession.setActionHandler('nexttrack',function(){skip()});
+  }}catch(e){}
+}
+function release(){
+  try{if(wake){wake.release();wake=null}}catch(e){}
+  try{if(keep)keep.pause()}catch(e){}
+}
+
+document.addEventListener('visibilitychange',function(){
+  if(document.visibilityState==='visible'&&state==='playing'){
+    if(navigator.wakeLock)navigator.wakeLock.request('screen').then(function(w){wake=w}).catch(function(){});
+    if(!synth.speaking){token++;speak()}
+  }
+});
+
+function speak(){
+  var my=token;
+  if(idx>=chunks.length){if(listRun){finishItem();return}state='idle';idx=0;mark();release();$('pause').querySelector('span:last-child').textContent='Pauză';say('Gata.');return}
+  mark();
+  var u=new SpeechSynthesisUtterance(chunks[idx]);
+  if(roVoice){u.voice=roVoice;u.lang=roVoice.lang}else u.lang='ro-RO';
+  u.rate=Number(rate.value);
+  u.onend=function(){if(my!==token)return;idx++;speak()};
+  u.onerror=function(e){if(my!==token)return;if(e.error==='canceled'||e.error==='interrupted')return;idx++;speak()};
+  state='playing';say('Citesc…');
+  synth.speak(u);
+}
+
+function start(){
+  if(mode===2){startList();return}
+  if(!chunks.length)render();
+  if(!chunks.length){say('Nu e text de citit. Lipește ceva mai întâi.');return}
+  token++;synth.cancel();hold();speak();
+}
+
+function pause(){
+  if(state==='playing'){token++;synth.cancel();state='paused';$('pause').querySelector('span:last-child').textContent='Reia';say('În pauză.')}
+  else if(state==='paused'){token++;$('pause').querySelector('span:last-child').textContent='Pauză';speak()}
+}
+
+function stop(){token++;listRun=false;synth.cancel();state='idle';idx=0;mark();release();$('pause').querySelector('span:last-child').textContent='Pauză';say('Oprit.')}
+
+function skip(){
+  if(mode===2&&listRun&&cur>=0){
+    token++;synth.cancel();finishItem();
+  } else if(chunks.length>0){
+    var target=Math.min(chunks.length-1,idx+5);
+    goTo(target,state==='playing');
+    say('Sărit la propoziția '+(target+1));
+  }
+}
+
+function note(t){
+  chunks=[];spans=[];
+  view.textContent=t;
+  view.hidden=false;
+  pos.max=0;mark();
+}
+
+function clean(md){
+  var i=md.indexOf('Markdown Content:');if(i>=0)md=md.slice(i+17);
+  md=md.replace(/!\[[^\]]*\]\([^)]*\)/g,'')
+       .replace(/\[([^\]]*)\]\([^)]*\)/g,'$1')
+       .replace(/https?:\/\/\S+/g,'')
+       .replace(/[*_`>#|~]+/g,'');
+  var months='ianuarie|februarie|martie|aprilie|mai|iunie|iulie|august|septembrie|octombrie|noiembrie|decembrie|january|february|march|april|may|june|july|september|october|november|december';
+  var reDate=new RegExp('\\b\\d{1,2}[./-]\\d{1,2}[./-]\\d{2,4}\\b|\\b\\d{1,2}\\s+('+months+')\\b|\\b('+months+')\\s+\\d{1,2},?\\s+\\d{4}|\\b\\d{1,2}:\\d{2}\\b','i');
+  var reBy=/^(de|by|autor|autori|text|foto|sursa|sursă|redactor|publicat|actualizat|updated|published|editor|credit)\b\s*[:\-]?/i;
+  var reJunk=/(citește și|citeste si|vezi și|vezi si|distribuie|share|facebook|twitter|whatsapp|newsletter|abonează|abonează-te|cookie|comentarii|comments|related|read more|citește mai mult|urmărește|urmareste|înscrie|inscrie|toate drepturile|copyright|©|publicitate|advertisement|trimite|print|imprimă|tags?:|etichete)/i;
+  var out=[];
+  md.split('\n').forEach(function(l){
+    l=l.replace(/\s+/g,' ').trim();
+    if(!l||/^[-=_*\s.•·]+$/.test(l))return;
+    var w=l.split(' ').length;
+    if(w<=12&&reJunk.test(l))return;
+    if(w<=10&&reDate.test(l))return;
+    if(w<=10&&reBy.test(l))return;
+    if(w<4&&!/[.!?:"”]$/.test(l))return;
+    out.push(l);
+  });
+  return out.join('\n');
+}
+
+async function getText(u){
+  var ctl=new AbortController(),to=setTimeout(function(){ctl.abort()},30000),api='https://r.jina.ai/'+u;
+  try{
+    var r;
+    try{r=await fetch(api,{signal:ctl.signal,headers:{'X-Retain-Images':'none','X-Remove-Selector':'header, footer, nav, aside, form, figure'}})}
+    catch(e){if(e.name==='AbortError')throw e;r=await fetch(api,{signal:ctl.signal})}
+    if(!r.ok)throw new Error('http '+r.status);
+    var t=clean(await r.text());
+    if(t.length<80)throw new Error('gol');
+    return t;
+  }finally{clearTimeout(to)}
+}
+
+async function loadUrl(u){
+  note('Se încarcă articolul…');
+  var t;try{t=await getText(u)}catch(e){note('Nu am putut încărca linkul. Verifică conexiunea la internet sau lipește textul.');return}
+  txt.value=t;render();
+}
+
+function save(){try{localStorage.setItem('cc_list',JSON.stringify(items))}catch(e){}}
+
+function addItem(u, title, textContent){
+  if(textContent){
+    items.push({type:'text',url:'',title:title||textContent.slice(0,60),text:textContent,read:false});
+    save();renderList();return;
+  }
+  u=u.replace(/[)\].,;]+$/,'');
+  if(!items.some(function(it){return it.url===u})){items.push({type:'link',url:u,title:title||'',read:false});save()}
+  renderList();
+}
+
+function renderList(){
+  var box=$('items');box.textContent='';
+  items.forEach(function(it,i){
+    var d=document.createElement('div');
+    var isCurrent=listRun&&i===cur;
+    d.className='list-item' + (isCurrent ? ' now' : it.read ? ' rd' : '');
+
+    var t=document.createElement('span');
+    t.className='list-item-title';
+    var label=it.title||(it.type==='text'?it.text.slice(0,60):it.url.replace(/^https?:\/\/(www\.)?/,'').slice(0,60));
+    var badgeType=it.type==='text'?'Text':'Link';
+    t.innerHTML=(it.read?'✓ ':it.err?'⚠ ':isCurrent?'▶ ':'• ')+label+'<span class="badge-tag">'+badgeType+'</span>';
+    t.onclick=function(){startList(i)};
+
+    var x=document.createElement('button');
+    x.type='button';
+    x.className='del-item';
+    x.textContent='✕';
+    x.setAttribute('aria-label','Șterge din listă');
+    x.onclick=function(e){e.stopPropagation();if(listRun&&i===cur)stop();items.splice(i,1);save();renderList()};
+
+    d.appendChild(t);d.appendChild(x);box.appendChild(d);
+  });
+  if(!items.length)box.innerHTML='<div style="padding:16px 0;text-align:center;color:var(--mut);font-size:0.8rem">Lista e goală. Distribuie un link sau text din altă aplicație către „Citește clipboard”.</div>';
+  $('m2').querySelector('span').textContent='📋 Listă ('+items.filter(function(it){return !it.read}).length+')';
+}
+
+function startList(from){
+  if(!items.length){note('Lista e goală.');return}
+  items.forEach(function(it){it.err=false});
+  var j=from!==undefined?from:items.findIndex(function(it){return !it.read});
+  if(j<0){say('Toate articolele sunt citite.');return}
+  listRun=true;token++;synth.cancel();hold();playItem(j);
+}
+
+async function playItem(i){
+  cur=i;state='loading';renderList();
+  if(items[i].type==='text'){
+    render(items[i].text);speak();return;
+  }
+  note('Se încarcă articolul…');
+  var my=token,t;
+  try{t=await getText(items[i].url)}catch(e){if(my!==token)return;items[i].err=true;save();renderList();playNext();return}
+  if(my!==token)return;
+  if(!items[i].title){items[i].title=t.split('\n')[0].slice(0,90);save()}
+  renderList();render(t);speak();
+}
+
+function playNext(){
+  for(var j=cur+1;j<items.length;j++)if(!items[j].read&&!items[j].err){playItem(j);return}
+  listRun=false;state='idle';release();$('pause').querySelector('span:last-child').textContent='Pauză';renderList();say('Lista a fost citită.');
+}
+
+function finishItem(){if(items[cur]){items[cur].read=true;save()}renderList();playNext()}
+
+function setMode(m){
+  stop();mode=m;
+  $('m1').classList.toggle('on', m===1);
+  $('m2').classList.toggle('on', m===2);
+
+  txt.hidden = m===2;
+  $('listbox').hidden = m!==2;
+  $('clear').hidden = m===2;
+  view.style.height = m===2 ? '24vh' : '32vh';
+
+  var v=txt.value.trim();
+  if(m===1&&v&&!/^https?:\/\/\S+$/i.test(v))render();else render('');
+  renderList();
+}
+
+var tm;
+txt.addEventListener('input',function(){
+  clearTimeout(tm);
+  tm=setTimeout(function(){
+    stop();
+    var v=txt.value.trim();
+    if(/^https?:\/\/\S+$/i.test(v)){loadUrl(v)}
+    else if(v){render()}
+    else{chunks=[];render()}
+  },300);
+});
+
+$('clear').onclick=function(){stop();clearTimeout(tm);txt.value='';chunks=[];render();txt.focus()};
+$('help').onclick=function(){var h=$('helpbox');h.hidden=!h.hidden;$('help').setAttribute('aria-expanded',String(!h.hidden))};
+$('m1').onclick=function(){setMode(1)};
+$('m2').onclick=function(){setMode(2)};
+$('delread').onclick=function(){if(listRun)stop();items=items.filter(function(it){return !it.read});save();renderList()};
+$('delall').onclick=function(){if(confirm('Ștergi toată lista?')){if(listRun)stop();items=[];save();renderList()}};
+$('play').onclick=start;
+$('pause').onclick=pause;
+$('skip').onclick=skip;
+$('stop').onclick=stop;
+window.addEventListener('pagehide',function(){synth.cancel()});
+
+// Download buttons functionality
+function saveLocal(filename, data, type){
+  var b=new Blob([data],{type:type});
+  var a=document.createElement('a');
+  a.href=URL.createObjectURL(b);
+  a.download=filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+}
+
+$('btn-dl-index').onclick=function(){
+  fetch(location.pathname.endsWith('lectura-v6.html') ? 'lectura-v6.html' : 'index.html')
+    .then(function(r){ return r.text(); })
+    .then(function(t){
+      saveLocal('index.html', t, 'text/html;charset=utf-8');
+    })
+    .catch(function(){
+      saveLocal('index.html', '<!DOCTYPE html>\n' + document.documentElement.outerHTML, 'text/html;charset=utf-8');
+    });
+};
+$('btn-dl-manifest').onclick=function(){
+  fetch('manifest.json?v=6').then(function(r){return r.text()}).then(function(t){
+    saveLocal('manifest.json', t, 'application/json;charset=utf-8');
+  }).catch(function(){
+    saveLocal('manifest.json', '{\\n  "id": "lectura-audio-v6",\\n  "name": "Lectură articole v6",\\n  "short_name": "Lectură v6",\\n  "start_url": "./index.html?v=6",\\n  "scope": "./",\\n  "display": "standalone"\\n}', 'application/json');
+  });
+};
+$('btn-dl-sw').onclick=function(){
+  fetch('sw.js?v=6').then(function(r){return r.text()}).then(function(t){
+    saveLocal('sw.js', t, 'application/javascript;charset=utf-8');
+  }).catch(function(){
+    saveLocal('sw.js', 'var CACHE="lectura-articole-v6";', 'application/javascript');
+  });
+};
+
+renderList();
+render('');
+
+(function(){
+  var q=new URLSearchParams(location.search);
+  if(!q.has('url')&&!q.has('text')&&!q.has('title'))return;
+  var m=[q.get('url'),q.get('text'),q.get('title')].join(' ').match(/https?:\/\/[^\s]+/);
+  try{history.replaceState(null,'',location.pathname)}catch(e){}
+  if(m){addItem(m[0]);setMode(2)}
+  else if((q.get('text')||'').trim()){
+    addItem('', q.get('title')||'', q.get('text').trim());
+    setMode(2);
+  }
+})();
+
+try{if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(function(){})}catch(e){}
+})();
+</script>
+</body>
+</html>
