@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="referrer" content="no-referrer">
-<title>Lectură audio v11</title>
+<title>Lectură audio v12</title>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#059669">
 <meta name="apple-mobile-web-app-title" content="Lectură">
@@ -798,6 +798,11 @@
 <script src="/_aistudio-iframe.js?v=1f94f900"></script></head>
 <body>
 
+<!-- X26: Mod dinamic invizibil (nu afișează nimic, doar citește) -->
+<div id="dynamic-blank" style="position:fixed;inset:0;z-index:50;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;cursor:pointer;" hidden>
+  <div id="dyn-hint" style="font-size:0.82rem;color:var(--mut);opacity:0.55;text-align:center;user-select:none;"></div>
+</div>
+
 <!-- X8: Fereastră minimală Share silențios -->
 <div id="share-mini" class="modal-backdrop" hidden>
   <div class="modal-card" style="max-width:360px;text-align:center;">
@@ -852,11 +857,11 @@
 </div>
 
 <main id="main-app">
-  <!-- Antet v11 (X17: fără panou download pe ecranul principal!) -->
+  <!-- Antet v12 (X17: fără panou download pe ecranul principal!) -->
   <header>
     <div class="title-group">
       <div class="app-icon">▶</div>
-      <h1>Lectură audio <span class="v-badge-green">v11</span></h1>
+      <h1>Lectură audio <span class="v-badge-green">v12</span></h1>
     </div>
     <div class="header-actions">
       <button id="settings-btn" type="button" class="btn-sm" aria-expanded="false" title="Setări, Sleep Timer, Download &amp; Istoric">
@@ -871,10 +876,10 @@
     </div>
   </header>
 
-  <!-- Settings, Download Opțional (X17), Mod Dinamic (X23), Sleep Timer & Fișier Istoric -->
+  <!-- Settings, Download Opțional (X17), Mod Dinamic (X23/X26/X27), Sleep Timer & Fișier Istoric -->
   <div id="settingsbox" class="panel-box" hidden>
     <h2>
-      <span>⚙ Setări aplicație (v11)</span>
+      <span>⚙ Setări aplicație (v12)</span>
       <button id="settings-close" type="button" class="hist-btn">Închide ✕</button>
     </h2>
 
@@ -901,7 +906,7 @@
       <input id="opt-autotrans" type="checkbox" checked>
     </label>
     <label class="setting-toggle">
-      <span><b>Mod de lucru dinamic la Share</b> (dacă lista e vidă pornește imediat în fundal; dacă nu e vidă continuă ce a rămas necitit)</span>
+      <span><b>Mod de lucru dinamic la Share</b> (nu afișează fereastra, citește prima dată articolul din Share, apoi continuă ce a rămas necitit)</span>
       <input id="opt-dynamicshare" type="checkbox">
     </label>
     <label class="setting-toggle">
@@ -920,13 +925,13 @@
     <!-- X17: Panou Descărcare mutată EXCLUSIV în Settings, controlată de checkbox -->
     <div id="dl-panel" class="dl-panel">
       <div class="dl-header">
-        <span>📥 Descarcă pentru GitHub (v11):</span>
+        <span>📥 Descarcă pentru GitHub (v12):</span>
         <span style="font-size:0.66rem;color:var(--mut);">opțional în Settings</span>
       </div>
       <div class="dl-grid">
-        <button id="btn-dl-index" type="button" class="dl-btn full" title="Descarcă index.html v11">📥 Descarcă index.html (v11)</button>
+        <button id="btn-dl-index" type="button" class="dl-btn full" title="Descarcă index.html v12">📥 Descarcă index.html (v12)</button>
         <button id="btn-dl-manifest" type="button" class="dl-btn sec" title="Descarcă manifest.json">📥 manifest.json</button>
-        <button id="btn-dl-sw" type="button" class="dl-btn gray" title="Descarcă sw.js v11">📥 sw.js (v11)</button>
+        <button id="btn-dl-sw" type="button" class="dl-btn gray" title="Descarcă sw.js v12">📥 sw.js (v12)</button>
       </div>
     </div>
 
@@ -943,12 +948,12 @@
 
   <!-- Help Accordion Box -->
   <div id="helpbox" class="panel-box" hidden>
-    <h2>Noutăți &amp; Instrucțiuni (v11)</h2>
+    <h2>Noutăți &amp; Instrucțiuni (v12)</h2>
     <ol>
-      <li><b>X23 Mod dinamic la Share (în Settings)</b>: când dați Share, dacă stiva era goală/citită pornește imediat lectura în background cu noul articol; dacă existau articole necitite, continuă automat cu ce a rămas necitit (apoi urcă la cel nou).</li>
-      <li><b>X24 Rezumat cu bold real &amp; fără asteriscuri</b>: cuvintele între <code>**...**</code> apar <b>îngroșate</b> în fereastra de rezumat, iar toate asteriscurile sunt eliminate înainte de citire vocală și copiere.</li>
-      <li><b>X25 Facebook cu 5 reîncercări automate</b>: încearcă automat până la 5 strategii diferite înainte de a afișa dialogul asistat cu pași clari și buton de reîncercare rapidă.</li>
-      <li><b>X17–X22</b>: butoane download doar în Settings, traducere directă + explicații sonore la erori, Sync Clipboard → Listă, memorie stare și protecție anti-citire dublă.</li>
+      <li><b>X26 Mod dinamic invizibil</b>: cu Modul dinamic activat în Settings, când dați Share aplicația nu mai afișează fereastra cu controale (dacă există deja o fereastră în fundal, îi predă redarea și se închide imediat; altfel rămâne ecran gol și citește). Dublu-tap pe ecranul gol arată interfața dacă doriți.</li>
+      <li><b>X27 Prioritate articol Share</b>: în Modul dinamic se citește întotdeauna <b>prima dată</b> articolul trimis prin Share, iar apoi continuă automat cu articolele rămase necitite (de la poziția salvată).</li>
+      <li><b>X24–X25</b>: rezumat cu bold real fără asteriscuri la citire/copiere; 5 reîncercări automate Facebook + ghid clar.</li>
+      <li><b>X17–X23</b>: download doar în Settings, traducere directă, explicații sonore la erori, Sync Clipboard → Listă, memorie stare și anti-citire dublă.</li>
     </ol>
   </div>
 
@@ -1244,7 +1249,7 @@ function addItemWithId(u, title, textContent, sourceTag, skipRender){
     var exTxtIdx=items.findIndex(function(it){return it.type==='text' && it.text===textContent});
     if(exTxtIdx>=0){
       var exTxt=items.splice(exTxtIdx,1)[0];
-      exTxt.read=false;exTxt.err=false;exTxt.errMsg='';
+      exTxt.read=false;exTxt.err=false;exTxt.errMsg='';exTxt.pos=0;
       items.unshift(exTxt);
       if(cur>=0){
         if(cur===exTxtIdx)cur=0;
@@ -1268,7 +1273,7 @@ function addItemWithId(u, title, textContent, sourceTag, skipRender){
   if(existingIdx>=0){
     var ex=items.splice(existingIdx,1)[0];
     if(title && !ex.title)ex.title=title;
-    ex.read=false;ex.err=false;ex.errMsg='';
+    ex.read=false;ex.err=false;ex.errMsg='';ex.pos=0;
     items.unshift(ex);
     if(cur>=0){
       if(cur===existingIdx)cur=0;
@@ -1311,8 +1316,9 @@ function updateItemMeta(id, title, errReason){
   }
 }
 
-// X8 + X23: Interceptăm Share (inclusiv Mod de lucru dinamic)
+// X8 + X23 + X26 + X27: Interceptăm Share (Mod dinamic invizibil + citește prima dată articolul trimis cu Share)
 var openedFromShare=false;
+var dynamicHandoffAcked=false;
 (function handleIncomingShare(){
   var q=new URLSearchParams(location.search);
   if(!q.has('url')&&!q.has('text')&&!q.has('title'))return;
@@ -1322,7 +1328,13 @@ var openedFromShare=false;
 
   var prevResume=null;
   try{prevResume=JSON.parse(localStorage.getItem('cc_resume')||'null')}catch(e){}
-  var unreadBefore=items.filter(function(it){return !it.read}).length;
+  // X27: Păstrăm poziția articolului precedent dacă era în curs de citire, apoi punem Share-ul pe poziția 0 ca primul de citit
+  if(settings.dynamicShareMode && prevResume && prevResume.mode===2 && prevResume.curId){
+    var prevIt=items.find(function(it){return it.id===prevResume.curId});
+    if(prevIt && !prevIt.read && Number(prevResume.idx)>(Number(prevIt.pos)||0)){
+      prevIt.pos=Number(prevResume.idx);
+    }
+  }
 
   var parsed=parseInputPayload(rawUrl ? (rawTitle?rawTitle+' ':'')+rawUrl : [rawTitle,rawText].filter(Boolean).join(' '));
   if(rawUrl && parsed.kind==='link' && !parsed.title && rawTitle)parsed.title=rawTitle.trim();
@@ -1337,11 +1349,13 @@ var openedFromShare=false;
 
   if(settings.dynamicShareMode){
     mode=2;
+    // X26: Nu afișăm interfața aplicației deloc în modul dinamic!
+    $('main-app').hidden=true;
+    $('dynamic-blank').hidden=false;
+    $('dyn-hint').textContent='';
     pendingShareDynamic={
       newId:added.id,
-      label:added.title,
-      unreadBefore:unreadBefore,
-      prevResume:prevResume
+      label:added.title
     };
     return;
   }
@@ -1371,10 +1385,60 @@ $('share-open-btn').onclick=function(){
   setMode(2,false);
 };
 
-// Sincronizare live + X22 oprire automată dacă altă fereastră/tab pornește citirea
+// X26: Pe ecranul invizibil (doar citire), atingerea pornește sunetul dacă a fost blocat de browser; dublu-tap arată aplicația
+var lastDynTapTs=0;
+$('dynamic-blank').onclick=function(){
+  if(state==='paused'){
+    $('dyn-hint').textContent='';
+    pause();
+    return;
+  }
+  if(state==='idle' && items.length){
+    $('dyn-hint').textContent='';
+    startList(0, false);
+    return;
+  }
+  var nowT=Date.now();
+  if(nowT-lastDynTapTs<420){
+    $('dynamic-blank').hidden=true;
+    $('main-app').hidden=false;
+  }
+  lastDynTapTs=nowT;
+};
+
+// Sincronizare live + X22 oprire simultană + X26/X27 predare automată Share către instanța din fundal
 if(bc){
   bc.onmessage=function(ev){
     if(!ev.data)return;
+    if(ev.data.type==='dynamic_share_ack' && pendingShareDynamic && ev.data.itemId===pendingShareDynamic.newId){
+      dynamicHandoffAcked=true;
+      try{window.close()}catch(e){}
+      setTimeout(function(){
+        if(history.length>1)try{history.back()}catch(e){}
+      },120);
+      return;
+    }
+    if(ev.data.type==='dynamic_share_handoff' && ev.data.sender!==INSTANCE_ID){
+      var prevOpenId=(cur>=0&&items[cur]&&!items[cur].read)?items[cur].id:null;
+      var prevOpenPos=(prevOpenId)?idx:0;
+      loadList();
+      if(prevOpenId){
+        var shifted=items.find(function(it){return it.id===prevOpenId});
+        if(shifted && !shifted.read && prevOpenPos>(Number(shifted.pos)||0)){
+          shifted.pos=prevOpenPos;
+          try{localStorage.setItem('cc_list',JSON.stringify(items))}catch(e){}
+        }
+      }
+      var shareTargetIdx=items.findIndex(function(it){return it.id===ev.data.itemId});
+      if(shareTargetIdx<0)shareTargetIdx=0;
+      try{bc.postMessage({type:'dynamic_share_ack',itemId:ev.data.itemId,owner:INSTANCE_ID})}catch(e){}
+      mode=2;
+      $('m1').classList.remove('on');$('m2').classList.add('on');
+      $('input-wrap').hidden=true;$('listbox').hidden=false;$('clear').hidden=true;
+      view.style.height='24vh';
+      startList(shareTargetIdx, false);
+      return;
+    }
     if(ev.data.type==='claim_play' && ev.data.owner!==INSTANCE_ID){
       forceYieldPlayback();
       return;
@@ -1952,14 +2016,18 @@ function handleTtsBlocked(reason){
   if(state!=='playing')return;
   token++;
   stopAudioDrivers();
-  stopHeartbeat();
+  clearPlaybackOwnership();
   state='paused';
   saveResume();
   updateMediaMeta();
   $('pause').querySelector('span:last-child').textContent='Reia';
   var msgTxt=reason||'Redare pusă în pauză (motorul vocal a fost blocat de sistem) — articolul a rămas nebifat.';
   say(msgTxt);
-  speakNotice(reason||'Motorul vocal este blocat');
+  if(!$('dynamic-blank').hidden){
+    $('dyn-hint').textContent='▶ Atingeți ecranul pentru a porni redarea vocală';
+  }else{
+    speakNotice(reason||'Motorul vocal este blocat');
+  }
 }
 
 function runWatchdogTick(){
@@ -2898,7 +2966,7 @@ $('skip').onclick=skip;
 $('stop').onclick=stop;
 window.addEventListener('beforeunload',function(){saveResume();stopAudioDrivers();release()});
 
-// Downloads v11
+// Downloads v12
 function saveLocal(filename, data, type){
   var b=new Blob([data],{type:type});
   var a=document.createElement('a');
@@ -2910,7 +2978,7 @@ function saveLocal(filename, data, type){
 }
 
 $('btn-dl-index').onclick=function(){
-  fetch(location.pathname.endsWith('lectura-v11.html') ? 'lectura-v11.html' : 'index.html')
+  fetch(location.pathname.endsWith('lectura-v12.html') ? 'lectura-v12.html' : 'index.html')
     .then(function(r){ return r.text(); })
     .then(function(t){
       var cleanHtml=t.replace(/<script[^>]*_aistudio-iframe\.js[^>]*><\/script>/gi,'');
@@ -2984,7 +3052,7 @@ $('btn-dl-sw').onclick=function(){
 renderList(false);
 renderHistory();
 
-// X23: Execută modul dinamic la Share după inițializare completă
+// X26 + X27: Mod dinamic invizibil la Share; încearcă întâi predarea către instanța din fundal, altfel pornește direct pe articolul trimis (index 0) fără interfață
 if(pendingShareDynamic){
   mode=2;
   $('m1').classList.remove('on');
@@ -2993,25 +3061,23 @@ if(pendingShareDynamic){
   $('listbox').hidden=false;
   $('clear').hidden=true;
   view.style.height='24vh';
+  $('main-app').hidden=true;
+  $('dynamic-blank').hidden=false;
 
-  if(isAnotherPlayerActive()){
-    say('Mod dinamic: „'+pendingShareDynamic.label+'” adăugat sus în stivă; lectura activă continuă.');
-  }else if(pendingShareDynamic.unreadBefore===0){
-    startList(0, false);
+  var startDynamicShareLocal=function(){
+    if(dynamicHandoffAcked)return;
+    var targetShareIdx=items.findIndex(function(it){return it.id===pendingShareDynamic.newId});
+    if(targetShareIdx<0)targetShareIdx=0;
+    startList(targetShareIdx, false);
+  };
+
+  if(bc){
+    try{
+      bc.postMessage({type:'dynamic_share_handoff',itemId:pendingShareDynamic.newId,sender:INSTANCE_ID});
+    }catch(e){}
+    setTimeout(startDynamicShareLocal, 240);
   }else{
-    var rTarget=-1;
-    var pr=pendingShareDynamic.prevResume;
-    if(pr && pr.curId){
-      var fIdx=items.findIndex(function(it){return it.id===pr.curId && !it.read});
-      if(fIdx>=0){
-        if(Number(pr.idx)>(Number(items[fIdx].pos)||0))items[fIdx].pos=Number(pr.idx);
-        rTarget=fIdx;
-      }
-    }
-    if(rTarget<0)rTarget=items.findIndex(function(it,i){return i>0 && !it.read && (Number(it.pos)||0)>0});
-    if(rTarget<0)rTarget=items.findIndex(function(it,i){return i>0 && !it.read});
-    if(rTarget<0)rTarget=0;
-    startList(rTarget, true);
+    startDynamicShareLocal();
   }
 }
 
