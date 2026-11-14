@@ -1,4 +1,4 @@
-var CACHE = 'lectura-articole-v7';
+var CACHE = 'lectura-articole-v9';
 var FILES = [
   './',
   './index.html',
@@ -29,13 +29,25 @@ self.addEventListener('activate', function(e) {
 });
 
 self.addEventListener('fetch', function(e) {
-  // Ignoră cererile către Google API sau r.jina.ai
-  if (e.request.url.includes('googleapi') || e.request.url.includes('r.jina.ai')) {
+  // Ignoră cererile externe (API-uri, TTS audio, proxy-uri)
+  if (
+    e.request.url.includes('google') ||
+    e.request.url.includes('r.jina.ai') ||
+    e.request.url.includes('piped') ||
+    e.request.url.includes('allorigins') ||
+    e.request.url.includes('corsproxy') ||
+    e.request.url.includes('lingva') ||
+    e.request.url.includes('puter.com')
+  ) {
     return;
   }
 
-  // Network-First pentru navigare/HTML pentru a primi imediat actualizările
-  if (e.request.mode === 'navigate') {
+  // Network-First pentru navigare, HTML și manifest.json ca să primească imediat actualizările
+  if (
+    e.request.mode === 'navigate' ||
+    e.request.url.endsWith('manifest.json') ||
+    e.request.url.endsWith('index.html')
+  ) {
     e.respondWith(
       fetch(e.request).then(function(resp) {
         if (resp && resp.status === 200) {

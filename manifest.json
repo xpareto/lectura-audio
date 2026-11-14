@@ -1,9 +1,9 @@
 {
   "id": "https://pareto.github.io/lectura-audio/",
-  "name": "Lectură articole v7",
-  "short_name": "Lectură v7",
+  "name": "Lectură articole",
+  "short_name": "Lectură",
   "description": "citește articole de la linkuri sau clipboard",
-  "start_url": "./index.html?v=7",
+  "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
   "background_color": "#FFFFFF",
