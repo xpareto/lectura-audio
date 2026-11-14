@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="referrer" content="no-referrer">
-<title>Lectură audio v9</title>
+<title>Lectură audio v10</title>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#059669">
 <meta name="apple-mobile-web-app-title" content="Lectură">
@@ -142,14 +142,13 @@
   .btn-sm:hover { filter: brightness(0.97); }
   .btn-sm:active { transform: scale(0.97); }
 
-  /* Download Panel */
+  /* Download Panel (exclusively inside Settings — X17) */
   .dl-panel {
-    background: var(--card);
+    background: var(--bg);
     border: 2px solid #059669;
     border-radius: 10px;
     padding: 8px 10px;
-    margin-bottom: 10px;
-    box-shadow: var(--card-shadow);
+    margin: 8px 0;
   }
   .dl-header {
     display: flex;
@@ -645,16 +644,26 @@
     cursor: pointer;
     flex-shrink: 0;
   }
-  .list-item-title {
+  .list-item-main {
     flex: 1;
     min-width: 0;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
     cursor: pointer;
+    display: flex;
+    flex-direction: column;
+  }
+  .list-item-title {
     display: flex;
     align-items: center;
     gap: 6px;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+  .list-item-err {
+    font-size: 0.7rem;
+    color: var(--stop);
+    margin-top: 2px;
+    white-space: normal;
+    line-height: 1.25;
   }
   .now-pill {
     font-size: 0.62rem;
@@ -754,6 +763,7 @@
     flex-direction: column;
   }
   .summary-card { border-color: #7c3aed; }
+  .fb-card { border-color: #1877f2; }
   .summary-body {
     overflow-y: auto;
     font-size: 0.9rem;
@@ -765,9 +775,10 @@
     margin: 10px 0;
     white-space: pre-wrap;
   }
-  .modal-actions { display: flex; gap: 8px; }
-  .modal-actions button {
+  .modal-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+  .modal-actions button, .modal-actions a {
     flex: 1;
+    min-width: 120px;
     padding: 9px 10px;
     border-radius: 9px;
     font-size: 0.8rem;
@@ -776,9 +787,12 @@
     border: 1px solid var(--line);
     background: var(--bg);
     color: var(--fg);
+    text-align: center;
+    text-decoration: none;
   }
   .modal-actions button.primary { background: #059669; color: #fff; border-color: #059669; }
   .modal-actions button.purple { background: #6d28d9; color: #fff; border-color: #6d28d9; }
+  .modal-actions a.fb-btn { background: #1877f2; color: #fff; border-color: #1877f2; }
   [hidden] { display: none !important; }
 </style>
 <script src="/_aistudio-iframe.js?v=1f94f900"></script></head>
@@ -792,6 +806,25 @@
     <div class="modal-actions">
       <button id="share-close-btn" type="button" class="primary">✕ Închide / Înapoi</button>
       <button id="share-open-btn" type="button">▶ Deschide stiva</button>
+    </div>
+  </div>
+</div>
+
+<!-- X19: Dialog Conectare / Preluare Facebook -->
+<div id="fb-modal" class="modal-backdrop" hidden>
+  <div class="modal-card fb-card">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;">
+      <strong style="font-size:0.95rem;color:#1877f2;">🔐 Conectare Facebook necesară</strong>
+      <button id="fb-close-x" type="button" class="hist-btn">✕</button>
+    </div>
+    <p style="font-size:0.82rem;line-height:1.45;color:var(--mut);margin-bottom:12px;">
+      Această postare Facebook este protejată și cere conectare cu contul dvs. (browserul nu permite aplicațiilor externe să folosească parola direct).<br><br>
+      <b>Pași rapizi:</b> Deschideți linkul în Facebook (conectați-vă dacă vi se cere), copiați textul postării și apăsați butonul de mai jos:
+    </p>
+    <div class="modal-actions">
+      <a id="fb-open-link" href="#" target="_blank" rel="noopener noreferrer" class="fb-btn">🔗 Deschide Facebook</a>
+      <button id="fb-paste-btn" type="button" class="primary">📋 Am copiat textul → Citește</button>
+      <button id="fb-close-btn" type="button">Închide</button>
     </div>
   </div>
 </div>
@@ -813,14 +846,14 @@
 </div>
 
 <main id="main-app">
-  <!-- Antet v9 -->
+  <!-- Antet v10 (X17: fără panou download pe ecranul principal!) -->
   <header>
     <div class="title-group">
       <div class="app-icon">▶</div>
-      <h1>Lectură audio <span class="v-badge-green">v9</span></h1>
+      <h1>Lectură audio <span class="v-badge-green">v10</span></h1>
     </div>
     <div class="header-actions">
-      <button id="settings-btn" type="button" class="btn-sm" aria-expanded="false" title="Setări, Sleep Timer &amp; Istoric">
+      <button id="settings-btn" type="button" class="btn-sm" aria-expanded="false" title="Setări, Sleep Timer, Download &amp; Istoric">
         <span>⚙ Settings</span>
       </button>
       <button id="clear" type="button" class="btn-sm" aria-label="Șterge textul" title="Șterge textul">
@@ -832,23 +865,10 @@
     </div>
   </header>
 
-  <!-- Panou Descărcare (X12: manifest & sw actualizate o dată pt. nume fără v7) -->
-  <div id="dl-panel" class="dl-panel">
-    <div class="dl-header">
-      <span>📥 Descarcă pentru GitHub (v9):</span>
-      <span style="font-size:0.66rem;color:var(--mut);">actualizare manifest/sw pt. nume fără „v7”</span>
-    </div>
-    <div class="dl-grid">
-      <button id="btn-dl-index" type="button" class="dl-btn full" title="Descarcă index.html v9">📥 Descarcă index.html (v9)</button>
-      <button id="btn-dl-manifest" type="button" class="dl-btn sec" title="Descarcă manifest.json (nume permanent: Lectură)">📥 manifest.json (fără v7)</button>
-      <button id="btn-dl-sw" type="button" class="dl-btn gray" title="Descarcă sw.js v9">📥 sw.js (v9)</button>
-    </div>
-  </div>
-
-  <!-- Settings, Sleep Timer & Fișier Istoric -->
+  <!-- Settings, Download Opțional (X17), Sleep Timer & Fișier Istoric -->
   <div id="settingsbox" class="panel-box" hidden>
     <h2>
-      <span>⚙ Setări aplicație (v9)</span>
+      <span>⚙ Setări aplicație (v10)</span>
       <button id="settings-close" type="button" class="hist-btn">Închide ✕</button>
     </h2>
 
@@ -867,7 +887,7 @@
       <input id="opt-audiotts" type="checkbox" checked>
     </label>
     <label class="setting-toggle">
-      <span>Pornire automată la inserare text/link (Clipboard)</span>
+      <span>Pornire automată la intrare în tabul Text / inserare Clipboard</span>
       <input id="opt-autoplay" type="checkbox" checked>
     </label>
     <label class="setting-toggle">
@@ -879,13 +899,26 @@
       <input id="opt-sharesilent" type="checkbox" checked>
     </label>
     <label class="setting-toggle">
-      <span>Ascunde panoul verde de descărcare (pe telefon/tabletă)</span>
-      <input id="opt-hidedl" type="checkbox">
-    </label>
-    <label class="setting-toggle">
       <span>Menține ecranul aprins în timpul citirii (WakeLock)</span>
       <input id="opt-wakelock" type="checkbox">
     </label>
+    <label class="setting-toggle">
+      <span><b>Afișează butoanele de descărcare (GitHub)</b> aici în Settings</span>
+      <input id="opt-showdl" type="checkbox" checked>
+    </label>
+
+    <!-- X17: Panou Descărcare mutată EXCLUSIV în Settings, controlată de checkbox -->
+    <div id="dl-panel" class="dl-panel">
+      <div class="dl-header">
+        <span>📥 Descarcă pentru GitHub (v10):</span>
+        <span style="font-size:0.66rem;color:var(--mut);">opțional în Settings</span>
+      </div>
+      <div class="dl-grid">
+        <button id="btn-dl-index" type="button" class="dl-btn full" title="Descarcă index.html v10">📥 Descarcă index.html (v10)</button>
+        <button id="btn-dl-manifest" type="button" class="dl-btn sec" title="Descarcă manifest.json">📥 manifest.json</button>
+        <button id="btn-dl-sw" type="button" class="dl-btn gray" title="Descarcă sw.js v10">📥 sw.js (v10)</button>
+      </div>
+    </div>
 
     <div class="hist-toolbar">
       <strong id="hist-count" style="color:var(--acc);font-size:0.84rem;">📜 Istoric Clipboard &amp; Share (0)</strong>
@@ -900,12 +933,14 @@
 
   <!-- Help Accordion Box -->
   <div id="helpbox" class="panel-box" hidden>
-    <h2>Noutăți &amp; Instrucțiuni (v9)</h2>
+    <h2>Noutăți &amp; Instrucțiuni (v10)</h2>
     <ol>
-      <li><b>X14 Fără zgomot &amp; Redare reală în fundal</b>: s-a eliminat semnalul de 12 Hz. Modul implicit <b>Voce Audio MP3</b> redă vocea direct ca stream audio real (suportat nativ de Android pe ecran blocat sau în alt program).</li>
-      <li><b>X13 Bife reale + Control manual</b>: s-a eliminat bifarea falsă la erori în fundal. Fiecare articol din stivă are propria bifă și butoane rapide <b>☑ Tot / ☐ Nimic</b>.</li>
-      <li><b>X15 Facebook &amp; X16 Curățare avansată</b>: extrage postările publice Facebook și elimină blocurile cu titluri bold + linkuri promo și etichetele <code>#text</code>.</li>
-      <li><b>X12 Nume permanent „Lectură”</b>: încarcă și noul <code>manifest.json</code> + <code>sw.js</code> pe GitHub ca aplicația instalată să nu mai afișeze „v7”.</li>
+      <li><b>X17 Ecran curat</b>: butoanele de download apar doar opțional în <b>Settings</b>.</li>
+      <li><b>X18 Traducere reparată + Explicație sonoră a erorilor</b>: traducerea folosește Google Translate direct (fără proxy-uri picate), iar orice eroare este explicată clar și sonor + afișată lângă <code>⚠</code>.</li>
+      <li><b>X19 Facebook asistat</b>: detectează imediat zidul de conectare și oferă deschidere directă în Facebook + preluare cu un tap din clipboard, fără a încerca să traducă mesajul de eroare.</li>
+      <li><b>X20 Sync Clipboard → Listă + Auto-citire în tabul Text</b>: tot ce intră în tabul Text se salvează sus în Listă și se bifează automat după citire. Simpla apăsare pe tabul <b>📄 Text</b> preia clipboard-ul sau textul existent și pornește citirea imediat.</li>
+      <li><b>X21 Memorie completă de stare</b>: la revenirea din background memorează tabul activ (Text sau Listă), articolul exact <code>N</code> și propoziția curentă.</li>
+      <li><b>X22 Anti-citire dublă</b>: blochează pornirea simultană din aceeași fereastră sau între aplicație și versiunea web.</li>
     </ol>
   </div>
 
@@ -1019,22 +1054,26 @@ var chunks=[],spans=[],idx=0,token=0,state='idle',roVoice=null,wake=null,mode=1,
 var utterStart=0,lastInputLen=0,bgWorker=null,bgTimerFallback=null,lockResolver=null;
 var currentArticleRawText='',currentTitle='',lastAddedId='',sleepMode='off',sleepEndTs=0;
 var chunkStarted=false,chunksSpokenInItem=0,ttsErrStreak=0,activeDriver='audio';
+var mode1ItemId='',lastAutoClip='',lastStartStamp=0,heartbeatTimer=null;
+var INSTANCE_ID='inst_'+Date.now()+'_'+Math.random().toString(36).slice(2,7);
 var bgAudioPlayer=new Audio();
 bgAudioPlayer.preload='auto';
 var bc=(typeof BroadcastChannel!=='undefined')?new BroadcastChannel('lectura_audio_sync'):null;
 
-// Settings
-var settings={useAudioTts:true,autoPlay:true,autoTranslate:true,shareSilent:true,hideDl:false,wakeLock:false};
+// Settings (X17: showDlInSettings replaces main-screen dl-panel)
+var settings={useAudioTts:true,autoPlay:true,autoTranslate:true,shareSilent:true,showDlInSettings:true,wakeLock:false};
 try{
   var st=JSON.parse(localStorage.getItem('cc_settings')||'{}');
-  ['useAudioTts','autoPlay','autoTranslate','shareSilent','hideDl','wakeLock'].forEach(function(k){
+  ['useAudioTts','autoPlay','autoTranslate','shareSilent','wakeLock'].forEach(function(k){
     if(typeof st[k]==='boolean')settings[k]=st[k];
   });
+  if(typeof st.showDlInSettings==='boolean')settings.showDlInSettings=st.showDlInSettings;
+  else if(typeof st.hideDl==='boolean')settings.showDlInSettings=!st.hideDl;
 }catch(e){}
 function saveSettings(){try{localStorage.setItem('cc_settings',JSON.stringify(settings))}catch(e){}}
 
 function applyDlVisibility(){
-  $('dl-panel').hidden=!!settings.hideDl;
+  $('dl-panel').hidden=!settings.showDlInSettings;
 }
 applyDlVisibility();
 
@@ -1065,19 +1104,23 @@ function addHistory(entry){
   renderHistory();
 }
 
-// Auto-Resume state
+// X21: Salvare completă a stării (inclusiv mode 1/2, articolul curent curId, poziția idx, conținut articol)
 function saveResume(){
   try{
+    var curItem=(mode===2 && cur>=0 && items[cur])?items[cur]:null;
     localStorage.setItem('cc_resume',JSON.stringify({
       mode:mode,
       cur:cur,
+      curId:curItem?curItem.id:(mode1ItemId||''),
       idx:idx,
       text:mode===1?txt.value:'',
-      article:mode===1?currentArticleRawText:'',
-      title:currentTitle,
+      article:currentArticleRawText||'',
+      spoken:chunks.join(' '),
+      title:currentTitle||'',
+      listRun:!!listRun,
       ts:Date.now()
     }));
-    if(mode===2 && listRun && items[cur]){
+    if(mode===2 && cur>=0 && items[cur]){
       items[cur].pos=idx;
       save();
     }
@@ -1096,6 +1139,7 @@ function loadList(){
         title: it.title || it.url || 'Articol',
         read: !!it.read,
         err: !!it.err,
+        errMsg: it.errMsg || '',
         pos: Number(it.pos)||0
       };
     });
@@ -1107,7 +1151,42 @@ function say(t){if(msg)msg.textContent=t||''}
 
 function save(){
   try{localStorage.setItem('cc_list',JSON.stringify(items))}catch(e){}
-  if(bc)try{bc.postMessage({type:'sync_list'})}catch(e){}
+  if(bc)try{bc.postMessage({type:'sync_list',sender:INSTANCE_ID})}catch(e){}
+}
+
+// X22: Prevenire pornire simultană (intra-tab & între aplicație și versiunea web)
+function claimPlaybackOwnership(){
+  try{
+    localStorage.setItem('cc_active_player',JSON.stringify({owner:INSTANCE_ID,ts:Date.now()}));
+  }catch(e){}
+  if(bc){
+    try{bc.postMessage({type:'claim_play',owner:INSTANCE_ID,ts:Date.now()})}catch(e){}
+  }
+  startHeartbeat();
+}
+
+function startHeartbeat(){
+  stopHeartbeat();
+  heartbeatTimer=setInterval(function(){
+    if(state==='playing'){
+      try{localStorage.setItem('cc_active_player',JSON.stringify({owner:INSTANCE_ID,ts:Date.now()}))}catch(e){}
+    }
+  },2000);
+}
+function stopHeartbeat(){
+  if(heartbeatTimer){clearInterval(heartbeatTimer);heartbeatTimer=null}
+}
+
+function forceYieldPlayback(){
+  if(state==='playing'||state==='loading'){
+    token++;
+    listRun=false;
+    stopAudioDrivers();
+    release();
+    state='paused';
+    $('pause').querySelector('span:last-child').textContent='Reia';
+    say('Redare oprită automat (o altă fereastră / versiune a preluat citirea).');
+  }
 }
 
 // Unwrap l.facebook.com redirect URLs
@@ -1134,16 +1213,32 @@ function parseInputPayload(raw){
   return {kind:'text',text:s,title:''};
 }
 
-// Stivă: adaugă SUS (unshift) și actualizează cur
-function addItem(u, title, textContent, sourceTag){
+// Adaugă SUS în stivă și returnează {id, title}
+function addItemWithId(u, title, textContent, sourceTag, skipRender){
   var newId='it_'+Date.now()+'_'+Math.random().toString(36).slice(2,6);
   lastAddedId=newId;
-  if(textContent){
-    var itemTitle=(title||'').trim()||textContent.split('\n')[0].slice(0,60)||'Text partajat';
-    items.unshift({id:newId,type:'text',url:'',title:itemTitle,text:textContent,read:false,pos:0});
+  if(textContent && !u){
+    var itemTitle=(title||'').trim()||textContent.split('\n')[0].slice(0,60)||'Text';
+    var exTxtIdx=items.findIndex(function(it){return it.type==='text' && it.text===textContent});
+    if(exTxtIdx>=0){
+      var exTxt=items.splice(exTxtIdx,1)[0];
+      exTxt.read=false;exTxt.err=false;exTxt.errMsg='';
+      items.unshift(exTxt);
+      if(cur>=0){
+        if(cur===exTxtIdx)cur=0;
+        else if(cur<exTxtIdx)cur++;
+      }
+      save();
+      addHistory({source:sourceTag||'clipboard',type:'text',title:exTxt.title||itemTitle,text:textContent});
+      if(!skipRender)renderList(true);
+      return {id:exTxt.id, title:exTxt.title||itemTitle};
+    }
+    items.unshift({id:newId,type:'text',url:'',title:itemTitle,text:textContent,read:false,err:false,errMsg:'',pos:0});
     if(cur>=0)cur++;
     addHistory({source:sourceTag||'share',type:'text',title:itemTitle,text:textContent});
-    save();renderList(true);return itemTitle;
+    save();
+    if(!skipRender)renderList(true);
+    return {id:newId, title:itemTitle};
   }
   u=unwrapUrl(u.replace(/[)\].,;]+$/,''));
   var linkTitle=(title||'').trim()||u.replace(/^https?:\/\/(www\.)?/,'').slice(0,60);
@@ -1151,26 +1246,55 @@ function addItem(u, title, textContent, sourceTag){
   if(existingIdx>=0){
     var ex=items.splice(existingIdx,1)[0];
     if(title && !ex.title)ex.title=title;
-    ex.read=false;ex.err=false;ex.id=newId;
+    ex.read=false;ex.err=false;ex.errMsg='';
     items.unshift(ex);
     if(cur>=0){
       if(cur===existingIdx)cur=0;
       else if(cur<existingIdx)cur++;
     }
+    newId=ex.id;
   }else{
-    items.unshift({id:newId,type:'link',url:u,title:title||'',read:false,pos:0});
+    items.unshift({id:newId,type:'link',url:u,title:title||'',read:false,err:false,errMsg:'',pos:0});
     if(cur>=0)cur++;
   }
   save();
   addHistory({source:sourceTag||'share',type:'link',title:linkTitle,url:u});
-  renderList(true);
-  return linkTitle;
+  if(!skipRender)renderList(true);
+  return {id:newId, title:linkTitle};
+}
+
+function addItem(u, title, textContent, sourceTag){
+  return addItemWithId(u, title, textContent, sourceTag, false).title;
+}
+
+function markMode1ItemRead(){
+  if(!mode1ItemId)return;
+  var found=items.find(function(it){return it.id===mode1ItemId});
+  if(found){
+    found.read=true;found.pos=0;found.err=false;found.errMsg='';
+    save();
+    renderList(false);
+  }
+}
+
+function updateItemMeta(id, title, errReason){
+  if(!id)return;
+  var found=items.find(function(it){return it.id===id});
+  if(found){
+    if(title && (!found.title || found.title.indexOf('http')===0))found.title=title;
+    if(errReason){found.err=true;found.errMsg=errReason}
+    else if(errReason===''){found.err=false;found.errMsg=''}
+    save();
+    renderList(false);
+  }
 }
 
 // X8: Interceptăm Share
+var openedFromShare=false;
 (function handleIncomingShare(){
   var q=new URLSearchParams(location.search);
   if(!q.has('url')&&!q.has('text')&&!q.has('title'))return;
+  openedFromShare=true;
   var rawUrl=q.get('url')||'',rawText=q.get('text')||'',rawTitle=q.get('title')||'';
   try{history.replaceState(null,'',location.pathname)}catch(e){}
 
@@ -1201,23 +1325,28 @@ $('share-close-btn').onclick=function(){
   try{window.close()}catch(e){}
   setTimeout(function(){
     if(history.length>1)history.back();
-    else{$('share-mini').hidden=true;$('main-app').hidden=false;setMode(2)}
+    else{$('share-mini').hidden=true;$('main-app').hidden=false;setMode(2,false)}
   },120);
 };
 $('share-open-btn').onclick=function(){
   $('share-mini').hidden=true;
   $('main-app').hidden=false;
-  setMode(2);
+  setMode(2,false);
 };
 
-// Sincronizare live când sosește un Share silențios din alt tab
+// Sincronizare live + X22 oprire automată dacă altă fereastră/tab pornește citirea
 if(bc){
   bc.onmessage=function(ev){
-    if(ev.data&&ev.data.type==='sync_list'){
-      var oldCurUrl=(cur>=0&&items[cur])?(items[cur].url||items[cur].text):null;
+    if(!ev.data)return;
+    if(ev.data.type==='claim_play' && ev.data.owner!==INSTANCE_ID){
+      forceYieldPlayback();
+      return;
+    }
+    if(ev.data.type==='sync_list' && ev.data.sender!==INSTANCE_ID){
+      var oldCurId=(cur>=0&&items[cur])?items[cur].id:null;
       loadList();
-      if(oldCurUrl){
-        var found=items.findIndex(function(it){return (it.url||it.text)===oldCurUrl});
+      if(oldCurId){
+        var found=items.findIndex(function(it){return it.id===oldCurId});
         if(found>=0)cur=found;
       }
       renderList(true);
@@ -1226,6 +1355,14 @@ if(bc){
   };
 }
 window.addEventListener('storage',function(e){
+  if(e.key==='cc_active_player' && e.newValue){
+    try{
+      var info=JSON.parse(e.newValue);
+      if(info && info.owner && info.owner!==INSTANCE_ID && (Date.now()-info.ts)<8000){
+        forceYieldPlayback();
+      }
+    }catch(err){}
+  }
   if(e.key==='cc_list'){loadList();renderList(true)}
   if(e.key==='cc_history'){try{historyList=JSON.parse(e.newValue||'[]');renderHistory()}catch(err){}}
 });
@@ -1265,18 +1402,20 @@ document.querySelectorAll('.preset-pill').forEach(function(btn){
   };
 });
 
-// Mesaj audio scurt înainte de acțiuni speciale
+// Mesaj audio scurt (fără zgomot; împărțit dacă depășește 170 caractere)
 function speakNotice(text){
+  var shortMsg=(text||'').trim().slice(0,170);
+  if(!shortMsg)return Promise.resolve();
   return new Promise(function(resolve){
-    if(settings.useAudioTts){
+    if(settings.useAudioTts && navigator.onLine){
       try{
-        var nu='https://translate.google.com/translate_tts?ie=UTF-8&q='+encodeURIComponent(text)+'&tl=ro&client=tw-ob';
+        var nu='https://translate.google.com/translate_tts?ie=UTF-8&q='+encodeURIComponent(shortMsg)+'&tl=ro&client=tw-ob';
         var a=new Audio(nu);
-        a.playbackRate=Math.min(1.2, Number(rate.value)||1);
+        a.playbackRate=Math.min(1.15, Number(rate.value)||1);
         var doneA=false;
         var finA=function(){if(!doneA){doneA=true;resolve()}};
         a.onended=finA;a.onerror=finA;
-        setTimeout(finA,3500);
+        setTimeout(finA,4500);
         a.play().catch(finA);
         return;
       }catch(e){}
@@ -1284,76 +1423,96 @@ function speakNotice(text){
     if(!synth){resolve();return}
     try{
       synth.cancel();
-      var u=new SpeechSynthesisUtterance(text);
+      var u=new SpeechSynthesisUtterance(shortMsg);
       if(roVoice){u.voice=roVoice;u.lang=roVoice.lang}else u.lang='ro-RO';
-      u.rate=Math.min(1.2, Number(rate.value)||1);
+      u.rate=Math.min(1.15, Number(rate.value)||1);
       var done=false;
       var finish=function(){if(!done){done=true;resolve()}};
       u.onend=finish;u.onerror=finish;
-      setTimeout(finish,3200);
+      setTimeout(finish,4000);
       synth.speak(u);
     }catch(e){resolve()}
   });
 }
 
-// Detectare limbă + Traducere automată în română
+// X18: Detectare corectă limbă română (nu se mai păcălește de la o singură diacritică!)
 function isRomanianText(t){
-  var sample=t.slice(0,1500);
-  if(/[ăâîșțĂÂÎȘȚ]/.test(sample))return true;
+  var sample=t.slice(0,1800);
+  var diacHits=(sample.match(/[ăâîșțĂÂÎȘȚ]/g)||[]).length;
   var low=sample.toLowerCase();
-  var roHits=(low.match(/\b(și|este|sunt|care|pentru|din|sau|dar|într|mai|fost|avea|acest|această|după|către|prin|despre|când|doar|încă)\b/g)||[]).length;
-  var enHits=(low.match(/\b(the|and|is|are|was|were|that|this|with|from|for|not|but|have|has|will|would|about|which|their)\b/g)||[]).length;
+  var roHits=(low.match(/\b(și|este|sunt|care|pentru|din|sau|dar|într|mai|fost|avea|acest|această|după|către|prin|despre|când|doar|încă|unei|unui|între)\b/g)||[]).length;
+  var enHits=(low.match(/\b(the|and|is|are|was|were|that|this|with|from|for|not|but|have|has|will|would|about|which|their|they|been|more|when|what)\b/g)||[]).length;
+  if(diacHits>=4 && roHits>=enHits)return true;
   if(roHits>=3 && roHits>=enHits)return true;
-  if(enHits>=3 && roHits===0)return false;
-  return sample.length<40;
+  if(diacHits>=1 && enHits<=2 && roHits>=1)return true;
+  if(enHits>=2 || sample.length>=30)return false;
+  return true;
 }
 
+// X18: Traducere directă prin Google Translate (CORS *) + fallback-uri funcționale
 async function translateChunkToRo(chunk){
-  var proxies=[
-    function(q){return 'https://lingva.ml/api/v1/auto/ro/'+encodeURIComponent(q)},
-    function(q){return 'https://api.allorigins.win/raw?url='+encodeURIComponent('https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=ro&dt=t&q='+encodeURIComponent(q))},
-    function(q){return 'https://corsproxy.io/?'+encodeURIComponent('https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=ro&dt=t&q='+encodeURIComponent(q))}
+  var q=encodeURIComponent(chunk);
+  var endpoints=[
+    function(){return 'https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=ro&dt=t&q='+q},
+    function(){return 'https://translate.googleapis.com/translate_a/single?client=dict-chrome-ex&sl=auto&tl=ro&dt=t&q='+q},
+    function(){return 'https://lingva.thedaviddelta.com/api/v1/auto/ro/'+q},
+    function(){return 'https://lingva.ml/api/v1/auto/ro/'+q},
+    function(){return 'https://api.codetabs.com/v1/proxy?quest='+encodeURIComponent('https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=ro&dt=t&q='+q)}
   ];
-  for(var i=0;i<proxies.length;i++){
+  for(var i=0;i<endpoints.length;i++){
     try{
       var ctl=new AbortController();
-      var to=setTimeout(function(){ctl.abort()},8000);
-      var r=await fetch(proxies[i](chunk),{signal:ctl.signal});
+      var to=setTimeout(function(){ctl.abort()},9000);
+      var r=await fetch(endpoints[i](),{signal:ctl.signal});
       clearTimeout(to);
       if(!r.ok)continue;
       var data=await r.json();
-      if(data && typeof data.translation==='string')return data.translation;
+      if(data && typeof data.translation==='string' && data.translation.trim())return data.translation;
       if(Array.isArray(data) && Array.isArray(data[0])){
-        return data[0].map(function(x){return x[0]||''}).join('');
+        var joined=data[0].map(function(x){return (x&&x[0])?x[0]:''}).join('');
+        if(joined.trim())return joined;
+      }
+      if(data && Array.isArray(data.sentences)){
+        var sJoined=data.sentences.map(function(x){return x.trans||''}).join('');
+        if(sJoined.trim())return sJoined;
       }
     }catch(e){}
   }
   return null;
 }
 
-async function maybeTranslateToRo(text, title){
+async function maybeTranslateToRo(text, title, myToken){
   if(!settings.autoTranslate)return {text:text,title:title};
   if(isRomanianText(text))return {text:text,title:title};
-  say('Pornesc traducerea…');
+  say('Pornesc traducerea în română…');
   await speakNotice('Pornesc traducerea');
+  if(myToken!==undefined && myToken!==token)return {text:text,title:title};
 
   var parts=[];
   var rest=text;
-  while(rest.length>0 && parts.length<12){
-    var cut=rest.length<=900?rest.length:rest.lastIndexOf('.',900)+1;
-    if(cut<=100)cut=Math.min(rest.length,900);
+  while(rest.length>0 && parts.length<40){
+    var cut=rest.length<=850?rest.length:rest.lastIndexOf('.',850)+1;
+    if(cut<=100)cut=Math.min(rest.length,850);
     parts.push(rest.slice(0,cut).trim());
     rest=rest.slice(cut).trim();
   }
   var translatedParts=[];
+  var translatedCount=0;
   for(var i=0;i<parts.length;i++){
+    if(myToken!==undefined && myToken!==token)return {text:text,title:title};
+    say('Traduc în română ('+(i+1)+'/'+parts.length+')…');
     var tr=await translateChunkToRo(parts[i]);
     if(!tr){
-      if(i===0){say('Traducerea publică nu a răspuns, citesc originalul.');return {text:text,title:title}}
       translatedParts.push(parts[i]);
     }else{
+      translatedCount++;
       translatedParts.push(tr);
     }
+  }
+  if(translatedCount===0){
+    say('Traducerea nu a răspuns, citesc în limba originală.');
+    await speakNotice('Traducerea nu a răspuns, citesc în limba originală');
+    return {text:text,title:title};
   }
   var newTitle=title;
   if(title && !isRomanianText(title)){
@@ -1361,6 +1520,23 @@ async function maybeTranslateToRo(text, title){
     if(trTitle)newTitle=trTitle;
   }
   return {text:translatedParts.join('\n'),title:newTitle};
+}
+
+// Explicații clare românești pentru orice eroare (X18)
+function describeError(err, url){
+  var m=(err&&err.message)?String(err.message):String(err||'');
+  if(!navigator.onLine)return 'Lipsă conexiune la internet.';
+  if(m==='FB_LOGIN_REQUIRED')return 'Postarea Facebook necesită conectare la contul dumneavoastră Facebook.';
+  if(m==='fb_failed')return 'Nu s-a putut extrage conținutul postării Facebook.';
+  if(m==='yt_failed')return 'Videoclipul YouTube nu are subtitrări publice disponibile.';
+  if((err&&err.name==='AbortError') || /abort|timeout/i.test(m))return 'Timpul de așteptare a expirat la încărcarea paginii.';
+  if(/http\s*403|http\s*401/i.test(m))return 'Site-ul blochează accesul automat (eroare 403).';
+  if(/http\s*404/i.test(m))return 'Pagina articolului nu mai există (eroare 404).';
+  if(/http\s*429/i.test(m))return 'Prea multe cereri către server (eroare 429). Încercați puțin mai târziu.';
+  if(/http\s*5\d\d/i.test(m))return 'Serverul site-ului a returnat o eroare temporară.';
+  if(m==='gol' || /insuficient/i.test(m))return 'Pagina nu conține text suficient sau necesită autentificare / abonament.';
+  if(/failed to fetch|network/i.test(m))return 'Eroare de rețea la conectarea către articol.';
+  return m || 'Nu s-a putut încărca articolul.';
 }
 
 // YouTube transcript
@@ -1373,7 +1549,7 @@ async function fetchYoutubeTranscript(u){
   var vid=extractYoutubeId(u);
   if(!vid)throw new Error('not_yt');
 
-  var proxies=['https://api.allorigins.win/raw?url=','https://corsproxy.io/?'];
+  var proxies=['https://api.codetabs.com/v1/proxy?quest=','https://api.allorigins.win/raw?url='];
   for(var p=0;p<proxies.length;p++){
     try{
       var ctl=new AbortController(),to=setTimeout(function(){ctl.abort()},12000);
@@ -1427,12 +1603,20 @@ async function fetchYoutubeTranscript(u){
   throw new Error('yt_failed');
 }
 
-// X15: Facebook link handling
+// X15 & X19: Facebook link handling + detectare strictă zid conectare
 function isFacebookUrl(u){
   try{return /(^|\.)(facebook\.com|fb\.com|fb\.watch)$/i.test(new URL(u).hostname)}catch(e){return false}
 }
 
+function isFacebookLoginWall(raw){
+  if(!raw)return false;
+  if(/Final URL:\s*https:\/\/www\.facebook\.com\/login/i.test(raw))return true;
+  if(/requiring captcha|you must log in to continue|log into facebook.*password|explore the things you love.*log into facebook|this content isn't available right now|when this happens, it's usually because/i.test(raw))return true;
+  return false;
+}
+
 function cleanFacebookText(raw){
+  if(isFacebookLoginWall(raw))throw new Error('FB_LOGIN_REQUIRED');
   var t=raw||'';
   var i=t.indexOf('Markdown Content:');
   if(i>=0)t=t.slice(i+17);
@@ -1455,38 +1639,45 @@ function cleanFacebookText(raw){
 
 async function fetchFacebookPost(u){
   u=unwrapUrl(u).replace(/^https?:\/\/(m|mbasic)\.facebook\.com/i,'https://www.facebook.com');
-  var authorTitle='';
+  var authorTitle='', sawLoginWall=false;
 
-  // 1. Plugin embed prin r.jina.ai (nu are zid Log In pt. postări publice!)
+  // 1. Plugin embed prin r.jina.ai
   try{
-    var ctl=new AbortController(),to=setTimeout(function(){ctl.abort()},14000);
+    var ctl=new AbortController(),to=setTimeout(function(){ctl.abort()},12000);
     var embedUrl='https://r.jina.ai/https://www.facebook.com/plugins/post.php?href='+encodeURIComponent(u);
     var r=await fetch(embedUrl,{signal:ctl.signal});
     clearTimeout(to);
     if(r.ok){
-      var txt1=cleanFacebookText(await r.text());
-      if(txt1.length>=30 && !/sorry, something went wrong/i.test(txt1)){
-        return {text:txt1,title:authorTitle};
+      var raw1=await r.text();
+      if(isFacebookLoginWall(raw1))sawLoginWall=true;
+      else{
+        var txt1=cleanFacebookText(raw1);
+        if(txt1.length>=35 && !/sorry, something went wrong/i.test(txt1)){
+          return {text:txt1,title:authorTitle};
+        }
       }
     }
-  }catch(e){}
+  }catch(e){if(e&&e.message==='FB_LOGIN_REQUIRED')sawLoginWall=true}
 
   // 2. Pagina directă prin r.jina.ai
   try{
-    var ctl2=new AbortController(),to2=setTimeout(function(){ctl2.abort()},14000);
+    var ctl2=new AbortController(),to2=setTimeout(function(){ctl2.abort()},12000);
     var r2=await fetch('https://r.jina.ai/'+u,{signal:ctl2.signal});
     clearTimeout(to2);
     if(r2.ok){
       var raw2=await r2.text();
-      var tm=raw2.match(/^Title:\s*(.+)$/m);
-      if(tm && !/^(facebook|log in|error)/i.test(tm[1].trim()))authorTitle=tm[1].trim();
-      var txt2=cleanFacebookText(raw2);
-      if(txt2.length>=30)return {text:txt2,title:authorTitle};
+      if(isFacebookLoginWall(raw2))sawLoginWall=true;
+      else{
+        var tm=raw2.match(/^Title:\s*(.+)$/m);
+        if(tm && !/^(facebook|log in|error)/i.test(tm[1].trim()))authorTitle=tm[1].trim();
+        var txt2=cleanFacebookText(raw2);
+        if(txt2.length>=35)return {text:txt2,title:authorTitle};
+      }
     }
-  }catch(e){}
+  }catch(e){if(e&&e.message==='FB_LOGIN_REQUIRED')sawLoginWall=true}
 
   // 3. Fallback proxy HTML (og:description / paragrafe plugin)
-  var proxies=['https://api.allorigins.win/raw?url=','https://corsproxy.io/?'];
+  var proxies=['https://api.codetabs.com/v1/proxy?quest=','https://api.allorigins.win/raw?url='];
   for(var i=0;i<proxies.length;i++){
     try{
       var ctl3=new AbortController(),to3=setTimeout(function(){ctl3.abort()},10000);
@@ -1495,13 +1686,40 @@ async function fetchFacebookPost(u){
       if(r3.ok){
         var html=await r3.text();
         var doc=new DOMParser().parseFromString(html,'text/html');
+        var ogDesc=(doc.querySelector('meta[property="og:description"]')||{}).content||'';
         var ps=Array.prototype.slice.call(doc.querySelectorAll('p')).map(function(el){return (el.textContent||'').trim()}).filter(Boolean).join('\n');
-        if(ps.length>=30)return {text:ps.replace(/(^|\s)#[\wăâîșțĂÂÎȘȚ-]+/g,'$1'),title:authorTitle};
+        var combined=(ps.length>=35?ps:ogDesc).replace(/(^|\s)#[\wăâîșțĂÂÎȘȚ-]+/g,'$1').trim();
+        if(combined.length>=35 && !isFacebookLoginWall(combined))return {text:combined,title:authorTitle};
+        if(/log in/i.test(html))sawLoginWall=true;
       }
     }catch(e){}
   }
-  throw new Error('fb_failed');
+
+  if(sawLoginWall)throw new Error('FB_LOGIN_REQUIRED');
+  throw new Error('FB_LOGIN_REQUIRED');
 }
+
+function showFacebookModal(fbUrl){
+  $('fb-open-link').href=fbUrl||'https://www.facebook.com/';
+  $('fb-modal').hidden=false;
+}
+$('fb-close-x').onclick=$('fb-close-btn').onclick=function(){$('fb-modal').hidden=true};
+$('fb-paste-btn').onclick=async function(){
+  $('fb-modal').hidden=true;
+  setMode(1,false);
+  try{
+    var clip=await navigator.clipboard.readText();
+    if(clip&&clip.trim()){
+      txt.value=clip.trim();
+      lastInputLen=txt.value.length;
+      handleTxtInsert(true,false);
+    }else{
+      say('Clipboard-ul este gol. Copiați textul din Facebook și apăsați 📋 Lipește.');
+    }
+  }catch(e){
+    say('Apăsați lung în casetă → Lipește pentru textul copiat din Facebook.');
+  }
+};
 
 // Split maxim 175 caractere ca să încapă întotdeauna în Audio TTS MP3
 function split(t){
@@ -1589,15 +1807,18 @@ function updateMediaMeta(){
   }catch(e){}
 }
 
-function handleTtsBlocked(){
+function handleTtsBlocked(reason){
   if(state!=='playing')return;
   token++;
   stopAudioDrivers();
+  stopHeartbeat();
   state='paused';
   saveResume();
   updateMediaMeta();
   $('pause').querySelector('span:last-child').textContent='Reia';
-  say('Redare pusă în pauză (motor vocal blocat în fundal) — articolul a rămas nebifat.');
+  var msgTxt=reason||'Redare pusă în pauză (motorul vocal a fost blocat de sistem) — articolul a rămas nebifat.';
+  say(msgTxt);
+  speakNotice(reason||'Motorul vocal este blocat');
 }
 
 function runWatchdogTick(){
@@ -1624,7 +1845,6 @@ function runWatchdogTick(){
     }
     return;
   }
-  // SpeechSynthesis fallback guard (fără a marca fals articolele drept citite!)
   if(synth){
     if(synth.paused){try{synth.resume()}catch(e){}}
     var maxUtterMs=Math.max(28000, ((chunks[idx]&&chunks[idx].length)||120)*240/Math.max(0.6, Number(rate.value)||1));
@@ -1637,7 +1857,7 @@ function runWatchdogTick(){
     }
     if(!synth.speaking && !synth.pending && (Date.now()-utterStart)>2200){
       if(!chunkStarted){
-        handleTtsBlocked();
+        handleTtsBlocked('Motorul vocal local a fost oprit în fundal.');
       }else{
         idx++;
         speak();
@@ -1673,6 +1893,7 @@ function stopAudioDrivers(){
 }
 
 async function hold(){
+  claimPlaybackOwnership();
   if(settings.wakeLock){
     try{if(navigator.wakeLock)wake=await navigator.wakeLock.request('screen')}catch(e){}
   }
@@ -1696,6 +1917,7 @@ async function hold(){
 
 function release(){
   stopWatchdog();
+  stopHeartbeat();
   stopAudioDrivers();
   try{if(wake){wake.release();wake=null}}catch(e){}
   try{if(lockResolver){lockResolver();lockResolver=null}}catch(e){}
@@ -1703,6 +1925,9 @@ function release(){
 }
 
 document.addEventListener('visibilitychange',function(){
+  if(document.visibilityState==='hidden'){
+    saveResume();
+  }
   if(state==='playing'){
     if(activeDriver==='audio' && bgAudioPlayer.paused && !bgAudioPlayer.ended){
       bgAudioPlayer.play().catch(function(){});
@@ -1714,9 +1939,10 @@ document.addEventListener('visibilitychange',function(){
     }
   }
 });
+window.addEventListener('pagehide',saveResume);
 
 function speakViaSynth(textChunk, my){
-  if(!synth){handleTtsBlocked();return}
+  if(!synth){handleTtsBlocked('Browserul nu are motor de sinteză vocală.');return}
   activeDriver='synth';
   chunkStarted=false;
   utterStart=Date.now();
@@ -1726,7 +1952,7 @@ function speakViaSynth(textChunk, my){
   u.onstart=function(){chunkStarted=true;ttsErrStreak=0};
   u.onend=function(){
     if(my!==token)return;
-    if(!chunkStarted && (Date.now()-utterStart)<120){handleTtsBlocked();return}
+    if(!chunkStarted && (Date.now()-utterStart)<120){handleTtsBlocked('Sinteza vocală a fost oprită imediat de sistem.');return}
     chunksSpokenInItem++;
     ttsErrStreak=0;
     idx++;
@@ -1736,7 +1962,7 @@ function speakViaSynth(textChunk, my){
     if(my!==token)return;
     if(e.error==='canceled'||e.error==='interrupted')return;
     ttsErrStreak++;
-    if(ttsErrStreak>=2 || !chunkStarted){handleTtsBlocked();return}
+    if(ttsErrStreak>=2 || !chunkStarted){handleTtsBlocked('Eroare la sinteza vocală: '+(e.error||'necunoscută'));return}
     idx++;
     speak();
   };
@@ -1772,7 +1998,6 @@ function speakViaAudio(textChunk, my, useAlt){
       return;
     }
     ttsErrStreak++;
-    // Fallback la sinteza locală dacă suntem offline sau proxy audio blochează
     speakViaSynth(textChunk, my);
   };
   bgAudioPlayer.src=url;
@@ -1790,14 +2015,17 @@ function speakViaAudio(textChunk, my, useAlt){
 function speak(){
   var my=token;
   if(idx>=chunks.length){
+    var finishedCleanly=chunksSpokenInItem>0;
     if(sleepMode==='end'){
       setSleep('off');
-      if(listRun&&items[cur]&&chunksSpokenInItem>0){items[cur].read=true;items[cur].pos=0;save()}
-      listRun=false;state='idle';idx=0;mark();release();renderList(false);
+      if(listRun&&items[cur]&&finishedCleanly){items[cur].read=true;items[cur].pos=0;save()}
+      else if(mode===1&&finishedCleanly)markMode1ItemRead();
+      listRun=false;state='idle';idx=0;mark();saveResume();release();renderList(false);
       $('pause').querySelector('span:last-child').textContent='Pauză';
       say('Sleep Timer: oprit la finalul articolului.');return;
     }
-    if(listRun){finishItem(chunksSpokenInItem>0);return}
+    if(listRun){finishItem(finishedCleanly);return}
+    if(mode===1 && finishedCleanly)markMode1ItemRead();
     state='idle';idx=0;mark();saveResume();release();
     $('pause').querySelector('span:last-child').textContent='Pauză';
     say('Gata.');return;
@@ -1806,6 +2034,7 @@ function speak(){
   saveResume();
   updateMediaMeta();
   state='playing';
+  $('pause').querySelector('span:last-child').textContent='Pauză';
   say(settings.useAudioTts ? 'Citesc (Audio MP3)…' : 'Citesc…');
   if(settings.useAudioTts){
     speakViaAudio(chunks[idx], my, false);
@@ -1815,7 +2044,19 @@ function speak(){
 }
 
 function start(){
-  if(mode===2){startList();return}
+  var nowTs=Date.now();
+  if(nowTs-lastStartStamp<350 && state==='playing')return;
+  lastStartStamp=nowTs;
+
+  if(mode===2){
+    // X21: Dacă eram deja opriți/restaurați pe articolul N la propoziția idx, reluăm de acolo!
+    if(cur>=0 && items[cur] && !items[cur].read){
+      startList(cur, true);
+    }else{
+      startList();
+    }
+    return;
+  }
   if(!chunks.length)render();
   if(!chunks.length){say('Nu e text de citit. Lipește ceva mai întâi.');return}
   chunksSpokenInItem=0;ttsErrStreak=0;
@@ -1824,7 +2065,7 @@ function start(){
 
 function pause(){
   if(state==='playing'){
-    token++;stopAudioDrivers();state='paused';saveResume();updateMediaMeta();
+    token++;stopAudioDrivers();stopHeartbeat();state='paused';saveResume();updateMediaMeta();
     $('pause').querySelector('span:last-child').textContent='Reia';say('În pauză.');
   }
   else if(state==='paused'){
@@ -1863,13 +2104,12 @@ function note(t){
   pos.max=0;mark();
 }
 
-// X16: Curățare agresivă a linkurilor către alte articole (titlu bold + link) & etichete #text
+// X16: Curățare agresivă a linkurilor promo (titlu bold + link) & #text
 function clean(md){
   var titleMatch=md.match(/^Title:\s*(.+)$/m);
   var extTitle=titleMatch?titleMatch[1].trim():'';
   var i=md.indexOf('Markdown Content:');if(i>=0)md=md.slice(i+17);
 
-  // 1. Elimină imaginile și etichetele de tip #text / #tag înainte de alt parsing
   md=md.replace(/!\[[^\]]*\]\([^)]*\)/g,'')
        .replace(/(^|\s)#[\wăâîșțĂÂÎȘȚ-]+/g,'$1');
 
@@ -1884,7 +2124,6 @@ function clean(md){
     var raw=rawLines[idxL].trim();
     if(!raw)continue;
 
-    // Verifică perechea: linie curentă **Titlu Bold** urmată de linie-link (sau URL simplu)
     var isOnlyBold=/^\s*(?:[-*•>#]+\s*)?(?:\*\*|__)[^*_]{3,}(?:\*\*|__)\s*:?\s*$/.test(raw);
     if(isOnlyBold){
       var nextRaw='';
@@ -1892,16 +2131,13 @@ function clean(md){
         if(rawLines[k].trim()){nextRaw=rawLines[k].trim();break}
       }
       if(/^\s*(?:https?:\/\/\S+|\[[^\]]*\]\(https?:\/\/[^)]+\))\s*$/.test(nextRaw)){
-        idxL++; // sari peste blocul promo bold + link
-        continue;
+        idxL++;continue;
       }
     }
 
-    // Elimină liniile care conțin titlu bold + link pe același rând (ex: "**Titlu** [Citește](http...)" sau "[**Titlu**](http...)" sau "### [Titlu](http...)")
     if(/^\s*(?:[-*•>#]+\s*)?(?:\*\*|__)?\[[^\]]+\]\(https?:\/\/[^)]+\)(?:\*\*|__)?\s*$/.test(raw))continue;
     if(/^\s*(?:[-*•>#]+\s*)?(?:\*\*|__)[^*_]+(?:\*\*|__)\s*(?:[-:|–—]*\s*)?(?:\[[^\]]*\]\(https?:\/\/[^)]+\)|https?:\/\/\S+)\s*$/.test(raw))continue;
 
-    // Dacă linia are linkuri și textul din afara linkurilor e neglijabil (<15 caractere), e link promoțional către alt articol
     if(/\[[^\]]+\]\(https?:\/\/[^)]+\)|https?:\/\/\S+/.test(raw)){
       var outsideLinks=raw.replace(/\[[^\]]*\]\(https?:\/\/[^)]+\)/g,'').replace(/https?:\/\/\S+/g,'').replace(/[*_`>#|\-~•:.\s]+/g,'').trim();
       if(outsideLinks.length<15)continue;
@@ -1931,69 +2167,128 @@ function clean(md){
   return {text:out.join('\n'),title:extTitle};
 }
 
-async function getText(u, customTitle){
+async function fetchHtmlFallback(u){
+  var proxies=['https://api.codetabs.com/v1/proxy?quest=','https://api.allorigins.win/raw?url='];
+  for(var i=0;i<proxies.length;i++){
+    try{
+      var ctl=new AbortController(),to=setTimeout(function(){ctl.abort()},12000);
+      var r=await fetch(proxies[i]+encodeURIComponent(u),{signal:ctl.signal});
+      clearTimeout(to);
+      if(!r.ok)continue;
+      var html=await r.text();
+      var doc=new DOMParser().parseFromString(html,'text/html');
+      doc.querySelectorAll('script,style,nav,header,footer,aside,form').forEach(function(el){el.remove()});
+      var root=doc.querySelector('article')||doc.body;
+      var ps=Array.prototype.slice.call(root.querySelectorAll('p, h1, h2')).map(function(el){return (el.textContent||'').replace(/\s+/g,' ').trim()}).filter(function(s){return s.length>25});
+      var title=(doc.querySelector('meta[property="og:title"]')||{}).content||doc.title||'';
+      var joined=ps.join('\n').replace(/(^|\s)#[\wăâîșțĂÂÎȘȚ-]+/g,'$1');
+      if(joined.length>=80)return {text:joined,title:title.trim()};
+    }catch(e){}
+  }
+  return null;
+}
+
+async function getText(u, customTitle, myToken){
   u=unwrapUrl(u);
   if(extractYoutubeId(u)){
     var yt=await fetchYoutubeTranscript(u);
-    var trYt=await maybeTranslateToRo(yt.text, customTitle||yt.title);
+    if(myToken!==undefined && myToken!==token)throw new Error('CANCELLED');
+    var trYt=await maybeTranslateToRo(yt.text, customTitle||yt.title, myToken);
     return {text:trYt.text, title:trYt.title};
   }
   if(isFacebookUrl(u)){
     var fb=await fetchFacebookPost(u);
-    var trFb=await maybeTranslateToRo(fb.text, customTitle||fb.title);
+    if(myToken!==undefined && myToken!==token)throw new Error('CANCELLED');
+    var trFb=await maybeTranslateToRo(fb.text, customTitle||fb.title, myToken);
     return {text:trFb.text, title:trFb.title};
   }
-  var ctl=new AbortController(),to=setTimeout(function(){ctl.abort()},30000),api='https://r.jina.ai/'+u;
+  var ctl=new AbortController(),to=setTimeout(function(){ctl.abort()},28000),api='https://r.jina.ai/'+u;
   try{
-    var r;
+    var r, res=null;
     try{
       r=await fetch(api,{
         signal:ctl.signal,
         headers:{
           'X-Retain-Images':'none',
-          'X-Remove-Selector':'header, footer, nav, aside, form, figure, [class*="related"], [class*="recomand"], [class*="citeste-si"], [class*="read-more"], [class*="promo"], [class*="newsletter"], [class*="social"], [class*="share"]'
+          'X-Remove-Selector':'header, footer, nav, aside, form'
         }
       });
-    }catch(e){if(e.name==='AbortError')throw e;r=await fetch(api,{signal:ctl.signal})}
-    if(!r.ok)throw new Error('http '+r.status);
-    var res=clean(await r.text());
-    if(res.text.length<80)throw new Error('gol');
+      if(r.ok){
+        res=clean(await r.text());
+      }
+    }catch(e){
+      if(e.name==='AbortError')throw e;
+      r=await fetch(api,{signal:ctl.signal});
+      if(r.ok)res=clean(await r.text());
+    }
+
+    // Fallback dacă selectorii au tăiat prea mult
+    if((!res || res.text.length<100) && (!r || r.ok)){
+      try{
+        var rRaw=await fetch(api,{signal:ctl.signal});
+        if(rRaw.ok){
+          var res2=clean(await rRaw.text());
+          if(res2.text.length>(res?res.text.length:0))res=res2;
+        }
+      }catch(e2){}
+    }
+
+    // Fallback proxy HTML dacă r.jina.ai e blocat sau gol
+    if(!res || res.text.length<80){
+      var fbHtml=await fetchHtmlFallback(u);
+      if(fbHtml && fbHtml.text.length>=80)res=fbHtml;
+    }
+
+    if(!res || res.text.length<80){
+      if(r && !r.ok)throw new Error('HTTP '+r.status);
+      throw new Error('gol');
+    }
+    if(myToken!==undefined && myToken!==token)throw new Error('CANCELLED');
     var finalTitle=(customTitle&&customTitle.trim())||res.title||'';
-    var tr=await maybeTranslateToRo(res.text, finalTitle);
+    var tr=await maybeTranslateToRo(res.text, finalTitle, myToken);
     return {text:tr.text, title:tr.title};
   }finally{clearTimeout(to)}
 }
 
-async function loadUrl(u, autoStart, customTitle){
+async function loadUrl(u, autoStart, customTitle, existingItemId){
+  var my=++token;
+  stopAudioDrivers();
+  state='loading';
   note('Se încarcă articolul…');
   var isYt=!!extractYoutubeId(u);
   var isFb=isFacebookUrl(u);
+  say(isYt?'Se preia transcriptul YouTube…':isFb?'Se preia postarea Facebook…':'Se încarcă articolul de pe link…');
+  if(existingItemId)mode1ItemId=existingItemId;
+
   var res;
   try{
-    res=await getText(u, customTitle);
+    res=await getText(u, customTitle, my);
   }catch(e){
-    if(isYt){
-      note('Nu am putut prelua transcriptul YouTube.');
-      say('Nu am putut prelua transcriptul YouTube.');
-      await speakNotice('Nu am putut prelua transcriptul YouTube');
-    }else if(isFb){
-      note('Postarea Facebook pare privată sau protejată la citire.');
-      say('Postare Facebook inaccesibilă fără autentificare.');
-      await speakNotice('Nu am putut prelua textul de pe Facebook');
-    }else{
-      note('Nu am putut încărca linkul. Verifică conexiunea sau lipește textul.');
+    if(my!==token || (e&&e.message==='CANCELLED'))return;
+    state='idle';
+    var reason=describeError(e,u);
+    updateItemMeta(mode1ItemId, '', reason);
+    note('⚠ '+reason);
+    say(reason);
+    await speakNotice('Eroare: '+reason);
+    if(e&&e.message==='FB_LOGIN_REQUIRED'){
+      showFacebookModal(u);
     }
     return;
   }
+  if(my!==token)return;
+
   currentTitle=res.title||customTitle||'';
   currentArticleRawText=res.text;
   var spoken=buildSpokenText(currentTitle, res.text);
   txt.value=spoken;
   lastInputLen=spoken.length;
+  updateItemMeta(mode1ItemId, currentTitle||res.text.split('\n')[0].slice(0,80), '');
   addHistory({source:'clipboard',type:'link',title:currentTitle||res.text.split('\n')[0].slice(0,80)||u,url:u,text:spoken});
   render(spoken);
   saveResume();
   if(autoStart && settings.autoPlay){start()}
+  else state='idle';
 }
 
 function renderList(scrollTopOnAdd){
@@ -2001,10 +2296,9 @@ function renderList(scrollTopOnAdd){
   var activeEl=null;
   items.forEach(function(it,i){
     var d=document.createElement('div');
-    var isCurrent=(listRun&&i===cur)||(mode===2&&cur===i&&state!=='idle');
+    var isCurrent=(listRun&&i===cur)||(mode===2&&cur===i);
     d.className='list-item' + (isCurrent ? ' now' : it.read ? ' rd' : '') + (it.id===lastAddedId ? ' just-added' : '');
 
-    // X13: Checkbox individual lângă fiecare articol
     var chk=document.createElement('input');
     chk.type='checkbox';
     chk.className='item-chk';
@@ -2015,32 +2309,49 @@ function renderList(scrollTopOnAdd){
     chk.onchange=function(e){
       e.stopPropagation();
       it.read=chk.checked;
-      if(!it.read)it.err=false;
+      if(!it.read){it.err=false;it.errMsg=''}
       save();
       renderList(false);
     };
 
-    var t=document.createElement('span');
+    var mainCol=document.createElement('div');
+    mainCol.className='list-item-main';
+    mainCol.onclick=function(){startList(i)};
+
+    var t=document.createElement('div');
     t.className='list-item-title';
     var label=it.title||(it.type==='text'?it.text.slice(0,60):it.url.replace(/^https?:\/\/(www\.)?/,'').slice(0,60));
     var badgeType=extractYoutubeId(it.url||'')?'YT':isFacebookUrl(it.url||'')?'FB':(it.type==='text'?'Text':'Link');
     var prefix=isCurrent?'<span class="now-pill">▶ CITESC</span>':(it.err?'⚠ ':'');
     t.innerHTML=prefix+'<span style="overflow:hidden;text-overflow:ellipsis;"></span><span class="badge-tag">'+badgeType+'</span>';
     t.querySelectorAll('span')[isCurrent?1:0].textContent=label;
-    t.onclick=function(){startList(i)};
+    mainCol.appendChild(t);
+
+    if(it.err && it.errMsg){
+      var em=document.createElement('div');
+      em.className='list-item-err';
+      em.textContent=it.errMsg;
+      mainCol.appendChild(em);
+    }
 
     var x=document.createElement('button');
     x.type='button';
     x.className='del-item';
     x.textContent='✕';
     x.setAttribute('aria-label','Șterge din listă');
-    x.onclick=function(e){e.stopPropagation();if(listRun&&i===cur)stop();if(cur>i)cur--;items.splice(i,1);save();renderList(false)};
+    x.onclick=function(e){
+      e.stopPropagation();
+      if(listRun&&i===cur)stop();
+      if(cur>i)cur--;
+      else if(cur===i)cur=-1;
+      items.splice(i,1);save();saveResume();renderList(false);
+    };
 
-    d.appendChild(chk);d.appendChild(t);d.appendChild(x);box.appendChild(d);
+    d.appendChild(chk);d.appendChild(mainCol);d.appendChild(x);box.appendChild(d);
     if(isCurrent)activeEl=d;
   });
   lastAddedId='';
-  if(!items.length)box.innerHTML='<div style="padding:14px 0;text-align:center;color:var(--mut);font-size:0.8rem">Stiva e goală. Trimite prin Share sau adaugă un articol — cele noi apar sus.</div>';
+  if(!items.length)box.innerHTML='<div style="padding:14px 0;text-align:center;color:var(--mut);font-size:0.8rem">Stiva e goală. Trimite prin Share sau lipește în Text — cele noi apar sus.</div>';
   $('m2').querySelector('span').textContent='📋 Listă ('+items.filter(function(it){return !it.read}).length+')';
 
   setTimeout(function(){
@@ -2052,43 +2363,50 @@ function renderList(scrollTopOnAdd){
   },40);
 }
 
-function startList(from){
+function startList(from, resumeSavedPos){
   if(!items.length){note('Lista e goală.');return}
-  items.forEach(function(it){it.err=false});
+  items.forEach(function(it){it.err=false;it.errMsg=''});
   var j=from!==undefined?from:items.findIndex(function(it){return !it.read});
-  if(j<0){say('Toate articolele sunt bifate ca citite.');return}
+  if(j<0){say('Toate articolele sunt bifate ca citite.');speakNotice('Toate articolele sunt bifate ca citite');return}
   listRun=true;chunksSpokenInItem=0;ttsErrStreak=0;
-  token++;stopAudioDrivers();hold();playItem(j);
+  token++;stopAudioDrivers();hold();playItem(j, resumeSavedPos);
 }
 
-async function playItem(i){
-  cur=i;state='loading';chunksSpokenInItem=0;ttsErrStreak=0;renderList(false);
+async function playItem(i, resumeSavedPos){
+  var my=token;
+  cur=i;state='loading';chunksSpokenInItem=0;ttsErrStreak=0;renderList(false);saveResume();
   var it=items[i];
+  if(!it){playNext();return}
   var savedPos=Number(it.pos)||0;
+  if(resumeSavedPos && idx>savedPos && idx<chunks.length)savedPos=idx;
+
   if(it.type==='text'){
-    var trTxt=await maybeTranslateToRo(it.text||'', it.title||'');
+    var trTxt=await maybeTranslateToRo(it.text||'', it.title||'', my);
+    if(my!==token)return;
     currentTitle=trTxt.title||it.title||'';
     currentArticleRawText=trTxt.text;
     var spokenTxt=buildSpokenText(currentTitle, trTxt.text);
     idx=savedPos;
     render(spokenTxt, savedPos>0);
+    saveResume();
     speak();return;
   }
+
   note('Se încarcă articolul…');
-  var my=token,res;
-  var isYt=!!extractYoutubeId(it.url||'');
-  var isFb=isFacebookUrl(it.url||'');
+  var res;
   try{
-    res=await getText(it.url, it.title||'');
+    res=await getText(it.url, it.title||'', my);
   }catch(e){
+    if(my!==token || (e&&e.message==='CANCELLED'))return;
+    var reason=describeError(e, it.url);
+    it.err=true;it.errMsg=reason;save();renderList(false);
+    say('⚠ '+reason);
+    await speakNotice('Eroare: '+reason);
     if(my!==token)return;
-    it.err=true;save();renderList(false);
-    if(isYt){
-      say('Nu am putut prelua transcriptul YouTube.');
-      await speakNotice('Nu am putut prelua transcriptul YouTube');
-    }else if(isFb){
-      say('Postare Facebook inaccesibilă fără autentificare.');
-      await speakNotice('Nu am putut prelua postarea de pe Facebook');
+    if(e&&e.message==='FB_LOGIN_REQUIRED'){
+      listRun=false;state='idle';release();
+      showFacebookModal(it.url);
+      return;
     }
     playNext();return;
   }
@@ -2100,21 +2418,25 @@ async function playItem(i){
   renderList(false);
   idx=savedPos;
   render(spoken, savedPos>0);
+  saveResume();
   speak();
 }
 
 function playNext(){
   for(var j=cur+1;j<items.length;j++)if(!items[j].read&&!items[j].err){playItem(j);return}
-  listRun=false;state='idle';release();$('pause').querySelector('span:last-child').textContent='Pauză';renderList(false);say('Lista a fost citită.');
+  listRun=false;state='idle';release();saveResume();
+  $('pause').querySelector('span:last-child').textContent='Pauză';renderList(false);
+  say('Lista a fost citită.');
 }
 
 function finishItem(markRead){
-  if(items[cur]&&markRead){items[cur].read=true;items[cur].pos=0;save()}
+  if(items[cur]&&markRead){items[cur].read=true;items[cur].pos=0;items[cur].err=false;items[cur].errMsg='';save()}
   renderList(false);playNext();
 }
 
-function setMode(m){
-  stop();mode=m;
+function setMode(m, fromUserTabTap){
+  stop();
+  mode=m;
   $('m1').classList.toggle('on', m===1);
   $('m2').classList.toggle('on', m===2);
 
@@ -2124,24 +2446,62 @@ function setMode(m){
   view.style.height = m===2 ? '24vh' : '31vh';
 
   var v=txt.value.trim();
-  if(m===1&&v&&parseInputPayload(v).kind==='text')render();else render('');
+  if(m===1&&v&&parseInputPayload(v).kind==='text')render();else if(m!==2)render('');
   renderList(false);
+  saveResume();
+
+  // X20: Simplul click pe tabul Text preia clipboard-ul sau citește conținutul existent imediat
+  if(m===1 && fromUserTabTap){
+    autoReadTab1Clipboard();
+  }
 }
 
-// X9 + Smart Link Parse + Auto-Translate
+async function autoReadTab1Clipboard(){
+  try{
+    if(navigator.clipboard && navigator.clipboard.readText){
+      var clip=(await navigator.clipboard.readText()||'').trim();
+      if(clip && clip!==lastAutoClip){
+        lastAutoClip=clip;
+        txt.value=clip;
+        lastInputLen=clip.length;
+        handleTxtInsert(true, true);
+        return;
+      }
+    }
+  }catch(e){}
+  // Dacă nu e nimic nou în clipboard, citește textul/linkul existent din casetă dacă există
+  if(txt.value.trim()){
+    if(chunks.length>0 && state==='idle'){
+      start();
+    }else if(parseInputPayload(txt.value.trim()).kind==='link' && !chunks.length){
+      handleTxtInsert(true, false);
+    }
+  }
+}
+
+// X9 + X20: Smart Link Parse + Auto-Add in List + Auto-Translate
 var tm, pastedFlag=false;
 txt.addEventListener('paste',function(){pastedFlag=true});
 
-async function handleTxtInsert(auto){
+async function handleTxtInsert(auto, fromClipboard){
   stop();
   var v=txt.value.trim();
-  if(!v){currentArticleRawText='';currentTitle='';chunks=[];render();return}
+  if(!v){currentArticleRawText='';currentTitle='';mode1ItemId='';chunks=[];render();saveResume();return}
   var parsed=parseInputPayload(v);
   if(parsed.kind==='link'){
-    loadUrl(parsed.url, auto, parsed.title);
+    // X20: adaugă automat în stiva Listă ca evidență și pentru bifare după citire
+    var addedLink=addItemWithId(parsed.url, parsed.title, '', 'clipboard', false);
+    mode1ItemId=addedLink.id;
+    lastAutoClip=v;
+    loadUrl(parsed.url, auto, parsed.title, addedLink.id);
   }else{
+    var my=++token;
     var cleanClip=v.replace(/(^|\s)#[\wăâîșțĂÂÎȘȚ-]+/g,'$1');
-    var tr=await maybeTranslateToRo(cleanClip, '');
+    var addedTxt=addItemWithId('', cleanClip.split('\n')[0].slice(0,60), cleanClip, 'clipboard', false);
+    mode1ItemId=addedTxt.id;
+    lastAutoClip=v;
+    var tr=await maybeTranslateToRo(cleanClip, '', my);
+    if(my!==token)return;
     currentTitle=tr.title||'';
     currentArticleRawText=tr.text;
     var spoken=buildSpokenText(currentTitle, tr.text);
@@ -2160,16 +2520,16 @@ txt.addEventListener('input',function(e){
   lastInputLen=curLen;
   var isBulk=pastedFlag || (e&&e.inputType==='insertFromPaste') || delta>=4;
   pastedFlag=false;
-  tm=setTimeout(function(){handleTxtInsert(isBulk)}, isBulk ? 80 : 500);
+  tm=setTimeout(function(){handleTxtInsert(isBulk, isBulk)}, isBulk ? 80 : 500);
 });
 
 $('btn-paste').onclick=async function(){
   try{
     var clip=await navigator.clipboard.readText();
-    if(!clip||!clip.trim()){say('Clipboard-ul este gol.');return}
+    if(!clip||!clip.trim()){say('Clipboard-ul este gol.');speakNotice('Clipboardul este gol');return}
     txt.value=clip.trim();
     lastInputLen=txt.value.length;
-    handleTxtInsert(true);
+    handleTxtInsert(true, true);
   }catch(e){
     txt.focus();
     say('Permisiunea clipboard a fost blocată; apasă lung în casetă → Lipește.');
@@ -2247,7 +2607,7 @@ $('sum-copy-btn').onclick=function(){
 $('sum-read-btn').onclick=function(){
   var sum=$('summary-text').textContent.trim();
   $('summary-modal').hidden=true;
-  setMode(1);
+  setMode(1,false);
   txt.value=sum;lastInputLen=sum.length;
   currentTitle='Rezumat';currentArticleRawText=sum;
   render(sum);start();
@@ -2276,14 +2636,14 @@ $('opt-audiotts').checked=settings.useAudioTts;
 $('opt-autoplay').checked=settings.autoPlay;
 $('opt-autotrans').checked=settings.autoTranslate;
 $('opt-sharesilent').checked=settings.shareSilent;
-$('opt-hidedl').checked=settings.hideDl;
+$('opt-showdl').checked=settings.showDlInSettings;
 $('opt-wakelock').checked=settings.wakeLock;
 
 $('opt-audiotts').onchange=function(){settings.useAudioTts=this.checked;saveSettings()};
 $('opt-autoplay').onchange=function(){settings.autoPlay=this.checked;saveSettings()};
 $('opt-autotrans').onchange=function(){settings.autoTranslate=this.checked;saveSettings()};
 $('opt-sharesilent').onchange=function(){settings.shareSilent=this.checked;saveSettings()};
-$('opt-hidedl').onchange=function(){settings.hideDl=this.checked;saveSettings();applyDlVisibility()};
+$('opt-showdl').onchange=function(){settings.showDlInSettings=this.checked;saveSettings();applyDlVisibility()};
 $('opt-wakelock').onchange=function(){settings.wakeLock=this.checked;saveSettings()};
 
 function renderHistory(){
@@ -2310,11 +2670,11 @@ function renderHistory(){
     d.onclick=function(){
       $('settingsbox').hidden=true;
       $('settings-btn').classList.remove('on');
-      setMode(1);
+      setMode(1,false);
       if(h.text){
         txt.value=h.text;lastInputLen=h.text.length;currentTitle=h.title||'';currentArticleRawText=h.text;render(h.text);if(settings.autoPlay)start();
       }else if(h.url){
-        txt.value=h.url;lastInputLen=h.url.length;loadUrl(h.url,true,h.title||'');
+        txt.value=h.url;lastInputLen=h.url.length;loadUrl(h.url,true,h.title||'','');
       }
     };
     d.appendChild(info);
@@ -2349,24 +2709,24 @@ $('settings-close').onclick=function(){
   $('settingsbox').hidden=true;$('settings-btn').classList.remove('on');
 };
 
-$('clear').onclick=function(){stop();clearTimeout(tm);txt.value='';lastInputLen=0;currentArticleRawText='';currentTitle='';chunks=[];render();txt.focus()};
+$('clear').onclick=function(){stop();clearTimeout(tm);txt.value='';lastInputLen=0;currentArticleRawText='';currentTitle='';mode1ItemId='';chunks=[];render();saveResume();txt.focus()};
 $('help').onclick=function(){
   var h=$('helpbox');
   $('settingsbox').hidden=true;$('settings-btn').classList.remove('on');
   h.hidden=!h.hidden;$('help').classList.toggle('on',!h.hidden);$('help').setAttribute('aria-expanded',String(!h.hidden));
 };
-$('m1').onclick=function(){setMode(1)};
-$('m2').onclick=function(){setMode(2)};
+$('m1').onclick=function(){setMode(1, true)};
+$('m2').onclick=function(){setMode(2, false)};
 $('chk-all').onclick=function(){
-  items.forEach(function(it){it.read=true;it.err=false});
+  items.forEach(function(it){it.read=true;it.err=false;it.errMsg=''});
   save();renderList(false);say('Toate articolele au fost bifate ca citite.');
 };
 $('unchk-all').onclick=function(){
-  items.forEach(function(it){it.read=false;it.err=false});
+  items.forEach(function(it){it.read=false;it.err=false;it.errMsg=''});
   save();renderList(false);say('Toate articolele au fost debifate (necitite).');
 };
 $('delread').onclick=function(){if(listRun)stop();items=items.filter(function(it){return !it.read});save();renderList(false)};
-$('delall').onclick=function(){if(confirm('Ștergi toată lista?')){if(listRun)stop();cur=-1;items=[];save();renderList(false)}};
+$('delall').onclick=function(){if(confirm('Ștergi toată lista?')){if(listRun)stop();cur=-1;items=[];save();saveResume();renderList(false)}};
 $('play').onclick=start;
 $('pause').onclick=pause;
 $('back2').onclick=back2;
@@ -2374,7 +2734,7 @@ $('skip').onclick=skip;
 $('stop').onclick=stop;
 window.addEventListener('beforeunload',function(){saveResume();stopAudioDrivers();release()});
 
-// Downloads v9 (index.html + manifest.json + sw.js)
+// Downloads v10
 function saveLocal(filename, data, type){
   var b=new Blob([data],{type:type});
   var a=document.createElement('a');
@@ -2386,7 +2746,7 @@ function saveLocal(filename, data, type){
 }
 
 $('btn-dl-index').onclick=function(){
-  fetch(location.pathname.endsWith('lectura-v9.html') ? 'lectura-v9.html' : 'index.html')
+  fetch(location.pathname.endsWith('lectura-v10.html') ? 'lectura-v10.html' : 'index.html')
     .then(function(r){ return r.text(); })
     .then(function(t){
       var cleanHtml=t.replace(/<script[^>]*_aistudio-iframe\.js[^>]*><\/script>/gi,'');
@@ -2409,16 +2769,47 @@ $('btn-dl-sw').onclick=function(){
   });
 };
 
-// Auto-Resume la pornire
+// X21: Restaurare completă la pornire / reactivare (atât Mod 1 cât și Mod 2 Listă + Articol N + propoziție)
 (function restoreResume(){
+  if(openedFromShare)return;
   try{
     var r=JSON.parse(localStorage.getItem('cc_resume')||'null');
     if(!r)return;
+    if(r.mode===2){
+      mode=2;
+      $('m1').classList.remove('on');
+      $('m2').classList.add('on');
+      $('input-wrap').hidden=true;
+      $('listbox').hidden=false;
+      $('clear').hidden=true;
+      view.style.height='24vh';
+
+      var targetIdx=-1;
+      if(r.curId)targetIdx=items.findIndex(function(it){return it.id===r.curId});
+      if(targetIdx<0 && typeof r.cur==='number' && r.cur>=0 && r.cur<items.length)targetIdx=r.cur;
+      cur=targetIdx;
+
+      if(r.article||r.spoken){
+        currentTitle=r.title||(cur>=0&&items[cur]?items[cur].title:'');
+        currentArticleRawText=r.article||'';
+        var restoredView=r.spoken||buildSpokenText(currentTitle, currentArticleRawText);
+        idx=Number(r.idx)||0;
+        render(restoredView, true);
+      }else{
+        idx=Number(r.idx)||0;
+      }
+      if(cur>=0 && items[cur]){
+        say('Reluat în Listă: articolul '+(cur+1)+' („'+(items[cur].title||'').slice(0,30)+'”), propoziția '+(idx+1));
+      }
+      return;
+    }
+
     if(r.mode===1 && (r.text||r.article)){
       txt.value=r.text||r.article;
       lastInputLen=txt.value.length;
       currentArticleRawText=r.article||r.text||'';
       currentTitle=r.title||'';
+      mode1ItemId=r.curId||'';
       idx=Number(r.idx)||0;
       render(txt.value, true);
       if(idx>0)say('Reluat de la propoziția '+(idx+1));
@@ -2428,7 +2819,6 @@ $('btn-dl-sw').onclick=function(){
 
 renderList(false);
 renderHistory();
-if(mode===2)setMode(2);
 
 try{if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(function(){})}catch(e){}
 })();

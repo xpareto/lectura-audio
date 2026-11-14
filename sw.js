@@ -1,4 +1,4 @@
-var CACHE = 'lectura-articole-v9';
+var CACHE = 'lectura-articole-v10';
 var FILES = [
   './',
   './index.html',
@@ -29,12 +29,13 @@ self.addEventListener('activate', function(e) {
 });
 
 self.addEventListener('fetch', function(e) {
-  // Ignoră cererile externe (API-uri, TTS audio, proxy-uri)
+  // Ignoră cererile externe (API-uri, TTS audio, traducere, proxy-uri)
   if (
     e.request.url.includes('google') ||
     e.request.url.includes('r.jina.ai') ||
     e.request.url.includes('piped') ||
     e.request.url.includes('allorigins') ||
+    e.request.url.includes('codetabs') ||
     e.request.url.includes('corsproxy') ||
     e.request.url.includes('lingva') ||
     e.request.url.includes('puter.com')
