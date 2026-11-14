@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="referrer" content="no-referrer">
-<title>Lectură audio v10</title>
+<title>Lectură audio v11</title>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#059669">
 <meta name="apple-mobile-web-app-title" content="Lectură">
@@ -810,19 +810,25 @@
   </div>
 </div>
 
-<!-- X19: Dialog Conectare / Preluare Facebook -->
+<!-- X19 + X25: Dialog Conectare / Preluare Facebook cu instrucțiuni clare & Reîncercare 5x -->
 <div id="fb-modal" class="modal-backdrop" hidden>
   <div class="modal-card fb-card">
     <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;">
-      <strong style="font-size:0.95rem;color:#1877f2;">🔐 Conectare Facebook necesară</strong>
+      <strong style="font-size:0.95rem;color:#1877f2;">🔐 Preluare postare Facebook</strong>
       <button id="fb-close-x" type="button" class="hist-btn">✕</button>
     </div>
-    <p style="font-size:0.82rem;line-height:1.45;color:var(--mut);margin-bottom:12px;">
-      Această postare Facebook este protejată și cere conectare cu contul dvs. (browserul nu permite aplicațiilor externe să folosească parola direct).<br><br>
-      <b>Pași rapizi:</b> Deschideți linkul în Facebook (conectați-vă dacă vi se cere), copiați textul postării și apăsați butonul de mai jos:
-    </p>
+    <div style="font-size:0.81rem;line-height:1.48;color:var(--mut);margin-bottom:12px;">
+      <p style="margin-bottom:8px;">Facebook a blocat accesul automat după 5 încercări succesive (poate cere autentificare sau verificare anti-bot temporară).</p>
+      <ol style="padding-left:18px;margin:0;">
+        <li style="margin-bottom:4px;">Încercați întâi <b>🔄 Reîncearcă automat (5×)</b> — uneori Facebook răspunde la o nouă serie de cereri.</li>
+        <li style="margin-bottom:4px;">Dacă tot nu merge, apăsați <b>🔗 Deschide postarea</b>.</li>
+        <li style="margin-bottom:4px;">În Facebook: conectați-vă dacă vi se cere, apoi <b>țineți apăsat cu degetul pe textul postării → Selectează tot / Copiază</b> (sau butonul <b>⋯ → Copiază textul</b>).</li>
+        <li>Reveniți aici și apăsați <b>📋 Am copiat textul → Citește</b>.</li>
+      </ol>
+    </div>
     <div class="modal-actions">
-      <a id="fb-open-link" href="#" target="_blank" rel="noopener noreferrer" class="fb-btn">🔗 Deschide Facebook</a>
+      <button id="fb-retry-btn" type="button" style="background:#0b6e8a;color:#fff;border-color:#0b6e8a;">🔄 Reîncearcă automat (5×)</button>
+      <a id="fb-open-link" href="#" target="_blank" rel="noopener noreferrer" class="fb-btn">🔗 Deschide postarea</a>
       <button id="fb-paste-btn" type="button" class="primary">📋 Am copiat textul → Citește</button>
       <button id="fb-close-btn" type="button">Închide</button>
     </div>
@@ -846,11 +852,11 @@
 </div>
 
 <main id="main-app">
-  <!-- Antet v10 (X17: fără panou download pe ecranul principal!) -->
+  <!-- Antet v11 (X17: fără panou download pe ecranul principal!) -->
   <header>
     <div class="title-group">
       <div class="app-icon">▶</div>
-      <h1>Lectură audio <span class="v-badge-green">v10</span></h1>
+      <h1>Lectură audio <span class="v-badge-green">v11</span></h1>
     </div>
     <div class="header-actions">
       <button id="settings-btn" type="button" class="btn-sm" aria-expanded="false" title="Setări, Sleep Timer, Download &amp; Istoric">
@@ -865,10 +871,10 @@
     </div>
   </header>
 
-  <!-- Settings, Download Opțional (X17), Sleep Timer & Fișier Istoric -->
+  <!-- Settings, Download Opțional (X17), Mod Dinamic (X23), Sleep Timer & Fișier Istoric -->
   <div id="settingsbox" class="panel-box" hidden>
     <h2>
-      <span>⚙ Setări aplicație (v10)</span>
+      <span>⚙ Setări aplicație (v11)</span>
       <button id="settings-close" type="button" class="hist-btn">Închide ✕</button>
     </h2>
 
@@ -895,7 +901,11 @@
       <input id="opt-autotrans" type="checkbox" checked>
     </label>
     <label class="setting-toggle">
-      <span>Share silențios (nu afișa fereastra completă)</span>
+      <span><b>Mod de lucru dinamic la Share</b> (dacă lista e vidă pornește imediat în fundal; dacă nu e vidă continuă ce a rămas necitit)</span>
+      <input id="opt-dynamicshare" type="checkbox">
+    </label>
+    <label class="setting-toggle">
+      <span>Share silențios (nu afișa fereastra completă — când Modul dinamic e oprit)</span>
       <input id="opt-sharesilent" type="checkbox" checked>
     </label>
     <label class="setting-toggle">
@@ -910,13 +920,13 @@
     <!-- X17: Panou Descărcare mutată EXCLUSIV în Settings, controlată de checkbox -->
     <div id="dl-panel" class="dl-panel">
       <div class="dl-header">
-        <span>📥 Descarcă pentru GitHub (v10):</span>
+        <span>📥 Descarcă pentru GitHub (v11):</span>
         <span style="font-size:0.66rem;color:var(--mut);">opțional în Settings</span>
       </div>
       <div class="dl-grid">
-        <button id="btn-dl-index" type="button" class="dl-btn full" title="Descarcă index.html v10">📥 Descarcă index.html (v10)</button>
+        <button id="btn-dl-index" type="button" class="dl-btn full" title="Descarcă index.html v11">📥 Descarcă index.html (v11)</button>
         <button id="btn-dl-manifest" type="button" class="dl-btn sec" title="Descarcă manifest.json">📥 manifest.json</button>
-        <button id="btn-dl-sw" type="button" class="dl-btn gray" title="Descarcă sw.js v10">📥 sw.js (v10)</button>
+        <button id="btn-dl-sw" type="button" class="dl-btn gray" title="Descarcă sw.js v11">📥 sw.js (v11)</button>
       </div>
     </div>
 
@@ -933,14 +943,12 @@
 
   <!-- Help Accordion Box -->
   <div id="helpbox" class="panel-box" hidden>
-    <h2>Noutăți &amp; Instrucțiuni (v10)</h2>
+    <h2>Noutăți &amp; Instrucțiuni (v11)</h2>
     <ol>
-      <li><b>X17 Ecran curat</b>: butoanele de download apar doar opțional în <b>Settings</b>.</li>
-      <li><b>X18 Traducere reparată + Explicație sonoră a erorilor</b>: traducerea folosește Google Translate direct (fără proxy-uri picate), iar orice eroare este explicată clar și sonor + afișată lângă <code>⚠</code>.</li>
-      <li><b>X19 Facebook asistat</b>: detectează imediat zidul de conectare și oferă deschidere directă în Facebook + preluare cu un tap din clipboard, fără a încerca să traducă mesajul de eroare.</li>
-      <li><b>X20 Sync Clipboard → Listă + Auto-citire în tabul Text</b>: tot ce intră în tabul Text se salvează sus în Listă și se bifează automat după citire. Simpla apăsare pe tabul <b>📄 Text</b> preia clipboard-ul sau textul existent și pornește citirea imediat.</li>
-      <li><b>X21 Memorie completă de stare</b>: la revenirea din background memorează tabul activ (Text sau Listă), articolul exact <code>N</code> și propoziția curentă.</li>
-      <li><b>X22 Anti-citire dublă</b>: blochează pornirea simultană din aceeași fereastră sau între aplicație și versiunea web.</li>
+      <li><b>X23 Mod dinamic la Share (în Settings)</b>: când dați Share, dacă stiva era goală/citită pornește imediat lectura în background cu noul articol; dacă existau articole necitite, continuă automat cu ce a rămas necitit (apoi urcă la cel nou).</li>
+      <li><b>X24 Rezumat cu bold real &amp; fără asteriscuri</b>: cuvintele între <code>**...**</code> apar <b>îngroșate</b> în fereastra de rezumat, iar toate asteriscurile sunt eliminate înainte de citire vocală și copiere.</li>
+      <li><b>X25 Facebook cu 5 reîncercări automate</b>: încearcă automat până la 5 strategii diferite înainte de a afișa dialogul asistat cu pași clari și buton de reîncercare rapidă.</li>
+      <li><b>X17–X22</b>: butoane download doar în Settings, traducere directă + explicații sonore la erori, Sync Clipboard → Listă, memorie stare și protecție anti-citire dublă.</li>
     </ol>
   </div>
 
@@ -1055,16 +1063,17 @@ var utterStart=0,lastInputLen=0,bgWorker=null,bgTimerFallback=null,lockResolver=
 var currentArticleRawText='',currentTitle='',lastAddedId='',sleepMode='off',sleepEndTs=0;
 var chunkStarted=false,chunksSpokenInItem=0,ttsErrStreak=0,activeDriver='audio';
 var mode1ItemId='',lastAutoClip='',lastStartStamp=0,heartbeatTimer=null;
+var lastFbUrl='',lastFbItemId='',summaryRawText='',summaryCleanText='',pendingShareDynamic=null;
 var INSTANCE_ID='inst_'+Date.now()+'_'+Math.random().toString(36).slice(2,7);
 var bgAudioPlayer=new Audio();
 bgAudioPlayer.preload='auto';
 var bc=(typeof BroadcastChannel!=='undefined')?new BroadcastChannel('lectura_audio_sync'):null;
 
-// Settings (X17: showDlInSettings replaces main-screen dl-panel)
-var settings={useAudioTts:true,autoPlay:true,autoTranslate:true,shareSilent:true,showDlInSettings:true,wakeLock:false};
+// Settings (X17: showDlInSettings, X23: dynamicShareMode)
+var settings={useAudioTts:true,autoPlay:true,autoTranslate:true,shareSilent:true,dynamicShareMode:false,showDlInSettings:true,wakeLock:false};
 try{
   var st=JSON.parse(localStorage.getItem('cc_settings')||'{}');
-  ['useAudioTts','autoPlay','autoTranslate','shareSilent','wakeLock'].forEach(function(k){
+  ['useAudioTts','autoPlay','autoTranslate','shareSilent','dynamicShareMode','wakeLock'].forEach(function(k){
     if(typeof st[k]==='boolean')settings[k]=st[k];
   });
   if(typeof st.showDlInSettings==='boolean')settings.showDlInSettings=st.showDlInSettings;
@@ -1175,6 +1184,19 @@ function startHeartbeat(){
 }
 function stopHeartbeat(){
   if(heartbeatTimer){clearInterval(heartbeatTimer);heartbeatTimer=null}
+}
+function clearPlaybackOwnership(){
+  stopHeartbeat();
+  try{
+    var curOwner=JSON.parse(localStorage.getItem('cc_active_player')||'null');
+    if(curOwner && curOwner.owner===INSTANCE_ID)localStorage.removeItem('cc_active_player');
+  }catch(e){}
+}
+function isAnotherPlayerActive(){
+  try{
+    var info=JSON.parse(localStorage.getItem('cc_active_player')||'null');
+    return !!(info && info.owner && info.owner!==INSTANCE_ID && (Date.now()-info.ts)<5000);
+  }catch(e){return false}
 }
 
 function forceYieldPlayback(){
@@ -1289,7 +1311,7 @@ function updateItemMeta(id, title, errReason){
   }
 }
 
-// X8: Interceptăm Share
+// X8 + X23: Interceptăm Share (inclusiv Mod de lucru dinamic)
 var openedFromShare=false;
 (function handleIncomingShare(){
   var q=new URLSearchParams(location.search);
@@ -1298,22 +1320,37 @@ var openedFromShare=false;
   var rawUrl=q.get('url')||'',rawText=q.get('text')||'',rawTitle=q.get('title')||'';
   try{history.replaceState(null,'',location.pathname)}catch(e){}
 
+  var prevResume=null;
+  try{prevResume=JSON.parse(localStorage.getItem('cc_resume')||'null')}catch(e){}
+  var unreadBefore=items.filter(function(it){return !it.read}).length;
+
   var parsed=parseInputPayload(rawUrl ? (rawTitle?rawTitle+' ':'')+rawUrl : [rawTitle,rawText].filter(Boolean).join(' '));
   if(rawUrl && parsed.kind==='link' && !parsed.title && rawTitle)parsed.title=rawTitle.trim();
 
-  var savedLabel='';
+  var added=null;
   if(parsed.kind==='link'){
-    savedLabel=addItem(parsed.url, parsed.title||rawTitle.trim(), '', 'share');
+    added=addItemWithId(parsed.url, parsed.title||rawTitle.trim(), '', 'share', true);
   }else if(rawText.trim()||rawTitle.trim()){
-    savedLabel=addItem('', rawTitle.trim(), rawText.trim()||rawTitle.trim(), 'share');
+    added=addItemWithId('', rawTitle.trim(), rawText.trim()||rawTitle.trim(), 'share', true);
   }
-  if(!savedLabel)return;
+  if(!added || !added.title)return;
+
+  if(settings.dynamicShareMode){
+    mode=2;
+    pendingShareDynamic={
+      newId:added.id,
+      label:added.title,
+      unreadBefore:unreadBefore,
+      prevResume:prevResume
+    };
+    return;
+  }
 
   if(settings.shareSilent){
     $('main-app').hidden=true;
     try{window.close()}catch(e){}
     setTimeout(function(){
-      $('share-mini-title').textContent=savedLabel;
+      $('share-mini-title').textContent=added.title;
       $('share-mini').hidden=false;
     },180);
   }else{
@@ -1637,73 +1674,146 @@ function cleanFacebookText(raw){
   return out.join('\n');
 }
 
-async function fetchFacebookPost(u){
-  u=unwrapUrl(u).replace(/^https?:\/\/(m|mbasic)\.facebook\.com/i,'https://www.facebook.com');
-  var authorTitle='', sawLoginWall=false;
+function sleepMs(ms){return new Promise(function(res){setTimeout(res,ms)})}
 
-  // 1. Plugin embed prin r.jina.ai
+function extractFbHtmlPost(html){
+  if(!html)return null;
   try{
-    var ctl=new AbortController(),to=setTimeout(function(){ctl.abort()},12000);
-    var embedUrl='https://r.jina.ai/https://www.facebook.com/plugins/post.php?href='+encodeURIComponent(u);
-    var r=await fetch(embedUrl,{signal:ctl.signal});
-    clearTimeout(to);
-    if(r.ok){
-      var raw1=await r.text();
-      if(isFacebookLoginWall(raw1))sawLoginWall=true;
-      else{
-        var txt1=cleanFacebookText(raw1);
-        if(txt1.length>=35 && !/sorry, something went wrong/i.test(txt1)){
-          return {text:txt1,title:authorTitle};
+    var doc=new DOMParser().parseFromString(html,'text/html');
+    var titleEl=doc.querySelector('meta[property="og:title"]');
+    var tCandidate=((titleEl&&titleEl.content)||doc.title||'').trim();
+    if(/^(facebook|log in|log into facebook|error|conecta)/i.test(tCandidate))tCandidate='';
+
+    var ogDesc=(doc.querySelector('meta[property="og:description"]')||{}).content||'';
+    var metaDesc=(doc.querySelector('meta[name="description"]')||{}).content||'';
+    var twDesc=(doc.querySelector('meta[name="twitter:description"]')||{}).content||'';
+
+    var ldBody='';
+    doc.querySelectorAll('script[type="application/ld+json"]').forEach(function(sc){
+      try{
+        var j=JSON.parse(sc.textContent||'{}');
+        var arr=Array.isArray(j)?j:[j];
+        arr.forEach(function(obj){
+          if(obj && (obj.articleBody||obj.description)){
+            var cand=String(obj.articleBody||obj.description).trim();
+            if(cand.length>ldBody.length)ldBody=cand;
+          }
+        });
+      }catch(e){}
+    });
+
+    var msgEls=Array.prototype.slice.call(doc.querySelectorAll('[data-ad-preview="message"], [data-testid="post_message"], article p, p'));
+    var ps=msgEls.map(function(el){return (el.textContent||'').replace(/\s+/g,' ').trim()}).filter(Boolean).join('\n');
+
+    var best='';
+    [ldBody, ps, ogDesc, metaDesc, twDesc].forEach(function(c){
+      if(c && c.trim().length>best.length)best=c.trim();
+    });
+    best=best.replace(/(^|\s)#[\wăâîșțĂÂÎȘȚ-]+/g,'$1').trim();
+    if(best.length>=30 && !isFacebookLoginWall(best) && !/sorry, something went wrong|log into facebook/i.test(best)){
+      return {text:best, title:tCandidate};
+    }
+  }catch(e){}
+  return null;
+}
+
+// X25: 5 încercări automate pe strategii diferite pentru Facebook înainte de a cere intervenția utilizatorului
+async function fetchFacebookPost(u, onAttempt, myToken){
+  u=unwrapUrl(u);
+  var wwwUrl=u.replace(/^https?:\/\/(m|mbasic)\.facebook\.com/i,'https://www.facebook.com');
+  var mobUrl=u.replace(/^https?:\/\/(www|mbasic)\.facebook\.com/i,'https://m.facebook.com');
+  var mbasicUrl=u.replace(/^https?:\/\/(www|m)\.facebook\.com/i,'https://mbasic.facebook.com');
+  var authorTitle='', sawLoginWall=false;
+  var proxies=['https://api.codetabs.com/v1/proxy?quest=','https://api.allorigins.win/raw?url='];
+
+  for(var attempt=1; attempt<=5; attempt++){
+    if(myToken!==undefined && myToken!==token)throw new Error('CANCELLED');
+    if(onAttempt)onAttempt(attempt, 5);
+    var cb=Date.now()+'_'+attempt;
+
+    // 1. Plugin embed prin r.jina.ai
+    try{
+      var ctl=new AbortController(),to=setTimeout(function(){ctl.abort()},12000);
+      var embedUrl='https://r.jina.ai/https://www.facebook.com/plugins/post.php?href='+encodeURIComponent(wwwUrl)+'&show_text=true&width=500&_cb='+cb;
+      var r=await fetch(embedUrl,{signal:ctl.signal});
+      clearTimeout(to);
+      if(r.ok){
+        var raw1=await r.text();
+        if(isFacebookLoginWall(raw1))sawLoginWall=true;
+        else{
+          var txt1=cleanFacebookText(raw1);
+          if(txt1.length>=30 && !/sorry, something went wrong/i.test(txt1)){
+            return {text:txt1,title:authorTitle};
+          }
         }
       }
-    }
-  }catch(e){if(e&&e.message==='FB_LOGIN_REQUIRED')sawLoginWall=true}
+    }catch(e){if(e&&e.message==='FB_LOGIN_REQUIRED')sawLoginWall=true}
 
-  // 2. Pagina directă prin r.jina.ai
-  try{
-    var ctl2=new AbortController(),to2=setTimeout(function(){ctl2.abort()},12000);
-    var r2=await fetch('https://r.jina.ai/'+u,{signal:ctl2.signal});
-    clearTimeout(to2);
-    if(r2.ok){
-      var raw2=await r2.text();
-      if(isFacebookLoginWall(raw2))sawLoginWall=true;
-      else{
-        var tm=raw2.match(/^Title:\s*(.+)$/m);
-        if(tm && !/^(facebook|log in|error)/i.test(tm[1].trim()))authorTitle=tm[1].trim();
-        var txt2=cleanFacebookText(raw2);
-        if(txt2.length>=35)return {text:txt2,title:authorTitle};
-      }
-    }
-  }catch(e){if(e&&e.message==='FB_LOGIN_REQUIRED')sawLoginWall=true}
+    if(myToken!==undefined && myToken!==token)throw new Error('CANCELLED');
 
-  // 3. Fallback proxy HTML (og:description / paragrafe plugin)
-  var proxies=['https://api.codetabs.com/v1/proxy?quest=','https://api.allorigins.win/raw?url='];
-  for(var i=0;i<proxies.length;i++){
+    // 2. r.jina.ai direct (alternând www / m / mbasic între încercări)
+    var targetVariant=(attempt===2)?mobUrl:(attempt===4)?mbasicUrl:wwwUrl;
     try{
-      var ctl3=new AbortController(),to3=setTimeout(function(){ctl3.abort()},10000);
-      var r3=await fetch(proxies[i]+encodeURIComponent('https://www.facebook.com/plugins/post.php?href='+encodeURIComponent(u)),{signal:ctl3.signal});
-      clearTimeout(to3);
-      if(r3.ok){
-        var html=await r3.text();
-        var doc=new DOMParser().parseFromString(html,'text/html');
-        var ogDesc=(doc.querySelector('meta[property="og:description"]')||{}).content||'';
-        var ps=Array.prototype.slice.call(doc.querySelectorAll('p')).map(function(el){return (el.textContent||'').trim()}).filter(Boolean).join('\n');
-        var combined=(ps.length>=35?ps:ogDesc).replace(/(^|\s)#[\wăâîșțĂÂÎȘȚ-]+/g,'$1').trim();
-        if(combined.length>=35 && !isFacebookLoginWall(combined))return {text:combined,title:authorTitle};
-        if(/log in/i.test(html))sawLoginWall=true;
+      var ctl2=new AbortController(),to2=setTimeout(function(){ctl2.abort()},12000);
+      var r2=await fetch('https://r.jina.ai/'+targetVariant,{signal:ctl2.signal});
+      clearTimeout(to2);
+      if(r2.ok){
+        var raw2=await r2.text();
+        if(isFacebookLoginWall(raw2))sawLoginWall=true;
+        else{
+          var tm=raw2.match(/^Title:\s*(.+)$/m);
+          if(tm && !/^(facebook|log in|error)/i.test(tm[1].trim()))authorTitle=tm[1].trim();
+          var txt2=cleanFacebookText(raw2);
+          if(txt2.length>=30)return {text:txt2,title:authorTitle};
+        }
       }
-    }catch(e){}
+    }catch(e){if(e&&e.message==='FB_LOGIN_REQUIRED')sawLoginWall=true}
+
+    if(myToken!==undefined && myToken!==token)throw new Error('CANCELLED');
+
+    // 3. Proxy HTML (plugin + m/mbasic) cu extragere meta og:description, JSON-LD, paragrafe
+    var proxyIdx=(attempt-1)%proxies.length;
+    var htmlTargets=[
+      'https://www.facebook.com/plugins/post.php?href='+encodeURIComponent(wwwUrl)+'&show_text=true',
+      (attempt%2===0?mbasicUrl:mobUrl)
+    ];
+    for(var ht=0;ht<htmlTargets.length;ht++){
+      try{
+        var ctl3=new AbortController(),to3=setTimeout(function(){ctl3.abort()},10000);
+        var r3=await fetch(proxies[proxyIdx]+encodeURIComponent(htmlTargets[ht]),{signal:ctl3.signal});
+        clearTimeout(to3);
+        if(r3.ok){
+          var html=await r3.text();
+          var parsedFb=extractFbHtmlPost(html);
+          if(parsedFb)return {text:parsedFb.text, title:parsedFb.title||authorTitle};
+          if(/log in|login_form/i.test(html))sawLoginWall=true;
+        }
+      }catch(e){}
+    }
+
+    if(attempt<5)await sleepMs(650);
   }
 
   if(sawLoginWall)throw new Error('FB_LOGIN_REQUIRED');
   throw new Error('FB_LOGIN_REQUIRED');
 }
 
-function showFacebookModal(fbUrl){
-  $('fb-open-link').href=fbUrl||'https://www.facebook.com/';
+function showFacebookModal(fbUrl, itemId){
+  lastFbUrl=fbUrl||'https://www.facebook.com/';
+  if(itemId!==undefined)lastFbItemId=itemId;
+  $('fb-open-link').href=lastFbUrl;
   $('fb-modal').hidden=false;
 }
 $('fb-close-x').onclick=$('fb-close-btn').onclick=function(){$('fb-modal').hidden=true};
+$('fb-retry-btn').onclick=function(){
+  $('fb-modal').hidden=true;
+  if(!lastFbUrl)return;
+  if(mode===2 && lastFbItemId){
+    var idxRetry=items.findIndex(function(it){return it.id===lastFbItemId});
+    if(idxRetry>=0){startList(idxRetry, false);return}
+  }
+  loadUrl(lastFbUrl, true, '', lastFbItemId||mode1ItemId);
+};
 $('fb-paste-btn').onclick=async function(){
   $('fb-modal').hidden=true;
   setMode(1,false);
@@ -1721,9 +1831,40 @@ $('fb-paste-btn').onclick=async function(){
   }
 };
 
-// Split maxim 175 caractere ca să încapă întotdeauna în Audio TTS MP3
+// X24: Eliminare marcaje Markdown (*, **, __, `, #) înainte de TTS și copiere
+function stripMarkdownForSpeech(raw){
+  return (raw||'')
+    .replace(/\*\*([\s\S]*?)\*\*/g,'$1')
+    .replace(/__([\s\S]*?)__/g,'$1')
+    .replace(/\*([^*\n]+)\*/g,'$1')
+    .replace(/`([^`\n]+)`/g,'$1')
+    .replace(/^\s{0,3}#{1,6}\s+/gm,'')
+    .replace(/^\s*[-*]\s+/gm,'• ')
+    .replace(/[*_`~]+/g,'')
+    .trim();
+}
+function escapeHtml(s){
+  return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function formatSummaryHtml(raw){
+  var lines=(raw||'').replace(/\r/g,'').split('\n');
+  return lines.map(function(line){
+    var safe=escapeHtml(line);
+    safe=safe.replace(/^\s*#{1,6}\s+(.+)$/,function(_,h){return '<strong>'+h+'</strong>'});
+    safe=safe.replace(/^\s*[-*]\s+/,'• ');
+    safe=safe.replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>');
+    safe=safe.replace(/__([^_]+)__/g,'<strong>$1</strong>');
+    safe=safe.replace(/\*([^*\n]+)\*/g,'<em>$1</em>');
+    safe=safe.replace(/`([^`\n]+)`/g,'<code>$1</code>');
+    safe=safe.replace(/\*/g,'');
+    return safe;
+  }).join('<br>');
+}
+
+// Split maxim 175 caractere ca să încapă întotdeauna în Audio TTS MP3 (X24: curăță și asteriscuri)
 function split(t){
-  var parts=t.replace(/\r/g,'').match(/[^.!?\n]+[.!?]*/g)||[];
+  var cleanT=stripMarkdownForSpeech(t||'');
+  var parts=cleanT.replace(/\r/g,'').match(/[^.!?\n]+[.!?]*/g)||[];
   var out=[],c='';
   parts.forEach(function(p){
     p=p.trim();if(!p)return;
@@ -1917,7 +2058,7 @@ async function hold(){
 
 function release(){
   stopWatchdog();
-  stopHeartbeat();
+  clearPlaybackOwnership();
   stopAudioDrivers();
   try{if(wake){wake.release();wake=null}}catch(e){}
   try{if(lockResolver){lockResolver();lockResolver=null}}catch(e){}
@@ -2025,7 +2166,20 @@ function speak(){
       say('Sleep Timer: oprit la finalul articolului.');return;
     }
     if(listRun){finishItem(finishedCleanly);return}
-    if(mode===1 && finishedCleanly)markMode1ItemRead();
+    if(mode===1 && finishedCleanly){
+      markMode1ItemRead();
+      if(settings.dynamicShareMode){
+        var nextDynamic=items.findIndex(function(it){return !it.read&&!it.err});
+        if(nextDynamic>=0){
+          mode=2;
+          $('m1').classList.remove('on');$('m2').classList.add('on');
+          $('input-wrap').hidden=true;$('listbox').hidden=false;$('clear').hidden=true;
+          view.style.height='24vh';
+          startList(nextDynamic, true);
+          return;
+        }
+      }
+    }
     state='idle';idx=0;mark();saveResume();release();
     $('pause').querySelector('span:last-child').textContent='Pauză';
     say('Gata.');return;
@@ -2065,7 +2219,7 @@ function start(){
 
 function pause(){
   if(state==='playing'){
-    token++;stopAudioDrivers();stopHeartbeat();state='paused';saveResume();updateMediaMeta();
+    token++;stopAudioDrivers();clearPlaybackOwnership();state='paused';saveResume();updateMediaMeta();
     $('pause').querySelector('span:last-child').textContent='Reia';say('În pauză.');
   }
   else if(state==='paused'){
@@ -2197,7 +2351,9 @@ async function getText(u, customTitle, myToken){
     return {text:trYt.text, title:trYt.title};
   }
   if(isFacebookUrl(u)){
-    var fb=await fetchFacebookPost(u);
+    var fb=await fetchFacebookPost(u, function(att, total){
+      say('Se preia postarea Facebook (încercarea '+att+'/'+total+')…');
+    }, myToken);
     if(myToken!==undefined && myToken!==token)throw new Error('CANCELLED');
     var trFb=await maybeTranslateToRo(fb.text, customTitle||fb.title, myToken);
     return {text:trFb.text, title:trFb.title};
@@ -2257,7 +2413,7 @@ async function loadUrl(u, autoStart, customTitle, existingItemId){
   note('Se încarcă articolul…');
   var isYt=!!extractYoutubeId(u);
   var isFb=isFacebookUrl(u);
-  say(isYt?'Se preia transcriptul YouTube…':isFb?'Se preia postarea Facebook…':'Se încarcă articolul de pe link…');
+  say(isYt?'Se preia transcriptul YouTube…':isFb?'Se preia postarea Facebook (încercarea 1/5)…':'Se încarcă articolul de pe link…');
   if(existingItemId)mode1ItemId=existingItemId;
 
   var res;
@@ -2272,7 +2428,7 @@ async function loadUrl(u, autoStart, customTitle, existingItemId){
     say(reason);
     await speakNotice('Eroare: '+reason);
     if(e&&e.message==='FB_LOGIN_REQUIRED'){
-      showFacebookModal(u);
+      showFacebookModal(u, mode1ItemId);
     }
     return;
   }
@@ -2405,7 +2561,7 @@ async function playItem(i, resumeSavedPos){
     if(my!==token)return;
     if(e&&e.message==='FB_LOGIN_REQUIRED'){
       listRun=false;state='idle';release();
-      showFacebookModal(it.url);
+      showFacebookModal(it.url, it.id);
       return;
     }
     playNext();return;
@@ -2422,8 +2578,10 @@ async function playItem(i, resumeSavedPos){
   speak();
 }
 
+// X23: Parcurgere stivă cu wrap-around ca să ajungă și la articolele noi adăugate sus (index 0)
 function playNext(){
   for(var j=cur+1;j<items.length;j++)if(!items[j].read&&!items[j].err){playItem(j);return}
+  for(var k=0;k<cur;k++)if(!items[k].read&&!items[k].err){playItem(k);return}
   listRun=false;state='idle';release();saveResume();
   $('pause').querySelector('span:last-child').textContent='Pauză';renderList(false);
   say('Lista a fost citită.');
@@ -2581,6 +2739,7 @@ function localExtractiveSummary(text){
 $('btn-summary').onclick=async function(){
   var source=(currentArticleRawText||chunks.join(' ')||txt.value).trim();
   if(source.length<40){say('Nu există suficient text pentru rezumat.');return}
+  summaryRawText='';summaryCleanText='';
   $('summary-text').textContent='Se generează rezumatul în limba română (Puter.js)…';
   $('summary-modal').hidden=false;
 
@@ -2596,16 +2755,19 @@ $('btn-summary').onclick=async function(){
   if(!summary||summary.trim().length<15){
     summary=localExtractiveSummary(source)+'\n\n(Rezumat generat local — Puter.js indisponibil)';
   }
-  $('summary-text').textContent=summary.trim();
-  try{await navigator.clipboard.writeText(summary.trim());say('Rezumat copiat automat în Clipboard!')}catch(e){}
+  summaryRawText=summary.trim();
+  summaryCleanText=stripMarkdownForSpeech(summaryRawText);
+  $('summary-text').innerHTML=formatSummaryHtml(summaryRawText);
+  try{await navigator.clipboard.writeText(summaryCleanText);say('Rezumat copiat automat în Clipboard!')}catch(e){}
 };
 
 $('sum-close-x').onclick=$('sum-close-btn').onclick=function(){$('summary-modal').hidden=true};
 $('sum-copy-btn').onclick=function(){
-  navigator.clipboard.writeText($('summary-text').textContent).then(function(){say('Rezumat copiat!')});
+  var toCopy=summaryCleanText||stripMarkdownForSpeech($('summary-text').textContent);
+  navigator.clipboard.writeText(toCopy).then(function(){say('Rezumat copiat!')});
 };
 $('sum-read-btn').onclick=function(){
-  var sum=$('summary-text').textContent.trim();
+  var sum=summaryCleanText||stripMarkdownForSpeech($('summary-text').textContent);
   $('summary-modal').hidden=true;
   setMode(1,false);
   txt.value=sum;lastInputLen=sum.length;
@@ -2635,6 +2797,7 @@ document.querySelectorAll('.sleep-pill').forEach(function(b){
 $('opt-audiotts').checked=settings.useAudioTts;
 $('opt-autoplay').checked=settings.autoPlay;
 $('opt-autotrans').checked=settings.autoTranslate;
+$('opt-dynamicshare').checked=settings.dynamicShareMode;
 $('opt-sharesilent').checked=settings.shareSilent;
 $('opt-showdl').checked=settings.showDlInSettings;
 $('opt-wakelock').checked=settings.wakeLock;
@@ -2642,6 +2805,7 @@ $('opt-wakelock').checked=settings.wakeLock;
 $('opt-audiotts').onchange=function(){settings.useAudioTts=this.checked;saveSettings()};
 $('opt-autoplay').onchange=function(){settings.autoPlay=this.checked;saveSettings()};
 $('opt-autotrans').onchange=function(){settings.autoTranslate=this.checked;saveSettings()};
+$('opt-dynamicshare').onchange=function(){settings.dynamicShareMode=this.checked;saveSettings()};
 $('opt-sharesilent').onchange=function(){settings.shareSilent=this.checked;saveSettings()};
 $('opt-showdl').onchange=function(){settings.showDlInSettings=this.checked;saveSettings();applyDlVisibility()};
 $('opt-wakelock').onchange=function(){settings.wakeLock=this.checked;saveSettings()};
@@ -2734,7 +2898,7 @@ $('skip').onclick=skip;
 $('stop').onclick=stop;
 window.addEventListener('beforeunload',function(){saveResume();stopAudioDrivers();release()});
 
-// Downloads v10
+// Downloads v11
 function saveLocal(filename, data, type){
   var b=new Blob([data],{type:type});
   var a=document.createElement('a');
@@ -2746,7 +2910,7 @@ function saveLocal(filename, data, type){
 }
 
 $('btn-dl-index').onclick=function(){
-  fetch(location.pathname.endsWith('lectura-v10.html') ? 'lectura-v10.html' : 'index.html')
+  fetch(location.pathname.endsWith('lectura-v11.html') ? 'lectura-v11.html' : 'index.html')
     .then(function(r){ return r.text(); })
     .then(function(t){
       var cleanHtml=t.replace(/<script[^>]*_aistudio-iframe\.js[^>]*><\/script>/gi,'');
@@ -2819,6 +2983,37 @@ $('btn-dl-sw').onclick=function(){
 
 renderList(false);
 renderHistory();
+
+// X23: Execută modul dinamic la Share după inițializare completă
+if(pendingShareDynamic){
+  mode=2;
+  $('m1').classList.remove('on');
+  $('m2').classList.add('on');
+  $('input-wrap').hidden=true;
+  $('listbox').hidden=false;
+  $('clear').hidden=true;
+  view.style.height='24vh';
+
+  if(isAnotherPlayerActive()){
+    say('Mod dinamic: „'+pendingShareDynamic.label+'” adăugat sus în stivă; lectura activă continuă.');
+  }else if(pendingShareDynamic.unreadBefore===0){
+    startList(0, false);
+  }else{
+    var rTarget=-1;
+    var pr=pendingShareDynamic.prevResume;
+    if(pr && pr.curId){
+      var fIdx=items.findIndex(function(it){return it.id===pr.curId && !it.read});
+      if(fIdx>=0){
+        if(Number(pr.idx)>(Number(items[fIdx].pos)||0))items[fIdx].pos=Number(pr.idx);
+        rTarget=fIdx;
+      }
+    }
+    if(rTarget<0)rTarget=items.findIndex(function(it,i){return i>0 && !it.read && (Number(it.pos)||0)>0});
+    if(rTarget<0)rTarget=items.findIndex(function(it,i){return i>0 && !it.read});
+    if(rTarget<0)rTarget=0;
+    startList(rTarget, true);
+  }
+}
 
 try{if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(function(){})}catch(e){}
 })();
