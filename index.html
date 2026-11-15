@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="referrer" content="no-referrer">
-<title>Lectură audio v14</title>
+<title>Lectură audio v15</title>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#059669">
 <meta name="apple-mobile-web-app-title" content="Lectură">
@@ -432,7 +432,7 @@
     background: var(--stop-bg);
   }
 
-  /* Row 4 Split: Speed (Left) & Position Progress (Right) (X278) */
+  /* Row 4 Split: Speed (Left) & Position Progress (Right) (X278 + X282) */
   .split-sliders-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -468,8 +468,8 @@
     flex-wrap: wrap;
   }
   .preset-pill {
-    padding: 1px 4px;
-    font-size: 0.65rem;
+    padding: 1px 5px;
+    font-size: 0.67rem;
     font-weight: 600;
     border-radius: 5px;
     border: 1px solid var(--line);
@@ -495,7 +495,7 @@
     white-space: nowrap;
   }
 
-  /* Stack List Container */
+  /* Stack List Container + Search + Local Settings & Help (X280) */
   #listbox {
     background: var(--card);
     border: 1px solid var(--line);
@@ -506,29 +506,111 @@
   }
   .list-head {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    flex-wrap: wrap;
     gap: 6px;
     padding-bottom: 8px;
     margin-bottom: 8px;
     border-bottom: 1px solid var(--line);
     font-size: 0.75rem;
-    font-weight: 600;
+    font-weight: 700;
     color: var(--mut);
   }
-  .list-actions { display: flex; gap: 4px; flex-wrap: wrap; }
-  .list-actions button {
-    padding: 3px 7px;
-    font-size: 0.7rem;
-    font-weight: 600;
-    border-radius: 6px;
+  .stack-search-wrap {
+    flex: 1;
+    min-width: 0;
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+  .stack-search-input {
+    width: 100%;
+    padding: 5px 24px 5px 9px;
+    border-radius: 8px;
+    border: 1px solid var(--line);
+    background: var(--bg);
+    color: var(--fg);
+    font-size: 0.74rem;
+    outline: none;
+  }
+  .stack-search-input:focus {
+    border-color: var(--acc);
+  }
+  .stack-search-clear {
+    position: absolute;
+    right: 5px;
+    background: none;
+    border: none;
+    color: var(--mut);
+    font-size: 0.78rem;
+    cursor: pointer;
+    padding: 2px 4px;
+    line-height: 1;
+  }
+  .stack-hdr-btns {
+    display: flex;
+    gap: 4px;
+    flex-shrink: 0;
+  }
+  .stack-hdr-btn {
+    min-height: 28px;
+    padding: 0 8px;
+    font-size: 0.74rem;
+    font-weight: 700;
+    border-radius: 7px;
     border: 1px solid var(--line);
     background: var(--bg);
     color: var(--fg);
     cursor: pointer;
   }
-  .list-actions button:active { transform: scale(0.96); }
+  .stack-hdr-btn.on {
+    background: var(--acc);
+    color: var(--accfg);
+    border-color: var(--acc);
+  }
+  .stack-local-drawer {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 8px 10px;
+    margin-bottom: 8px;
+    font-size: 0.76rem;
+  }
+  .stack-local-drawer h3 {
+    font-size: 0.78rem;
+    color: var(--acc);
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .stack-actions-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-bottom: 6px;
+  }
+  .stack-actions-grid:last-child { margin-bottom: 0; }
+  .stack-actions-grid button {
+    padding: 5px 9px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    border-radius: 7px;
+    border: 1px solid var(--line);
+    background: var(--card);
+    color: var(--fg);
+    cursor: pointer;
+  }
+  .stack-actions-grid button:active { transform: scale(0.96); }
+  .stack-actions-grid button.primary { background: var(--acc); color: var(--accfg); border-color: var(--acc); }
+  .stack-actions-grid button.emerald { background: #059669; color: #fff; border-color: #059669; }
+  .stack-actions-grid button.danger { color: var(--stop); border-color: #fca5a5; }
+  .stack-help-list {
+    padding-left: 16px;
+    line-height: 1.42;
+    color: var(--mut);
+  }
+  .stack-help-list li { margin-bottom: 4px; }
+
   #items {
     max-height: 28vh;
     overflow-y: auto;
@@ -628,7 +710,7 @@
   .row-actions {
     display: flex;
     align-items: center;
-    gap: 2px;
+    gap: 3px;
     flex-shrink: 0;
   }
   .row-icon-btn {
@@ -641,6 +723,10 @@
     border-radius: 6px;
     flex-shrink: 0;
     line-height: 1.1;
+  }
+  .row-icon-btn.has-sum {
+    border-color: #7c3aed;
+    background: rgba(124, 58, 237, 0.1);
   }
   .row-icon-btn:hover { border-color: var(--acc); }
   .row-icon-btn:active { transform: scale(0.94); }
@@ -756,6 +842,9 @@
 <script src="/_aistudio-iframe.js?v=1f94f900"></script></head>
 <body>
 
+<!-- Input ascuns pentru restaurare JSON (folosit atât din Settings cât și din Settings local al stivei) -->
+<input id="restore-json-input" type="file" accept=".json,application/json" hidden>
+
 <!-- X26: Mod dinamic invizibil (nu afișează nimic, doar citește) -->
 <div id="dynamic-blank" style="position:fixed;inset:0;z-index:50;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;cursor:pointer;" hidden>
   <div id="dyn-hint" style="font-size:0.96rem;font-weight:700;line-height:1.5;max-width:360px;color:var(--acc);text-align:center;user-select:none;white-space:pre-line;"></div>
@@ -773,7 +862,7 @@
   </div>
 </div>
 
-<!-- X19 + X25: Dialog Conectare / Preluare Facebook cu instrucțiuni clare & Reîncercare 5x -->
+<!-- X19 + X25: Dialog Conectare / Preluare Facebook cu Reîncercare 5x -->
 <div id="fb-modal" class="modal-backdrop" hidden>
   <div class="modal-card fb-card">
     <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;">
@@ -783,9 +872,9 @@
     <div style="font-size:0.81rem;line-height:1.48;color:var(--mut);margin-bottom:12px;">
       <p style="margin-bottom:8px;">Facebook a blocat accesul automat după 5 încercări succesive (poate cere autentificare sau verificare anti-bot temporară).</p>
       <ol style="padding-left:18px;margin:0;">
-        <li style="margin-bottom:4px;">Încercați întâi <b>🔄 Reîncearcă automat (5×)</b> — uneori Facebook răspunde la o nouă serie de cereri.</li>
+        <li style="margin-bottom:4px;">Încercați întâi <b>🔄 Reîncearcă automat (5×)</b>.</li>
         <li style="margin-bottom:4px;">Dacă tot nu merge, apăsați <b>🔗 Deschide postarea</b>.</li>
-        <li style="margin-bottom:4px;">În Facebook: conectați-vă dacă vi se cere, apoi <b>țineți apăsat cu degetul pe textul postării → Selectează tot / Copiază</b> (sau butonul <b>⋯ → Copiază textul</b>).</li>
+        <li style="margin-bottom:4px;">În Facebook: conectați-vă dacă vi se cere, apoi <b>țineți apăsat pe textul postării → Selectează tot / Copiază</b>.</li>
         <li>Reveniți aici și apăsați <b>📋 Am copiat textul → Citește</b>.</li>
       </ol>
     </div>
@@ -798,11 +887,11 @@
   </div>
 </div>
 
-<!-- 1.7: Fereastră prim-plan Rezumat -->
+<!-- 1.7 + X279: Fereastră prim-plan Rezumat -->
 <div id="summary-modal" class="modal-backdrop" hidden>
   <div class="modal-card summary-card">
     <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;">
-      <strong style="font-size:0.95rem;color:#6d28d9;">✨ Rezumat (copiat în Clipboard)</strong>
+      <strong style="font-size:0.95rem;color:#6d28d9;">✨ Rezumat (salvat pe rând &amp; Clipboard)</strong>
       <button id="sum-close-x" type="button" class="hist-btn">✕</button>
     </div>
     <div id="summary-text" class="summary-body">Se generează rezumatul…</div>
@@ -814,13 +903,14 @@
   </div>
 </div>
 
-<!-- Modal fallback lipire manuală (doar dacă browserul blochează accesul automat la Clipboard) -->
+<!-- Modal adăugare manuală / fallback clipboard -->
 <div id="clip-modal" class="modal-backdrop" hidden>
   <div class="modal-card" style="max-width:420px;">
     <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;">
       <strong style="font-size:0.95rem;color:var(--acc);">📋 Adaugă sus în stivă</strong>
       <button id="clip-close-x" type="button" class="hist-btn">✕</button>
     </div>
+    <input id="clip-manual-title" type="text" placeholder="Titlu opțional..." style="width:100%;padding:8px 10px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--fg);font:inherit;font-size:0.84rem;margin-bottom:8px;">
     <textarea id="clip-manual-txt" rows="4" placeholder="Lipește aici linkul sau textul..." style="width:100%;padding:10px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--fg);font:inherit;font-size:0.86rem;margin-bottom:10px;resize:vertical;"></textarea>
     <div class="modal-actions">
       <button id="clip-cancel-btn" type="button">Anulează</button>
@@ -830,14 +920,14 @@
 </div>
 
 <main id="main-app">
-  <!-- Antet v14 (X274: număr elemente în listă lângă versiune, X17: fără download pe ecran principal) -->
+  <!-- Antet v15 (X274: număr elemente în listă lângă versiune, X17: fără download pe ecran principal) -->
   <header>
     <div class="title-group">
       <div class="app-icon">▶</div>
-      <h1>Lectură audio <span class="v-badge-green">v14</span> <span id="hdr-count" class="hdr-count" title="Elemente în stivă (necitite / total)">(0)</span></h1>
+      <h1>Lectură audio <span class="v-badge-green">v15</span> <span id="hdr-count" class="hdr-count" title="Elemente în stivă (necitite / total)">(0)</span></h1>
     </div>
     <div class="header-actions">
-      <button id="settings-btn" type="button" class="btn-sm" aria-expanded="false" title="Setări, Sleep Timer, Download &amp; Istoric">
+      <button id="settings-btn" type="button" class="btn-sm" aria-expanded="false" title="Setări, Salvare/Restaurare, Sleep Timer, Download &amp; Istoric">
         <span>⚙ Settings</span>
       </button>
       <button id="help" type="button" class="btn-sm" aria-expanded="false" title="Ajutor">
@@ -846,10 +936,10 @@
     </div>
   </header>
 
-  <!-- Settings, Download Opțional (X17), Mod Dinamic (X272), Sleep Timer & Fișier Istoric -->
+  <!-- Settings generale, Salvare/Restaurare JSON, Download (X17), Sleep Timer & Istoric -->
   <div id="settingsbox" class="panel-box" hidden>
     <h2>
-      <span>⚙ Setări aplicație (v14)</span>
+      <span>⚙ Setări aplicație (v15)</span>
       <button id="settings-close" type="button" class="hist-btn">Închide ✕</button>
     </h2>
 
@@ -868,7 +958,7 @@
       <input id="opt-audiotts" type="checkbox" checked>
     </label>
     <label class="setting-toggle">
-      <span>Pornire automată la intrare în tabul Text / inserare Clipboard</span>
+      <span>Pornire automată la inserare din Clipboard</span>
       <input id="opt-autoplay" type="checkbox" checked>
     </label>
     <label class="setting-toggle">
@@ -876,7 +966,7 @@
       <input id="opt-autotrans" type="checkbox" checked>
     </label>
     <label class="setting-toggle">
-      <span><b>Mod de lucru dinamic la Share</b> (nu afișează fereastra, citește prima dată articolul din Share, apoi continuă ce a rămas necitit)</span>
+      <span><b>Mod de lucru dinamic la Share</b> (fără fereastră vizibilă; dacă nu se citește nimic pornește articolul trimis, iar dacă alt articol se citește îl pune în stivă)</span>
       <input id="opt-dynamicshare" type="checkbox">
     </label>
     <label class="setting-toggle">
@@ -892,16 +982,25 @@
       <input id="opt-showdl" type="checkbox" checked>
     </label>
 
-    <!-- X17: Panou Descărcare mutată EXCLUSIV în Settings, controlată de checkbox -->
+    <!-- X280: Salvare & Restaurare completă stivă (+ text + rezumate) -->
+    <div class="hist-toolbar" style="margin-top:8px;">
+      <strong style="color:var(--acc);font-size:0.82rem;">💾 Salvare &amp; Restaurare Stivă</strong>
+      <div class="hist-btns">
+        <button id="top-save-stack" type="button" class="hist-btn" style="background:#059669;color:#fff;border-color:#059669;">💾 Salvare stivă (.json)</button>
+        <button id="top-restore-stack" type="button" class="hist-btn">📂 Restaurare (.json)</button>
+      </div>
+    </div>
+
+    <!-- X17: Panou Descărcare mutată EXCLUSIV în Settings -->
     <div id="dl-panel" class="dl-panel">
       <div class="dl-header">
-        <span>📥 Descarcă pentru GitHub (v14):</span>
+        <span>📥 Descarcă pentru GitHub (v15):</span>
         <span style="font-size:0.66rem;color:var(--mut);">opțional în Settings</span>
       </div>
       <div class="dl-grid">
-        <button id="btn-dl-index" type="button" class="dl-btn full" title="Descarcă index.html v14">📥 Descarcă index.html (v14)</button>
+        <button id="btn-dl-index" type="button" class="dl-btn full" title="Descarcă index.html v15">📥 Descarcă index.html (v15)</button>
         <button id="btn-dl-manifest" type="button" class="dl-btn sec" title="Descarcă manifest.json">📥 manifest.json</button>
-        <button id="btn-dl-sw" type="button" class="dl-btn gray" title="Descarcă sw.js v14">📥 sw.js (v14)</button>
+        <button id="btn-dl-sw" type="button" class="dl-btn gray" title="Descarcă sw.js v15">📥 sw.js (v15)</button>
       </div>
     </div>
 
@@ -916,17 +1015,18 @@
     <div id="hist-items"></div>
   </div>
 
-  <!-- Help Accordion Box -->
+  <!-- Help General v15 -->
   <div id="helpbox" class="panel-box" hidden>
-    <h2>Noutăți &amp; Instrucțiuni (v14)</h2>
+    <h2>Noutăți &amp; Instrucțiuni (v15)</h2>
     <ol>
-      <li><b>X272 Share neîntrerupt</b>: dacă în timp ce ascultați un articol dați Share la alt articol, cel curent <b>nu este întrerupt</b> — noul articol se depune sus în stivă și își așteaptă rândul. Dacă nu se citește nimic și Modul dinamic e activ, pornește imediat.</li>
-      <li><b>X273–X278 Interfață unificată cu Stivă implicită</b>: numărul de elemente apare lângă <code>v14</code>; sub titlu sunt două contoare (articolul curent + total rânduri necitite) și butonul rapid <b>📋 + Clipboard</b>; controalele Viteză și Poziție stau pe un singur rând împărțit în două; butoanele <b>✨ Rezumat</b> și <b>📋 Text curat</b> sunt acum direct pe fiecare rând al listei (funcționează și după citire).</li>
-      <li><b>X24–X26</b>: rezumat cu bold real fără asteriscuri, 5 reîncercări Facebook și ecran gol dinamic la Share.</li>
+      <li><b>X279 Text &amp; Rezumat salvate pe fiecare rând</b>: textul curat se păstrează imediat pe rând, iar la <b>✨ Rezumat</b> rezumatul este salvat pe rând și la cererile următoare se deschide și se copiază instant fără regenerare.</li>
+      <li><b>X280 Căutare, Settings local &amp; Help local în stivă</b>: căutați în titlu, text și rezumate direct în capul stivei; butoanele de administrare stivă + copiile pentru <b>Salvare / Restaurare</b> sunt în <b>⚙</b> local, iar explicațiile stivei în <b>?</b> local.</li>
+      <li><b>X281 + X283 Stivă citită de la bază &amp; Semn de carte exact</b>: articolul în redare nu mai e întrerupt de Share, niciun rând nu se mai bifează „citit” din greșeală la <b>Skip</b> / <b>Stop</b> / erori, semnul de carte se salvează exact la propoziția curentă, iar bifarea/Skip/Stop trec la următorul rând necitit pornind de la baza stivei.</li>
+      <li><b>X282 Viteze noi</b>: trepte rapide <b>1 · 1.2 · 1.3 · 1.4 · 1.5</b>.</li>
     </ol>
   </div>
 
-  <!-- Rândul 2 (X274 + X275): Două contoare (Articol curent + Suma necitite) în stânga + Buton Clipboard în dreapta -->
+  <!-- Rândul 2 (X274 + X275): Două contoare + Buton Clipboard -->
   <div class="tabs-dur-row">
     <div id="dur">
       <div class="dur-line">Curent: Viz – · Aud –</div>
@@ -938,7 +1038,7 @@
     </button>
   </div>
 
-  <!-- Rândul 3 (X276) + Rândul 4 nou (X277 + X278): 5 butoane + Viteză (stânga) & Începe de la (dreapta) -->
+  <!-- Rândul 3 + Rândul 4 (X282: Viteze 1, 1.2, 1.3, 1.4, 1.5) -->
   <div class="control-card">
     <div class="main-controls">
       <button id="play" type="button" class="ctrl-btn btn-play" title="Pornește lectura">
@@ -956,31 +1056,30 @@
         <span>-2 prop</span>
       </button>
 
-      <button id="skip" type="button" class="ctrl-btn btn-skip" title="Sari peste articolul curent">
+      <button id="skip" type="button" class="ctrl-btn btn-skip" title="Sare la următorul articol de la baza stivei (păstrând semnul de carte)">
         <span style="font-size:1.1rem">⏭</span>
         <span>Skip</span>
       </button>
 
-      <button id="stop" type="button" class="ctrl-btn btn-stop" title="Oprește">
+      <button id="stop" type="button" class="ctrl-btn btn-stop" title="Termină prematur rândul curent și trece la următorul de la baza stivei">
         <span style="font-size:1.1rem">⏹</span>
         <span>Stop</span>
       </button>
     </div>
 
-    <!-- Rândul 4 nou: Viteză (stânga) + Evoluție/Poziție articol curent (dreapta) -->
     <div class="split-sliders-row">
       <div class="slider-col">
         <div class="setting-header">
           <span>Viteză: <span id="rv" class="val-highlight">1.0</span>×</span>
           <div class="preset-row">
-            <button type="button" class="preset-pill active" data-val="1.0">1.0×</button>
-            <button type="button" class="preset-pill" data-val="1.2">1.2×</button>
-            <button type="button" class="preset-pill" data-val="1.5">1.5×</button>
-            <button type="button" class="preset-pill" data-val="1.8">1.8×</button>
-            <button type="button" class="preset-pill" data-val="2.0">2.0×</button>
+            <button type="button" class="preset-pill active" data-val="1">1</button>
+            <button type="button" class="preset-pill" data-val="1.2">1.2</button>
+            <button type="button" class="preset-pill" data-val="1.3">1.3</button>
+            <button type="button" class="preset-pill" data-val="1.4">1.4</button>
+            <button type="button" class="preset-pill" data-val="1.5">1.5</button>
           </div>
         </div>
-        <input id="rate" type="range" min="0.6" max="2" step="0.1" value="1">
+        <input id="rate" type="range" min="0.8" max="1.6" step="0.1" value="1">
       </div>
 
       <div class="slider-col">
@@ -993,17 +1092,55 @@
     </div>
   </div>
 
-  <!-- Listă Stivă articole & texte (implicită permanent, X273) -->
+  <!-- X280: Stivă cu Căutare în titlu/text/rezumat + Settings local (⚙) + Help local (?) -->
   <div id="listbox">
     <div class="list-head">
-      <span>Stivă articole (noi sus)</span>
-      <div class="list-actions">
-        <button id="chk-all" type="button" title="Bifează toate ca citite">☑ Tot</button>
-        <button id="unchk-all" type="button" title="Debifează toate ca necitite">☐ Nimic</button>
-        <button id="delread" type="button">Șterge citite</button>
-        <button id="delall" type="button">Șterge tot</button>
+      <span style="white-space:nowrap;">Stivă</span>
+      <div class="stack-search-wrap">
+        <input id="stack-search" type="search" class="stack-search-input" placeholder="Caută titlu, text, rezumat…" aria-label="Caută în stivă">
+        <button id="stack-search-clear" type="button" class="stack-search-clear" hidden title="Șterge căutarea">✕</button>
+      </div>
+      <div class="stack-hdr-btns">
+        <button id="stack-settings-btn" type="button" class="stack-hdr-btn" title="Setări locale stivă (Bifare, Adăugare, Ștergere, Salvare & Restaurare)">⚙</button>
+        <button id="stack-help-btn" type="button" class="stack-hdr-btn" title="Ajutor stivă și butoanele ✨ / 📋">?</button>
       </div>
     </div>
+
+    <!-- Settings local al stivei (mutat aici ☑ Tot, ☐ Nimic, + Adaugă, Șterge citite, Șterge tot + Salvare/Restaurare) -->
+    <div id="stack-settings-box" class="stack-local-drawer" hidden>
+      <h3>
+        <span>⚙ Administrare stivă</span>
+        <button id="stack-settings-close" type="button" class="hist-btn">✕</button>
+      </h3>
+      <div class="stack-actions-grid">
+        <button id="chk-all" type="button" title="Bifează toate ca citite">☑ Tot</button>
+        <button id="unchk-all" type="button" title="Debifează toate ca necitite">☐ Nimic</button>
+        <button id="stack-add-btn" type="button" class="primary">➕ Adaugă</button>
+        <button id="delread" type="button">Șterge citite</button>
+        <button id="delall" type="button" class="danger">Șterge tot</button>
+      </div>
+      <div class="stack-actions-grid">
+        <button id="stack-save-json" type="button" class="emerald">💾 Salvare stivă (.json)</button>
+        <button id="stack-restore-json" type="button">📂 Restaurare (.json)</button>
+      </div>
+    </div>
+
+    <!-- Help local al stivei -->
+    <div id="stack-help-box" class="stack-local-drawer" hidden>
+      <h3>
+        <span>? Cum funcționează Stiva</span>
+        <button id="stack-help-close" type="button" class="hist-btn">✕</button>
+      </h3>
+      <ul class="stack-help-list">
+        <li><b>Ordine LIFO &amp; citire de la bază</b>: articolele noi se adaugă <b>sus</b>, dar lectura parcurge rândurile necitite <b>de jos în sus (de la baza stivei spre vârf)</b>, fără să întrerupă articolul aflat deja în redare.</li>
+        <li><b>Bifare / Debifare</b>: dacă <b>bifezi</b> rândul curent, lectura trece automat la următorul rând de la baza stivei. Dacă <b>debifezi</b> un rând, îl pregătești de recitit (sau continuare exact de la semnul de carte dacă a fost întrerupt).</li>
+        <li><b>Skip (⏭) vs Stop (⏹)</b>: ambele păstrează rândul <b>nebifat</b> cu semnul de carte exact salvat și trec automat la următorul rând necitit de la baza stivei. <b>Skip</b> sare articolul curent (sau +5 propoziții când citești un text izolat) păstrând continuarea automată, iar <b>Stop</b> închide prematur redarea curentă și predă controlul către următorul rând necitit (sau oprește complet dacă nu mai există alt rând necitit). Folosiți <b>⏸ Pauză</b> dacă doriți doar să opriți temporar pe loc.</li>
+        <li><b>Cele două butoane de pe fiecare rând</b>:
+          <br><b>✨ Rezumat</b> — generează rezumatul în română, îl salvează invizibil direct pe rând, îl afișează și îl copiază automat în Clipboard. La apăsările următoare îl încarcă instant de pe rând fără a-l regenera.
+          <br><b>📋 Text curat</b> — copiază în Clipboard textul curățat și tradus al articolului (salvat pe rând după preluare, disponibil oricând ulterior).</li>
+      </ul>
+    </div>
+
     <div id="items"></div>
   </div>
 
@@ -1022,10 +1159,10 @@ var synth=window.speechSynthesis;
 var $=function(id){return document.getElementById(id)};
 var view=$('view'),pos=$('pos'),rate=$('rate'),msg=$('msg'),durEl=$('dur');
 var chunks=[],spans=[],idx=0,token=0,state='idle',roVoice=null,wake=null,mode=2,items=[],cur=-1,listRun=false;
-var utterStart=0,lastInputLen=0,bgWorker=null,bgTimerFallback=null,lockResolver=null;
+var utterStart=0,bgWorker=null,bgTimerFallback=null,lockResolver=null;
 var currentArticleRawText='',currentTitle='',lastAddedId='',sleepMode='off',sleepEndTs=0;
-var chunkStarted=false,chunksSpokenInItem=0,ttsErrStreak=0,activeDriver='audio';
-var lastStartStamp=0,heartbeatTimer=null;
+var chunkStarted=false,chunksSpokenInItem=0,lastCompletedChunkIdx=-1,ttsErrStreak=0,activeDriver='audio';
+var lastStartStamp=0,heartbeatTimer=null,searchQuery='';
 var lastFbUrl='',lastFbItemId='',summaryRawText='',summaryCleanText='',pendingShareDynamic=null;
 var INSTANCE_ID='inst_'+Date.now()+'_'+Math.random().toString(36).slice(2,7);
 var bgAudioPlayer=new Audio();
@@ -1122,27 +1259,56 @@ function getArticleCache(id){
 function countWordsStr(s){
   return (s||'').trim().split(/\s+/).filter(Boolean).length;
 }
+function normSearchStr(s){
+  return (s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+}
 
-// X21: Salvare completă a stării (Listă implicită + Articol N + propoziție)
-function saveResume(){
+// Persistență sigură cc_list (cu curățare text vechi de pe rândurile deja citite doar dacă localStorage atinge limita de cotă)
+function writeListStorage(){
   try{
+    localStorage.setItem('cc_list',JSON.stringify(items));
+    return true;
+  }catch(e){
+    try{
+      var trimmed=items.map(function(it,k){
+        if(k===cur)return it;
+        return Object.assign({},it,{text:it.read?(it.text||'').slice(0,4000):(it.text||'').slice(0,18000)});
+      });
+      localStorage.setItem('cc_list',JSON.stringify(trimmed));
+      return true;
+    }catch(e2){return false}
+  }
+}
+
+function save(skipBc){
+  writeListStorage();
+  if(!skipBc && bc)try{bc.postMessage({type:'sync_list',sender:INSTANCE_ID})}catch(e){}
+}
+
+// X21 + X281: Salvare sincronă și exactă a semnului de carte (cc_resume + items[cur].pos + cc_list)
+function saveResume(overrideIdx){
+  try{
+    var idxToSave=(overrideIdx!==undefined)?Number(overrideIdx):idx;
+    if(isNaN(idxToSave)||idxToSave<0)idxToSave=0;
+    if(chunks.length>0 && idxToSave>=chunks.length)idxToSave=chunks.length-1;
     var curItem=(cur>=0 && items[cur])?items[cur]:null;
+    if(curItem){
+      curItem.pos=idxToSave;
+      writeListStorage();
+    }
     localStorage.setItem('cc_resume',JSON.stringify({
       mode:2,
       cur:cur,
       curId:curItem?curItem.id:(currentLoadedId||''),
-      idx:idx,
+      idx:idxToSave,
       text:'',
       article:currentArticleRawText||'',
       spoken:chunks.join(' '),
       title:currentTitle||'',
       listRun:!!listRun,
+      wasPlaying:(state==='playing'||state==='loading'),
       ts:Date.now()
     }));
-    if(cur>=0 && items[cur]){
-      items[cur].pos=idx;
-      save();
-    }
   }catch(e){}
 }
 
@@ -1158,6 +1324,7 @@ function loadList(){
         url: it.url || '',
         text: txtVal,
         title: it.title || it.url || 'Articol',
+        summary: it.summary || '',
         read: !!it.read,
         err: !!it.err,
         errMsg: it.errMsg || '',
@@ -1171,29 +1338,31 @@ loadList();
 
 function say(t){if(msg)msg.textContent=t||''}
 
-function save(){
-  try{localStorage.setItem('cc_list',JSON.stringify(items))}catch(e){}
-  if(bc)try{bc.postMessage({type:'sync_list',sender:INSTANCE_ID})}catch(e){}
-}
-
-// X22: Prevenire pornire simultană (intra-tab & între aplicație și versiunea web)
-function claimPlaybackOwnership(){
+// X22 + X272: Ownership cu curId, idx & state ca să prevenim orice întrerupere nedorită
+function writeActiveOwner(){
   try{
-    localStorage.setItem('cc_active_player',JSON.stringify({owner:INSTANCE_ID,ts:Date.now()}));
+    var curItem=(cur>=0&&items[cur])?items[cur]:null;
+    localStorage.setItem('cc_active_player',JSON.stringify({
+      owner:INSTANCE_ID,
+      state:state,
+      curId:curItem?curItem.id:(currentLoadedId||''),
+      idx:idx,
+      ts:Date.now()
+    }));
   }catch(e){}
+}
+function claimPlaybackOwnership(){
+  writeActiveOwner();
   if(bc){
     try{bc.postMessage({type:'claim_play',owner:INSTANCE_ID,ts:Date.now()})}catch(e){}
   }
   startHeartbeat();
 }
-
 function startHeartbeat(){
   stopHeartbeat();
   heartbeatTimer=setInterval(function(){
-    if(state==='playing'){
-      try{localStorage.setItem('cc_active_player',JSON.stringify({owner:INSTANCE_ID,ts:Date.now()}))}catch(e){}
-    }
-  },2000);
+    if(state==='playing'||state==='loading')writeActiveOwner();
+  },1500);
 }
 function stopHeartbeat(){
   if(heartbeatTimer){clearInterval(heartbeatTimer);heartbeatTimer=null}
@@ -1205,11 +1374,17 @@ function clearPlaybackOwnership(){
     if(curOwner && curOwner.owner===INSTANCE_ID)localStorage.removeItem('cc_active_player');
   }catch(e){}
 }
-function isAnotherPlayerActive(){
+function getActivePlayerInfo(){
   try{
     var info=JSON.parse(localStorage.getItem('cc_active_player')||'null');
-    return !!(info && info.owner && info.owner!==INSTANCE_ID && (Date.now()-info.ts)<5000);
-  }catch(e){return false}
+    if(info && info.owner && info.owner!==INSTANCE_ID && (Date.now()-info.ts)<12000){
+      return info;
+    }
+  }catch(e){}
+  return null;
+}
+function isAnotherPlayerActive(){
+  return !!getActivePlayerInfo();
 }
 
 function forceYieldPlayback(){
@@ -1217,6 +1392,7 @@ function forceYieldPlayback(){
     token++;
     listRun=false;
     stopAudioDrivers();
+    saveResume(idx);
     release();
     state='paused';
     $('pause').querySelector('span:last-child').textContent='Reia';
@@ -1235,7 +1411,7 @@ function unwrapUrl(u){
   return u;
 }
 
-// Extragere inteligentă link + titlu din textul din fața linkului (ignoră textul de după)
+// Extragere inteligentă link + titlu
 function parseInputPayload(raw){
   var s=(raw||'').trim();
   if(!s)return {kind:'empty'};
@@ -1248,7 +1424,7 @@ function parseInputPayload(raw){
   return {kind:'text',text:s,title:''};
 }
 
-// Adaugă SUS în stivă și returnează {id, title}
+// Adaugă SUS în stivă (vârf = index 0) și returnează {id, title}
 function addItemWithId(u, title, textContent, sourceTag, skipRender){
   var newId='it_'+Date.now()+'_'+Math.random().toString(36).slice(2,6);
   lastAddedId=newId;
@@ -1257,7 +1433,8 @@ function addItemWithId(u, title, textContent, sourceTag, skipRender){
     var exTxtIdx=items.findIndex(function(it){return it.type==='text' && it.text===textContent});
     if(exTxtIdx>=0){
       var exTxt=items.splice(exTxtIdx,1)[0];
-      exTxt.read=false;exTxt.err=false;exTxt.errMsg='';exTxt.pos=0;
+      exTxt.read=false;exTxt.err=false;exTxt.errMsg='';
+      if(title && !exTxt.title)exTxt.title=itemTitle;
       items.unshift(exTxt);
       if(cur>=0){
         if(cur===exTxtIdx)cur=0;
@@ -1268,7 +1445,7 @@ function addItemWithId(u, title, textContent, sourceTag, skipRender){
       if(!skipRender)renderList(true);
       return {id:exTxt.id, title:exTxt.title||itemTitle};
     }
-    items.unshift({id:newId,type:'text',url:'',title:itemTitle,text:textContent,read:false,err:false,errMsg:'',pos:0,words:countWordsStr(textContent)});
+    items.unshift({id:newId,type:'text',url:'',title:itemTitle,text:textContent,summary:'',read:false,err:false,errMsg:'',pos:0,words:countWordsStr(textContent)});
     if(cur>=0)cur++;
     addHistory({source:sourceTag||'share',type:'text',title:itemTitle,text:textContent});
     save();
@@ -1281,7 +1458,7 @@ function addItemWithId(u, title, textContent, sourceTag, skipRender){
   if(existingIdx>=0){
     var ex=items.splice(existingIdx,1)[0];
     if(title && !ex.title)ex.title=title;
-    ex.read=false;ex.err=false;ex.errMsg='';ex.pos=0;
+    ex.read=false;ex.err=false;ex.errMsg='';
     items.unshift(ex);
     if(cur>=0){
       if(cur===existingIdx)cur=0;
@@ -1289,7 +1466,7 @@ function addItemWithId(u, title, textContent, sourceTag, skipRender){
     }
     newId=ex.id;
   }else{
-    items.unshift({id:newId,type:'link',url:u,title:title||'',read:false,err:false,errMsg:'',pos:0,words:0});
+    items.unshift({id:newId,type:'link',url:u,title:title||'',text:'',summary:'',read:false,err:false,errMsg:'',pos:0,words:0});
     if(cur>=0)cur++;
   }
   save();
@@ -1298,30 +1475,30 @@ function addItemWithId(u, title, textContent, sourceTag, skipRender){
   return {id:newId, title:linkTitle};
 }
 
-function addItem(u, title, textContent, sourceTag){
-  return addItemWithId(u, title, textContent, sourceTag, false).title;
-}
-
-function updateItemMeta(id, title, errReason){
-  if(!id)return;
-  var found=items.find(function(it){return it.id===id});
-  if(found){
-    if(title && (!found.title || found.title.indexOf('http')===0))found.title=title;
-    if(errReason){found.err=true;found.errMsg=errReason}
-    else if(errReason===''){found.err=false;found.errMsg=''}
-    save();
-    renderList(false);
-  }
-}
-
-// X8 + X26 + X27 + X272: Interceptăm Share (dacă alt articol se citește acum, nu îl întrerupem; altfel pornim dinamic)
+// X272 + X8 + X26 + X27: Captură Share; dacă alt articol Y era în redare (alt tab SAU același tab Android reîncărcat), nu îl întrerupe!
 var openedFromShare=false;
 var dynamicHandoffAcked=false;
 var dynamicQueuedAcked=false;
+var prevActiveBeforeNav=null;
 (function handleIncomingShare(){
   var q=new URLSearchParams(location.search);
   if(!q.has('url')&&!q.has('text')&&!q.has('title'))return;
   openedFromShare=true;
+
+  // Inspectăm starea anterioară ÎNAINTE de a modifica stiva
+  var prevActive=getActivePlayerInfo();
+  var prevResume=null;
+  try{prevResume=JSON.parse(localStorage.getItem('cc_resume')||'null')}catch(e){}
+  if(prevResume && prevResume.curId && (prevActive || (prevResume.wasPlaying && prevResume.ts && (Date.now()-prevResume.ts)<12000))){
+    var activeRowId=(prevActive&&prevActive.curId)||prevResume.curId;
+    var activeRow=items.find(function(it){return it.id===activeRowId});
+    if(activeRow && !activeRow.read && !activeRow.err){
+      var savedIdxFromPrev=Math.max(Number(activeRow.pos)||0, Number(prevActive&&prevActive.idx)||0, Number(prevResume.idx)||0);
+      activeRow.pos=savedIdxFromPrev;
+      prevActiveBeforeNav={id:activeRowId,idx:savedIdxFromPrev,title:activeRow.title||prevResume.title||''};
+    }
+  }
+
   var rawUrl=q.get('url')||'',rawText=q.get('text')||'',rawTitle=q.get('title')||'';
   try{history.replaceState(null,'',location.pathname)}catch(e){}
 
@@ -1335,8 +1512,9 @@ var dynamicQueuedAcked=false;
     added=addItemWithId('', rawTitle.trim(), rawText.trim()||rawTitle.trim(), 'share', true);
   }
   if(!added || !added.title)return;
+  if(prevActiveBeforeNav && prevActiveBeforeNav.id===added.id)prevActiveBeforeNav=null;
 
-  if(settings.dynamicShareMode || isAnotherPlayerActive()){
+  if(settings.dynamicShareMode || prevActive || prevActiveBeforeNav){
     mode=2;
     $('main-app').hidden=true;
     $('dynamic-blank').hidden=false;
@@ -1373,7 +1551,7 @@ $('share-open-btn').onclick=function(){
   renderList(false);
 };
 
-// X26: Pe ecranul invizibil (doar citire), atingerea deblochează sunetul sincron și pornește/reia articolul; dublu-tap arată aplicația
+// X26: Pe ecranul invizibil, atingerea deblochează sunetul sincron și pornește/reia articolul; dublu-tap arată aplicația
 var lastDynTapTs=0;
 $('dynamic-blank').onclick=function(){
   unlockAudioSync();
@@ -1408,6 +1586,10 @@ $('dynamic-blank').onclick=function(){
   }
   if(state==='idle' && items.length){
     $('dyn-hint').textContent='';
+    if(prevActiveBeforeNav){
+      var yIdx=items.findIndex(function(it){return it.id===prevActiveBeforeNav.id && !it.read && !it.err});
+      if(yIdx>=0){startList(yIdx, true);return}
+    }
     var targetShareIdx=pendingShareDynamic?items.findIndex(function(it){return it.id===pendingShareDynamic.newId}):0;
     if(targetShareIdx<0)targetShareIdx=0;
     startList(targetShareIdx, false);
@@ -1418,7 +1600,7 @@ $('dynamic-blank').onclick=function(){
   }
 };
 
-// X272: Dacă se citește deja articolul Y, noul Share X NU întrerupe Y, doar actualizează stiva și așteaptă rândul
+// X272: BroadcastChannel & storage sync — nu întrerupe articolul Y aflat în redare!
 if(bc){
   bc.onmessage=function(ev){
     if(!ev.data)return;
@@ -1441,18 +1623,22 @@ if(bc){
       return;
     }
     if(ev.data.type==='dynamic_share_handoff' && ev.data.sender!==INSTANCE_ID){
-      if(state!=='playing')return;
-      // X272: Nu întrerupem articolul Y aflat în redare! Actualizăm stiva păstrând cur intact și confirmăm că X e în coadă
-      var oldPlayingId=(cur>=0&&items[cur])?items[cur].id:null;
+      if(state!=='playing' && state!=='loading')return;
+      // X272: Articolul Y nu este întrerupt! Păstrăm cur pe id-ul lui Y, reîncărcăm lista cu X sus și confirmăm
+      var oldPlayingId=(cur>=0&&items[cur])?items[cur].id:currentLoadedId;
+      var savedCurIdx=idx;
       loadList();
       if(oldPlayingId){
         var newPosIdx=items.findIndex(function(it){return it.id===oldPlayingId});
-        if(newPosIdx>=0)cur=newPosIdx;
+        if(newPosIdx>=0){
+          cur=newPosIdx;
+          items[cur].pos=savedCurIdx;
+        }
       }
       listRun=true;
       renderList(false);
       try{bc.postMessage({type:'dynamic_share_ack',itemId:ev.data.itemId,owner:INSTANCE_ID,queued:true})}catch(e){}
-      say('Articol nou depus sus în stivă — va fi citit după articolul curent.');
+      say('Articol nou depus sus în stivă — articolul curent continuă neîntrerupt.');
       return;
     }
     if(ev.data.type==='claim_play' && ev.data.owner!==INSTANCE_ID){
@@ -1460,7 +1646,7 @@ if(bc){
       return;
     }
     if(ev.data.type==='sync_list' && ev.data.sender!==INSTANCE_ID){
-      var oldCurId=(cur>=0&&items[cur])?items[cur].id:null;
+      var oldCurId=(cur>=0&&items[cur])?items[cur].id:currentLoadedId;
       loadList();
       if(oldCurId){
         var found=items.findIndex(function(it){return it.id===oldCurId});
@@ -1480,7 +1666,15 @@ window.addEventListener('storage',function(e){
       }
     }catch(err){}
   }
-  if(e.key==='cc_list'){loadList();renderList(true)}
+  if(e.key==='cc_list'){
+    var oldCurId=(cur>=0&&items[cur])?items[cur].id:currentLoadedId;
+    loadList();
+    if(oldCurId){
+      var found=items.findIndex(function(it){return it.id===oldCurId});
+      if(found>=0)cur=found;
+    }
+    renderList(false);
+  }
   if(e.key==='cc_history'){try{historyList=JSON.parse(e.newValue||'[]');renderHistory()}catch(err){}}
 });
 
@@ -1491,7 +1685,15 @@ function loadVoices(){
 }
 if(synth){loadVoices();synth.onvoiceschanged=loadVoices}
 
-try{var s=localStorage.getItem('rate');if(s){rate.value=s;$('rv').textContent=Number(s).toFixed(1)}}catch(e){}
+// X282: Viteză implicită și preseturi [1, 1.2, 1.3, 1.4, 1.5]
+try{
+  var s=localStorage.getItem('rate');
+  if(s){
+    var parsedRate=Math.min(1.6, Math.max(0.8, Number(s)||1));
+    rate.value=String(parsedRate);
+    $('rv').textContent=parsedRate.toFixed(1);
+  }
+}catch(e){}
 
 function updatePresets(){
   var curVal=Number(rate.value).toFixed(1);
@@ -1519,7 +1721,7 @@ document.querySelectorAll('.preset-pill').forEach(function(btn){
   };
 });
 
-// Mesaj audio scurt (fără zgomot; împărțit dacă depășește 170 caractere)
+// Mesaj audio scurt
 function speakNotice(text){
   var shortMsg=(text||'').trim().slice(0,170);
   if(!shortMsg)return Promise.resolve();
@@ -1552,7 +1754,7 @@ function speakNotice(text){
   });
 }
 
-// X18: Detectare corectă limbă română (nu se mai păcălește de la o singură diacritică!)
+// X18: Detectare corectă limbă română
 function isRomanianText(t){
   var sample=t.slice(0,1800);
   var diacHits=(sample.match(/[ăâîșțĂÂÎȘȚ]/g)||[]).length;
@@ -1566,7 +1768,6 @@ function isRomanianText(t){
   return true;
 }
 
-// X18: Traducere directă prin Google Translate (CORS *) + fallback-uri funcționale
 async function translateChunkToRo(chunk){
   var q=encodeURIComponent(chunk);
   var endpoints=[
@@ -1639,8 +1840,7 @@ async function maybeTranslateToRo(text, title, myToken){
   return {text:translatedParts.join('\n'),title:newTitle};
 }
 
-// Explicații clare românești pentru orice eroare (X18)
-function describeError(err, url){
+function describeError(err){
   var m=(err&&err.message)?String(err.message):String(err||'');
   if(!navigator.onLine)return 'Lipsă conexiune la internet.';
   if(m==='FB_LOGIN_REQUIRED')return 'Postarea Facebook necesită conectare la contul dumneavoastră Facebook.';
@@ -1656,7 +1856,6 @@ function describeError(err, url){
   return m || 'Nu s-a putut încărca articolul.';
 }
 
-// YouTube transcript
 function extractYoutubeId(u){
   var m=(u||'').match(/(?:youtube\.com\/(?:watch\?.*v=|shorts\/|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
   return m?m[1]:null;
@@ -1720,7 +1919,6 @@ async function fetchYoutubeTranscript(u){
   throw new Error('yt_failed');
 }
 
-// X15 & X19: Facebook link handling + detectare strictă zid conectare
 function isFacebookUrl(u){
   try{return /(^|\.)(facebook\.com|fb\.com|fb\.watch)$/i.test(new URL(u).hostname)}catch(e){return false}
 }
@@ -1797,7 +1995,6 @@ function extractFbHtmlPost(html){
   return null;
 }
 
-// X25: 5 încercări automate pe strategii diferite pentru Facebook înainte de a cere intervenția utilizatorului
 async function fetchFacebookPost(u, onAttempt, myToken){
   u=unwrapUrl(u);
   var wwwUrl=u.replace(/^https?:\/\/(m|mbasic)\.facebook\.com/i,'https://www.facebook.com');
@@ -1811,7 +2008,6 @@ async function fetchFacebookPost(u, onAttempt, myToken){
     if(onAttempt)onAttempt(attempt, 5);
     var cb=Date.now()+'_'+attempt;
 
-    // 1. Plugin embed prin r.jina.ai
     try{
       var ctl=new AbortController(),to=setTimeout(function(){ctl.abort()},12000);
       var embedUrl='https://r.jina.ai/https://www.facebook.com/plugins/post.php?href='+encodeURIComponent(wwwUrl)+'&show_text=true&width=500&_cb='+cb;
@@ -1831,7 +2027,6 @@ async function fetchFacebookPost(u, onAttempt, myToken){
 
     if(myToken!==undefined && myToken!==token)throw new Error('CANCELLED');
 
-    // 2. r.jina.ai direct (alternând www / m / mbasic între încercări)
     var targetVariant=(attempt===2)?mobUrl:(attempt===4)?mbasicUrl:wwwUrl;
     try{
       var ctl2=new AbortController(),to2=setTimeout(function(){ctl2.abort()},12000);
@@ -1851,7 +2046,6 @@ async function fetchFacebookPost(u, onAttempt, myToken){
 
     if(myToken!==undefined && myToken!==token)throw new Error('CANCELLED');
 
-    // 3. Proxy HTML (plugin + m/mbasic) cu extragere meta og:description, JSON-LD, paragrafe
     var proxyIdx=(attempt-1)%proxies.length;
     var htmlTargets=[
       'https://www.facebook.com/plugins/post.php?href='+encodeURIComponent(wwwUrl)+'&show_text=true',
@@ -1889,7 +2083,7 @@ $('fb-retry-btn').onclick=function(){
   $('fb-modal').hidden=true;
   if(!lastFbUrl)return;
   var idxRetry=lastFbItemId?items.findIndex(function(it){return it.id===lastFbItemId}):-1;
-  if(idxRetry>=0){startList(idxRetry, false);return}
+  if(idxRetry>=0){startList(idxRetry, true);return}
   startList(0, false);
 };
 $('fb-paste-btn').onclick=async function(){
@@ -1898,19 +2092,20 @@ $('fb-paste-btn').onclick=async function(){
     var clip=(await navigator.clipboard.readText()||'').trim();
     if(clip){
       var added=addItemWithId('', clip.split('\n')[0].slice(0,60), clip, 'clipboard', false);
-      if(state!=='playing')startList(0, false);
+      if(state!=='playing' && state!=='loading')startList(0, false);
       else say('Adăugat sus în stivă: '+added.title);
     }else{
       say('Clipboard-ul este gol. Copiați textul din Facebook și apăsați 📋 + Clipboard.');
     }
   }catch(e){
+    $('clip-manual-title').value='';
     $('clip-manual-txt').value='';
     $('clip-modal').hidden=false;
     $('clip-manual-txt').focus();
   }
 };
 
-// X24: Eliminare marcaje Markdown (*, **, __, `, #) înainte de TTS și copiere
+// X24: Eliminare marcaje Markdown
 function stripMarkdownForSpeech(raw){
   return (raw||'')
     .replace(/\*\*([\s\S]*?)\*\*/g,'$1')
@@ -1940,7 +2135,6 @@ function formatSummaryHtml(raw){
   }).join('<br>');
 }
 
-// Split maxim 175 caractere ca să încapă întotdeauna în Audio TTS MP3 (X24: curăță și asteriscuri)
 function split(t){
   var cleanT=stripMarkdownForSpeech(t||'');
   var parts=cleanT.replace(/\r/g,'').match(/[^.!?\n]+[.!?]*/g)||[];
@@ -1989,7 +2183,7 @@ function render(t, keepIdx){
 
 function fmt(sec){sec=Math.round(sec);var m=Math.floor(sec/60),r=sec%60;return m?(m+'m '+r+'s'):(r+'s')}
 
-// X275: Două contoare — (1) Articol curent, (2) Suma rândurilor rămase nemarcate
+// X275: Două contoare
 function dur(){
   var r=Number(rate.value)||1,vis=220,tts=155;
   function words(a){return a.reduce(function(n,c){return n+c.split(/\s+/).filter(Boolean).length},0)}
@@ -2046,7 +2240,9 @@ function mark(){
 }
 
 function goTo(i,restart){
-  idx=Math.max(0,Math.min(i,chunks.length-1));mark();saveResume();
+  idx=Math.max(0,Math.min(i,chunks.length-1));
+  mark();
+  saveResume(idx);
   if(restart&&state==='playing'){token++;stopAudioDrivers();speak()}
 }
 pos.oninput=function(){goTo(Number(pos.value),false)};
@@ -2072,7 +2268,7 @@ function handleTtsBlocked(reason){
   stopAudioDrivers();
   clearPlaybackOwnership();
   state='paused';
-  saveResume();
+  saveResume(idx);
   updateMediaMeta();
   $('pause').querySelector('span:last-child').textContent='Reia';
   var msgTxt=reason||'Redare pusă în pauză (motorul vocal a fost blocat de sistem) — articolul a rămas nebifat.';
@@ -2085,6 +2281,16 @@ function handleTtsBlocked(reason){
   }
 }
 
+function completeCurrentChunk(completedIdx, expectedToken){
+  if(expectedToken!==undefined && expectedToken!==token)return;
+  if(state!=='playing' || completedIdx!==idx)return;
+  chunksSpokenInItem++;
+  lastCompletedChunkIdx=completedIdx;
+  ttsErrStreak=0;
+  idx=completedIdx+1;
+  speak();
+}
+
 function runWatchdogTick(){
   if(state!=='playing')return;
   if(sleepMode==='15'||sleepMode==='30'){
@@ -2092,16 +2298,13 @@ function runWatchdogTick(){
     $('sleep-status').textContent=Math.floor(rem/60)+'m '+(rem%60)+'s';
     if(rem<=0){
       setSleep('off');
-      stop();
-      say('Sleep Timer: oprit.');
+      performTimerShutdown('Sleep Timer: oprit.');
       return;
     }
   }
   if(activeDriver==='audio'){
     if(bgAudioPlayer.ended && (Date.now()-utterStart)>400){
-      chunksSpokenInItem++;
-      idx++;
-      speak();
+      completeCurrentChunk(idx, token);
       return;
     }
     if(bgAudioPlayer.paused && !bgAudioPlayer.ended && (Date.now()-utterStart)>1200){
@@ -2114,17 +2317,14 @@ function runWatchdogTick(){
     var maxUtterMs=Math.max(28000, ((chunks[idx]&&chunks[idx].length)||120)*240/Math.max(0.6, Number(rate.value)||1));
     if(synth.speaking && (Date.now()-utterStart)>maxUtterMs){
       try{synth.cancel()}catch(e){}
-      chunksSpokenInItem++;
-      idx++;
-      speak();
+      completeCurrentChunk(idx, token);
       return;
     }
     if(!synth.speaking && !synth.pending && (Date.now()-utterStart)>2200){
       if(!chunkStarted){
         handleTtsBlocked('Motorul vocal local a fost oprit în fundal.');
       }else{
-        idx++;
-        speak();
+        completeCurrentChunk(idx, token);
       }
     }
   }
@@ -2190,7 +2390,7 @@ function release(){
 
 document.addEventListener('visibilitychange',function(){
   if(document.visibilityState==='hidden'){
-    saveResume();
+    saveResume(idx);
   }
   if(state==='playing'){
     if(activeDriver==='audio' && bgAudioPlayer.paused && !bgAudioPlayer.ended){
@@ -2203,9 +2403,9 @@ document.addEventListener('visibilitychange',function(){
     }
   }
 });
-window.addEventListener('pagehide',saveResume);
+window.addEventListener('pagehide',function(){saveResume(idx)});
 
-function speakViaSynth(textChunk, my){
+function speakViaSynth(textChunk, my, curChunkIdx){
   if(!synth){handleTtsBlocked('Browserul nu are motor de sinteză vocală.');return}
   activeDriver='synth';
   chunkStarted=false;
@@ -2217,10 +2417,7 @@ function speakViaSynth(textChunk, my){
   u.onend=function(){
     if(my!==token)return;
     if(!chunkStarted && (Date.now()-utterStart)<120){handleTtsBlocked('Sinteza vocală a fost oprită imediat de sistem.');return}
-    chunksSpokenInItem++;
-    ttsErrStreak=0;
-    idx++;
-    speak();
+    completeCurrentChunk(curChunkIdx, my);
   };
   u.onerror=function(e){
     if(my!==token)return;
@@ -2230,9 +2427,8 @@ function speakViaSynth(textChunk, my){
       return;
     }
     ttsErrStreak++;
-    if(ttsErrStreak>=2 || !chunkStarted){handleTtsBlocked('Eroare la sinteza vocală: '+(e.error||'necunoscută'));return}
-    idx++;
-    speak();
+    // Nu sărim peste propoziții la eroare ca să nu falsificăm progresul / bifa citit!
+    handleTtsBlocked('Eroare la sinteza vocală ('+(e.error||'necunoscută')+'). Păstrat semnul de carte la propoziția '+(curChunkIdx+1)+'.');
   };
   try{synth.speak(u)}catch(ex){handleTtsBlocked('Sinteza vocală necesită interacțiune.');return}
   setTimeout(function(){
@@ -2242,7 +2438,7 @@ function speakViaSynth(textChunk, my){
   }, 900);
 }
 
-function speakViaAudio(textChunk, my, useAlt){
+function speakViaAudio(textChunk, my, useAlt, curChunkIdx){
   activeDriver='audio';
   chunkStarted=false;
   utterStart=Date.now();
@@ -2260,19 +2456,16 @@ function speakViaAudio(textChunk, my, useAlt){
   };
   bgAudioPlayer.onended=function(){
     if(my!==token)return;
-    chunksSpokenInItem++;
-    ttsErrStreak=0;
-    idx++;
-    speak();
+    completeCurrentChunk(curChunkIdx, my);
   };
   bgAudioPlayer.onerror=function(){
     if(my!==token)return;
     if(!useAlt){
-      speakViaAudio(textChunk, my, true);
+      speakViaAudio(textChunk, my, true, curChunkIdx);
       return;
     }
     ttsErrStreak++;
-    speakViaSynth(textChunk, my);
+    speakViaSynth(textChunk, my, curChunkIdx);
   };
   bgAudioPlayer.muted=false;
   bgAudioPlayer.volume=1;
@@ -2288,38 +2481,49 @@ function speakViaAudio(textChunk, my, useAlt){
       handleTtsBlocked('Browserul necesită o atingere pe ecran pentru a porni sunetul.');
       return;
     }
-    if(!useAlt)speakViaAudio(textChunk, my, true);
-    else speakViaSynth(textChunk, my);
+    if(!useAlt)speakViaAudio(textChunk, my, true, curChunkIdx);
+    else speakViaSynth(textChunk, my, curChunkIdx);
   });
 }
 
 function speak(){
   var my=token;
   if(idx>=chunks.length){
-    var finishedCleanly=chunksSpokenInItem>0;
+    // X281: Marcăm „citit” STRICT doar când ultima propoziție reală (chunks.length - 1) s-a încheiat curat!
+    var finishedCleanly=(chunks.length>0 && chunksSpokenInItem>0 && lastCompletedChunkIdx===chunks.length-1);
     if(sleepMode==='end'){
       setSleep('off');
-      if(items[cur]&&finishedCleanly){items[cur].read=true;items[cur].pos=0;save()}
-      listRun=false;state='idle';idx=0;mark();saveResume();release();renderList(false);
+      if(items[cur]&&finishedCleanly){items[cur].read=true;items[cur].pos=0;items[cur].err=false;items[cur].errMsg='';save()}
+      listRun=false;state='idle';idx=0;mark();saveResume(0);release();renderList(false);
       $('pause').querySelector('span:last-child').textContent='Pauză';
       say('Sleep Timer: oprit la finalul articolului.');return;
     }
     if(listRun){finishItem(finishedCleanly);return}
-    state='idle';idx=0;mark();saveResume();release();
+    state='idle';idx=0;mark();saveResume(0);release();
     $('pause').querySelector('span:last-child').textContent='Pauză';
     say('Gata.');return;
   }
-  mark();
-  saveResume();
-  updateMediaMeta();
   state='playing';
+  mark();
+  saveResume(idx);
+  writeActiveOwner();
+  updateMediaMeta();
   $('pause').querySelector('span:last-child').textContent='Pauză';
   say(settings.useAudioTts ? 'Citesc (Audio MP3)…' : 'Citesc…');
   if(settings.useAudioTts){
-    speakViaAudio(chunks[idx], my, false);
+    speakViaAudio(chunks[idx], my, false, idx);
   }else{
-    speakViaSynth(chunks[idx], my);
+    speakViaSynth(chunks[idx], my, idx);
   }
+}
+
+// X283: Căutare următorul rând necitit pornind de la BAZA stivei (jos -> sus)
+function findNextFromBase(excludeIdx){
+  for(var i=items.length-1; i>=0; i--){
+    if(excludeIdx!==undefined && i===excludeIdx)continue;
+    if(!items[i].read && !items[i].err)return i;
+  }
+  return -1;
 }
 
 function start(){
@@ -2330,14 +2534,16 @@ function start(){
   if(cur>=0 && items[cur] && !items[cur].read){
     startList(cur, true);
   }else{
-    startList();
+    var baseIdx=findNextFromBase();
+    if(baseIdx>=0)startList(baseIdx, true);
+    else startList();
   }
 }
 
 function pause(){
   if(state==='playing'){
-    token++;stopAudioDrivers();clearPlaybackOwnership();state='paused';saveResume();updateMediaMeta();
-    $('pause').querySelector('span:last-child').textContent='Reia';say('În pauză.');
+    token++;stopAudioDrivers();clearPlaybackOwnership();state='paused';saveResume(idx);updateMediaMeta();
+    $('pause').querySelector('span:last-child').textContent='Reia';say('În pauză (propoziția '+(idx+1)+').');
   }
   else if(state==='paused'){
     token++;ttsErrStreak=0;
@@ -2345,9 +2551,33 @@ function pause(){
   }
 }
 
+function performTimerShutdown(reasonMsg){
+  token++;listRun=false;stopAudioDrivers();saveResume(idx);state='idle';release();
+  $('pause').querySelector('span:last-child').textContent='Pauză';
+  renderList(false);
+  say(reasonMsg||'Oprit.');
+}
+
+// X281 + X283: Stop termină prematur citirea rândului curent (fără să-l bifeze fals ca citit, păstrând semnul de carte)
+// și trece automat la următorul rând necitit de la baza stivei (dacă există)
 function stop(){
-  token++;listRun=false;stopAudioDrivers();state='idle';idx=0;mark();saveResume();release();
-  $('pause').querySelector('span:last-child').textContent='Pauză';say('Oprit.');
+  var wasCur=cur;
+  if(wasCur>=0 && items[wasCur]){
+    saveResume(idx);
+  }
+  token++;stopAudioDrivers();
+  var nextFromBase=findNextFromBase(wasCur>=0?wasCur:undefined);
+  if(nextFromBase>=0){
+    listRun=true;
+    hold();
+    playItem(nextFromBase, true);
+    say('Oprit rândul curent (semn de carte păstrat) — continuu de la baza stivei.');
+    return;
+  }
+  listRun=false;state='idle';cur=-1;currentLoadedId='';
+  release();saveResume(0);renderList(false);
+  $('pause').querySelector('span:last-child').textContent='Pauză';
+  say('Oprit. Nu mai sunt alte rânduri necitite în stivă.');
 }
 
 function back2(){
@@ -2358,10 +2588,25 @@ function back2(){
   }
 }
 
+// X281 + X283: Skip NU marchează articolul parțial ca „citit” — îi păstrează exact semnul de carte și trece la următorul rând de la baza stivei!
 function skip(){
-  if(listRun&&cur>=0){
-    token++;stopAudioDrivers();finishItem(true);
-  } else if(chunks.length>0){
+  if((listRun || state==='playing' || state==='loading' || state==='paused') && cur>=0 && items[cur]){
+    var skippedCur=cur;
+    saveResume(idx);
+    token++;stopAudioDrivers();
+    var nextFromBase=findNextFromBase(skippedCur);
+    if(nextFromBase>=0){
+      listRun=true;
+      hold();
+      playItem(nextFromBase, true);
+      say('Sărit peste articol (nebifat, semn de carte salvat) — citesc de la baza stivei.');
+    }else{
+      listRun=false;state='idle';cur=-1;currentLoadedId='';
+      release();saveResume(0);renderList(false);
+      $('pause').querySelector('span:last-child').textContent='Pauză';
+      say('Nu mai există alt rând necitit în stivă.');
+    }
+  }else if(chunks.length>0){
     var target=Math.min(chunks.length-1,idx+5);
     goTo(target,state==='playing');
     say('Sărit la propoziția '+(target+1));
@@ -2375,7 +2620,7 @@ function note(t){
   pos.max=0;mark();
 }
 
-// X16: Curățare agresivă a linkurilor promo (titlu bold + link) & #text
+// X16: Curățare agresivă
 function clean(md){
   var titleMatch=md.match(/^Title:\s*(.+)$/m);
   var extTitle=titleMatch?titleMatch[1].trim():'';
@@ -2495,7 +2740,6 @@ async function getText(u, customTitle, myToken){
       if(r.ok)res=clean(await r.text());
     }
 
-    // Fallback dacă selectorii au tăiat prea mult
     if((!res || res.text.length<100) && (!r || r.ok)){
       try{
         var rRaw=await fetch(api,{signal:ctl.signal});
@@ -2506,7 +2750,6 @@ async function getText(u, customTitle, myToken){
       }catch(e2){}
     }
 
-    // Fallback proxy HTML dacă r.jina.ai e blocat sau gol
     if(!res || res.text.length<80){
       var fbHtml=await fetchHtmlFallback(u);
       if(fbHtml && fbHtml.text.length>=80)res=fbHtml;
@@ -2523,23 +2766,28 @@ async function getText(u, customTitle, myToken){
   }finally{clearTimeout(to)}
 }
 
-
-// X277: Obține textul curat pentru orice rând (din memorie, cache sau prin descărcare la cerere)
+// X279: Obține textul curat direct din it.text (câmp atașat rândului), memorie, cache sau prin preluare
 async function resolveItemCleanText(it){
   if(!it)return {text:'',title:''};
-  if(it.id===currentLoadedId && currentArticleRawText && currentArticleRawText.trim()){
-    return {text:currentArticleRawText, title:currentTitle||it.title||''};
+  if(it.text && it.text.trim()){
+    var savedClean=it.type==='text'?it.text.replace(/(^|\s)#[\wăâîșțĂÂÎȘȚ-]+/g,'$1').trim():it.text.trim();
+    return {text:savedClean, title:it.title||''};
   }
-  if(it.type==='text'){
-    var txtClean=(it.text||'').replace(/(^|\s)#[\wăâîșțĂÂÎȘȚ-]+/g,'$1').trim();
-    return {text:txtClean, title:it.title||''};
+  if(it.id===currentLoadedId && currentArticleRawText && currentArticleRawText.trim()){
+    it.text=currentArticleRawText.slice(0,35000);
+    save();
+    return {text:currentArticleRawText, title:currentTitle||it.title||''};
   }
   var cached=getArticleCache(it.id);
   if(cached && cached.text && cached.text.trim()){
+    it.text=cached.text.slice(0,35000);
+    save();
     return {text:cached.text, title:it.title||cached.title||''};
   }
+  if(!it.url)return {text:'',title:it.title||''};
   say('Se preia textul pentru „'+(it.title||it.url).slice(0,40)+'”…');
   var res=await getText(it.url, it.title||'');
+  it.text=(res.text||'').slice(0,35000);
   it.words=countWordsStr(res.text);
   if(!it.title && res.title)it.title=res.title;
   saveArticleCache(it.id, res.text, it.title);
@@ -2560,14 +2808,29 @@ async function copyRowCleanText(it){
   }
 }
 
+// X279: Rezumat salvat direct în it.summary; la cereri ulterioare se ia direct de pe rând + afișare + Clipboard
 async function summarizeRowItem(it){
   try{
+    if(it.summary && it.summary.trim()){
+      summaryRawText=it.summary.trim();
+      summaryCleanText=stripMarkdownForSpeech(summaryRawText);
+      $('summary-text').innerHTML=formatSummaryHtml(summaryRawText);
+      $('summary-modal').hidden=false;
+      try{await navigator.clipboard.writeText(summaryCleanText);say('Rezumat încărcat din rând și copiat automat în Clipboard!')}catch(e){say('Rezumat încărcat din rând.')}
+      return;
+    }
+
+    summaryRawText='';summaryCleanText='';
+    $('summary-text').textContent='Se preia textul și se generează rezumatul în limba română (Puter.js)…';
+    $('summary-modal').hidden=false;
+
     var r=await resolveItemCleanText(it);
     var source=(r.text||'').trim();
-    if(source.length<40){say('Text prea scurt pentru rezumat.');return}
-    summaryRawText='';summaryCleanText='';
-    $('summary-text').textContent='Se generează rezumatul în limba română (Puter.js)…';
-    $('summary-modal').hidden=false;
+    if(source.length<40){
+      $('summary-text').textContent='Text prea scurt pentru rezumat.';
+      say('Text prea scurt pentru rezumat.');
+      return;
+    }
 
     var summary='';
     try{
@@ -2581,8 +2844,11 @@ async function summarizeRowItem(it){
     }
     summaryRawText=summary.trim();
     summaryCleanText=stripMarkdownForSpeech(summaryRawText);
+    it.summary=summaryRawText;
+    save();
+    renderList(false);
     $('summary-text').innerHTML=formatSummaryHtml(summaryRawText);
-    try{await navigator.clipboard.writeText(summaryCleanText);say('Rezumat copiat automat în Clipboard!')}catch(e){}
+    try{await navigator.clipboard.writeText(summaryCleanText);say('Rezumat salvat pe rând și copiat automat în Clipboard!')}catch(e){}
   }catch(e){
     $('summary-modal').hidden=true;
     say('Nu s-a putut genera rezumatul pentru acest rând.');
@@ -2592,29 +2858,65 @@ async function summarizeRowItem(it){
 function renderList(scrollTopOnAdd){
   var box=$('items');box.textContent='';
   var activeEl=null;
+  var qNorm=normSearchStr(searchQuery.trim());
+  var shownCount=0;
+
   items.forEach(function(it,i){
+    if(qNorm){
+      var hay=normSearchStr((it.title||'')+'\n'+(it.text||'')+'\n'+(it.summary||'')+'\n'+(it.url||''));
+      if(hay.indexOf(qNorm)<0)return;
+    }
+    shownCount++;
     var d=document.createElement('div');
-    var isCurrent=(listRun&&i===cur)||(cur===i);
+    var isCurrent=(cur===i && (listRun || state!=='idle'));
     d.className='list-item' + (isCurrent ? ' now' : it.read ? ' rd' : '') + (it.id===lastAddedId ? ' just-added' : '');
 
     var chk=document.createElement('input');
     chk.type='checkbox';
     chk.className='item-chk';
     chk.checked=!!it.read;
-    chk.title='Marchează citit / necitit';
+    chk.title='Marchează citit / debifează pentru recitire sau continuare';
     chk.setAttribute('aria-label','Marchează citit');
     chk.onclick=function(e){e.stopPropagation()};
     chk.onchange=function(e){
       e.stopPropagation();
       it.read=chk.checked;
-      if(!it.read){it.err=false;it.errMsg=''}
-      save();
-      renderList(false);
+      if(it.read){
+        // X283: Bifarea rândului curent trece automat la următorul rând de la baza stivei
+        if(cur===i && (state==='playing'||state==='loading'||listRun)){
+          token++;stopAudioDrivers();
+          it.pos=0;
+          save();
+          var nextIdx=findNextFromBase(i);
+          if(nextIdx>=0){
+            listRun=true;
+            hold();
+            playItem(nextIdx, true);
+            say('Rând bifat — trec la următorul de la baza stivei.');
+            return;
+          }else{
+            listRun=false;state='idle';cur=-1;currentLoadedId='';
+            release();saveResume(0);renderList(false);
+            $('pause').querySelector('span:last-child').textContent='Pauză';
+            say('Toate articolele din stivă sunt bifate.');
+            return;
+          }
+        }
+        save();
+        renderList(false);
+      }else{
+        // X283: Debifarea înseamnă recitire sau continuare din semnul de carte
+        it.err=false;it.errMsg='';
+        if(state==='idle')cur=i;
+        save();
+        renderList(false);
+        say(it.pos>0 ? ('Pregătit pentru continuare de la propoziția '+(it.pos+1)+'.') : 'Rând pregătit pentru recitire.');
+      }
     };
 
     var mainCol=document.createElement('div');
     mainCol.className='list-item-main';
-    mainCol.onclick=function(){startList(i)};
+    mainCol.onclick=function(){startList(i, true)};
 
     var t=document.createElement('div');
     t.className='list-item-title';
@@ -2632,15 +2934,14 @@ function renderList(scrollTopOnAdd){
       mainCol.appendChild(em);
     }
 
-    // X277: Două butoane simple pe fiecare rând: steluță (Rezumat) + clipboard (Copiază text curat) + ștergere
     var rowActs=document.createElement('div');
     rowActs.className='row-actions';
 
     var sumBtn=document.createElement('button');
     sumBtn.type='button';
-    sumBtn.className='row-icon-btn';
+    sumBtn.className='row-icon-btn'+(it.summary&&it.summary.trim()?' has-sum':'');
     sumBtn.textContent='✨';
-    sumBtn.title='Rezumat în fereastră + Clipboard';
+    sumBtn.title=(it.summary&&it.summary.trim())?'Deschide rezumatul salvat și copiază în Clipboard':'Generează rezumat (salvează pe rând + Clipboard)';
     sumBtn.setAttribute('aria-label','Rezumat articol');
     sumBtn.onclick=function(e){e.stopPropagation();summarizeRowItem(it)};
 
@@ -2648,7 +2949,7 @@ function renderList(scrollTopOnAdd){
     copyBtn.type='button';
     copyBtn.className='row-icon-btn';
     copyBtn.textContent='📋';
-    copyBtn.title='Copiază text curat';
+    copyBtn.title='Copiază text curat în Clipboard';
     copyBtn.setAttribute('aria-label','Copiază text curat');
     copyBtn.onclick=function(e){e.stopPropagation();copyRowCleanText(it)};
 
@@ -2659,10 +2960,21 @@ function renderList(scrollTopOnAdd){
     x.setAttribute('aria-label','Șterge din listă');
     x.onclick=function(e){
       e.stopPropagation();
-      if(listRun&&i===cur)stop();
+      var wasActivePlaying=(cur===i && (state==='playing'||state==='loading'||listRun));
+      if(wasActivePlaying){token++;stopAudioDrivers()}
       if(cur>i)cur--;
       else if(cur===i)cur=-1;
-      items.splice(i,1);save();saveResume();renderList(false);
+      items.splice(i,1);
+      save();
+      if(wasActivePlaying){
+        var nxt=findNextFromBase();
+        if(nxt>=0){listRun=true;hold();playItem(nxt, true);return}
+        listRun=false;state='idle';release();saveResume(0);
+        $('pause').querySelector('span:last-child').textContent='Pauză';
+      }else{
+        saveResume();
+      }
+      renderList(false);
     };
 
     rowActs.appendChild(sumBtn);
@@ -2672,7 +2984,11 @@ function renderList(scrollTopOnAdd){
     if(isCurrent)activeEl=d;
   });
   lastAddedId='';
-  if(!items.length)box.innerHTML='<div style="padding:14px 0;text-align:center;color:var(--mut);font-size:0.8rem">Stiva e goală. Trimite prin Share sau apasă „📋 + Clipboard” — cele noi apar sus.</div>';
+  if(!items.length){
+    box.innerHTML='<div style="padding:14px 0;text-align:center;color:var(--mut);font-size:0.8rem">Stiva e goală. Trimite prin Share sau apasă „📋 + Clipboard” — cele noi apar sus.</div>';
+  }else if(shownCount===0){
+    box.innerHTML='<div style="padding:14px 0;text-align:center;color:var(--mut);font-size:0.8rem">Niciun rând nu conține „'+escapeHtml(searchQuery)+'” în titlu, text sau rezumat.</div>';
+  }
   var unreadCnt=items.filter(function(it){return !it.read}).length;
   $('hdr-count').textContent='('+unreadCnt+'/'+items.length+')';
   dur();
@@ -2686,36 +3002,42 @@ function renderList(scrollTopOnAdd){
   },40);
 }
 
+// X283: Pornire de la indexul specificat sau de la BAZA stivei
 function startList(from, resumeSavedPos){
   if(!items.length){note('Lista e goală.');return}
   items.forEach(function(it){it.err=false;it.errMsg=''});
-  var j=from!==undefined?from:items.findIndex(function(it){return !it.read});
+  var j=(from!==undefined)?from:findNextFromBase();
   if(j<0){say('Toate articolele sunt bifate ca citite.');speakNotice('Toate articolele sunt bifate ca citite');return}
-  listRun=true;chunksSpokenInItem=0;ttsErrStreak=0;
-  token++;stopAudioDrivers();hold();playItem(j, resumeSavedPos);
+  listRun=true;chunksSpokenInItem=0;lastCompletedChunkIdx=-1;ttsErrStreak=0;
+  token++;stopAudioDrivers();hold();playItem(j, resumeSavedPos!==false);
 }
 
 async function playItem(i, resumeSavedPos){
   var my=token;
-  cur=i;state='loading';chunksSpokenInItem=0;ttsErrStreak=0;renderList(false);saveResume();
+  cur=i;state='loading';chunksSpokenInItem=0;lastCompletedChunkIdx=-1;ttsErrStreak=0;
+  writeActiveOwner();
+  renderList(false);saveResume();
   var it=items[i];
   if(!it){playNext();return}
   currentLoadedId=it.id;
-  var savedPos=Number(it.pos)||0;
-  if(resumeSavedPos && idx>savedPos && idx<chunks.length)savedPos=idx;
+  var savedPos=Math.max(0, Number(it.pos)||0);
+  if(resumeSavedPos && cur===i && idx>savedPos && idx<chunks.length)savedPos=idx;
 
-  if(it.type==='text'){
-    var trTxt=await maybeTranslateToRo(it.text||'', it.title||'', my);
+  if(it.type==='text' || (it.text && it.text.trim().length>=40)){
+    var rawBody=it.text||'';
+    var trTxt=await maybeTranslateToRo(rawBody, it.title||'', my);
     if(my!==token)return;
     currentTitle=trTxt.title||it.title||'';
     currentArticleRawText=trTxt.text;
+    it.text=trTxt.text.slice(0,35000);
     it.words=countWordsStr(trTxt.text);
     saveArticleCache(it.id, trTxt.text, currentTitle);
     save();
     var spokenTxt=buildSpokenText(currentTitle, trTxt.text);
-    idx=savedPos;
-    render(spokenTxt, savedPos>0);
-    saveResume();
+    var tempChunks=split(spokenTxt);
+    idx=(savedPos>0 && savedPos<tempChunks.length)?savedPos:0;
+    render(spokenTxt, idx>0);
+    saveResume(idx);
     speak();return;
   }
 
@@ -2725,7 +3047,7 @@ async function playItem(i, resumeSavedPos){
     res=await getText(it.url, it.title||'', my);
   }catch(e){
     if(my!==token || (e&&e.message==='CANCELLED'))return;
-    var reason=describeError(e, it.url);
+    var reason=describeError(e);
     it.err=true;it.errMsg=reason;save();renderList(false);
     say('⚠ '+reason);
     if(e&&e.message==='FB_LOGIN_REQUIRED'){
@@ -2737,7 +3059,7 @@ async function playItem(i, resumeSavedPos){
     }
     if($('dynamic-blank').hidden)await speakNotice('Eroare: '+reason);
     if(my!==token)return;
-    var hasNextUnread=items.some(function(x,k){return k!==cur && !x.read && !x.err});
+    var hasNextUnread=(findNextFromBase(cur)>=0);
     if(!hasNextUnread && !$('dynamic-blank').hidden){
       listRun=false;state='idle';release();renderList(false);
       $('dyn-hint').textContent='⚠ '+reason+'\n\n(Dublu-tap pentru a deschide aplicația)';
@@ -2747,6 +3069,8 @@ async function playItem(i, resumeSavedPos){
   }
   if(my!==token)return;
   if(!it.title && res.title){it.title=res.title}
+  // X279: Păstrăm textul imediat după preluare și traducere chiar pe rând
+  it.text=(res.text||'').slice(0,35000);
   it.words=countWordsStr(res.text);
   saveArticleCache(it.id, res.text, it.title||res.title||'');
   save();
@@ -2754,16 +3078,17 @@ async function playItem(i, resumeSavedPos){
   currentArticleRawText=res.text;
   var spoken=buildSpokenText(currentTitle, res.text);
   renderList(false);
-  idx=savedPos;
-  render(spoken, savedPos>0);
-  saveResume();
+  var tempChunks2=split(spoken);
+  idx=(savedPos>0 && savedPos<tempChunks2.length)?savedPos:0;
+  render(spoken, idx>0);
+  saveResume(idx);
   speak();
 }
 
-// X23: Parcurgere stivă cu wrap-around ca să ajungă și la articolele noi adăugate sus (index 0)
+// X283: Următorul rând necitit întotdeauna pornind de la BAZA stivei (items.length - 1 -> 0)
 function playNext(){
-  for(var j=cur+1;j<items.length;j++)if(!items[j].read&&!items[j].err){playItem(j);return}
-  for(var k=0;k<cur;k++)if(!items[k].read&&!items[k].err){playItem(k);return}
+  var nextIdx=findNextFromBase(cur>=0?cur:undefined);
+  if(nextIdx>=0){playItem(nextIdx, true);return}
   listRun=false;state='idle';release();saveResume();
   $('pause').querySelector('span:last-child').textContent='Pauză';renderList(false);
   say('Lista a fost citită.');
@@ -2774,21 +3099,23 @@ function finishItem(markRead){
   renderList(false);playNext();
 }
 
-// X274: Adăugare rapidă în vârful listei din Clipboard (respeсtă X272: nu întrerupe dacă se citește alt articol!)
-function pushRawInputToStackTop(rawInput){
+// X274 + X272: Adăugare în vârful stivei fără a întrerupe articolul curent
+function pushRawInputToStackTop(rawInput, customTitle){
   var trimmed=(rawInput||'').trim();
   if(!trimmed){say('Conținut gol.');return}
   var parsed=parseInputPayload(trimmed);
   var added=null;
   if(parsed.kind==='link'){
-    added=addItemWithId(parsed.url, parsed.title, '', 'clipboard', false);
+    added=addItemWithId(parsed.url, (customTitle||'').trim()||parsed.title, '', 'clipboard', false);
   }else{
     var cleanClip=trimmed.replace(/(^|\s)#[\wăâîșțĂÂÎȘȚ-]+/g,'$1');
-    added=addItemWithId('', cleanClip.split('\n')[0].slice(0,60), cleanClip, 'clipboard', false);
+    var ttl=(customTitle||'').trim()||cleanClip.split('\n')[0].slice(0,60);
+    added=addItemWithId('', ttl, cleanClip, 'clipboard', false);
   }
   if(!added)return;
-  if(state==='playing'){
-    say('Depus sus în stivă: „'+added.title+'” (așteaptă să se termine articolul curent).');
+  if(state==='playing'||state==='loading'){
+    listRun=true;
+    say('Depus sus în stivă: „'+added.title+'” (articolul curent continuă neîntrerupt).');
   }else if(settings.autoPlay){
     startList(0, false);
   }else{
@@ -2803,6 +3130,7 @@ $('btn-clip-add').onclick=async function(){
     if(!clip){say('Clipboard-ul este gol.');speakNotice('Clipboardul este gol');return}
     pushRawInputToStackTop(clip);
   }catch(e){
+    $('clip-manual-title').value='';
     $('clip-manual-txt').value='';
     $('clip-modal').hidden=false;
     $('clip-manual-txt').focus();
@@ -2811,8 +3139,129 @@ $('btn-clip-add').onclick=async function(){
 $('clip-close-x').onclick=$('clip-cancel-btn').onclick=function(){$('clip-modal').hidden=true};
 $('clip-save-btn').onclick=function(){
   var val=($('clip-manual-txt').value||'').trim();
+  var ttl=($('clip-manual-title').value||'').trim();
   $('clip-modal').hidden=true;
-  if(val)pushRawInputToStackTop(val);
+  if(val)pushRawInputToStackTop(val, ttl);
+};
+
+// X280: Căutare în titlu, text și rezumate + Settings local & Help local stivă
+$('stack-search').oninput=function(){
+  searchQuery=this.value||'';
+  $('stack-search-clear').hidden=!searchQuery;
+  renderList(false);
+};
+$('stack-search-clear').onclick=function(){
+  searchQuery='';
+  $('stack-search').value='';
+  this.hidden=true;
+  renderList(false);
+};
+$('stack-settings-btn').onclick=function(){
+  $('stack-help-box').hidden=true;$('stack-help-btn').classList.remove('on');
+  var box=$('stack-settings-box');
+  box.hidden=!box.hidden;
+  this.classList.toggle('on', !box.hidden);
+};
+$('stack-settings-close').onclick=function(){
+  $('stack-settings-box').hidden=true;$('stack-settings-btn').classList.remove('on');
+};
+$('stack-help-btn').onclick=function(){
+  $('stack-settings-box').hidden=true;$('stack-settings-btn').classList.remove('on');
+  var box=$('stack-help-box');
+  box.hidden=!box.hidden;
+  this.classList.toggle('on', !box.hidden);
+};
+$('stack-help-close').onclick=function(){
+  $('stack-help-box').hidden=true;$('stack-help-btn').classList.remove('on');
+};
+$('stack-add-btn').onclick=function(){
+  $('clip-manual-title').value='';
+  $('clip-manual-txt').value='';
+  $('clip-modal').hidden=false;
+  $('clip-manual-txt').focus();
+};
+
+// X280: Salvare & Restaurare JSON (sincron între Settings principal și Settings local stivă)
+function exportStackBackupJson(){
+  var payload={
+    app:'Lectură audio',
+    version:'v15',
+    exportedAt:new Date().toISOString(),
+    items:items,
+    history:historyList
+  };
+  saveLocal('stiva-lectura-v15.json', JSON.stringify(payload, null, 2), 'application/json;charset=utf-8');
+  say('Stiva ('+items.length+' rânduri cu text & rezumate) a fost salvată în fișier .json.');
+}
+function triggerRestoreJson(){
+  $('restore-json-input').value='';
+  $('restore-json-input').click();
+}
+$('top-save-stack').onclick=exportStackBackupJson;
+$('stack-save-json').onclick=exportStackBackupJson;
+$('top-restore-stack').onclick=triggerRestoreJson;
+$('stack-restore-json').onclick=triggerRestoreJson;
+
+$('restore-json-input').onchange=function(ev){
+  var file=ev.target.files&&ev.target.files[0];
+  if(!file)return;
+  var reader=new FileReader();
+  reader.onload=function(){
+    try{
+      var parsed=JSON.parse(String(reader.result||'null'));
+      var importedItems=[];
+      if(parsed && Array.isArray(parsed.items)){
+        importedItems=parsed.items;
+        if(Array.isArray(parsed.history)){
+          historyList=parsed.history.slice(0,200);
+          saveHistory();renderHistory();
+        }
+      }else if(Array.isArray(parsed)){
+        importedItems=parsed.map(function(entry,i){
+          if(entry && (entry.source==='share'||entry.source==='clipboard') && !('read' in entry)){
+            return {
+              id:entry.id||('rest_'+Date.now()+'_'+i),
+              type:entry.type||(entry.url?'link':'text'),
+              url:entry.url||'',
+              text:entry.text||'',
+              title:entry.title||entry.url||'Articol',
+              summary:entry.summary||'',
+              read:false,err:false,errMsg:'',pos:0,
+              words:entry.text?countWordsStr(entry.text):0
+            };
+          }
+          return entry;
+        });
+      }
+      if(!importedItems.length){say('Fișierul JSON nu conține elemente valide pentru stivă.');return}
+      var normalized=importedItems.map(function(it,i){
+        var txt=it.text||'';
+        return {
+          id:it.id||('rest_'+Date.now()+'_'+i),
+          type:it.type||(txt&&!it.url?'text':'link'),
+          url:it.url||'',
+          text:txt,
+          title:it.title||it.url||'Articol',
+          summary:it.summary||'',
+          read:!!it.read,
+          err:!!it.err,
+          errMsg:it.errMsg||'',
+          pos:Number(it.pos)||0,
+          words:Number(it.words)||(txt?countWordsStr(txt):0)
+        };
+      });
+      var existIds={};
+      normalized.forEach(function(it){existIds[it.id]=true});
+      items.forEach(function(old){if(!existIds[old.id])normalized.push(old)});
+      items=normalized;
+      save();
+      renderList(false);
+      say('Restaurat cu succes '+importedItems.length+' rânduri în stivă!');
+    }catch(err){
+      say('Eroare la citirea fișierului JSON de restaurare.');
+    }
+  };
+  reader.readAsText(file);
 };
 
 // Rezumat Puter.js + fallback local
@@ -2857,8 +3306,7 @@ $('sum-copy-btn').onclick=function(){
 $('sum-read-btn').onclick=function(){
   var sum=summaryCleanText||stripMarkdownForSpeech($('summary-text').textContent);
   $('summary-modal').hidden=true;
-  addItemWithId('', 'Rezumat', sum, 'clipboard', false);
-  startList(0, false);
+  pushRawInputToStackTop(sum, 'Rezumat');
 };
 
 // Sleep Timer
@@ -2925,7 +3373,7 @@ function renderHistory(){
       }else if(h.text){
         addItemWithId('', h.title||'', h.text, 'clipboard', false);
       }
-      if(state!=='playing' && settings.autoPlay)startList(0, false);
+      if(state!=='playing' && state!=='loading' && settings.autoPlay)startList(0, false);
     };
     d.appendChild(info);
     box.appendChild(d);
@@ -2965,23 +3413,36 @@ $('help').onclick=function(){
   h.hidden=!h.hidden;$('help').classList.toggle('on',!h.hidden);$('help').setAttribute('aria-expanded',String(!h.hidden));
 };
 $('chk-all').onclick=function(){
-  items.forEach(function(it){it.read=true;it.err=false;it.errMsg=''});
+  items.forEach(function(it){it.read=true;it.err=false;it.errMsg='';it.pos=0});
+  if(state==='playing'||state==='loading'||listRun)performTimerShutdown('Toate articolele au fost bifate ca citite.');
   save();renderList(false);say('Toate articolele au fost bifate ca citite.');
 };
 $('unchk-all').onclick=function(){
   items.forEach(function(it){it.read=false;it.err=false;it.errMsg=''});
   save();renderList(false);say('Toate articolele au fost debifate (necitite).');
 };
-$('delread').onclick=function(){if(listRun)stop();items=items.filter(function(it){return !it.read});save();renderList(false)};
-$('delall').onclick=function(){if(confirm('Ștergi toată lista?')){if(listRun)stop();cur=-1;items=[];save();saveResume();renderList(false)}};
+$('delread').onclick=function(){
+  if(cur>=0 && items[cur] && items[cur].read){
+    token++;stopAudioDrivers();listRun=false;state='idle';cur=-1;currentLoadedId='';release();
+  }
+  items=items.filter(function(it){return !it.read});
+  save();saveResume();renderList(false);
+};
+$('delall').onclick=function(){
+  if(confirm('Ștergi toată lista?')){
+    performTimerShutdown('Stiva a fost ștearsă.');
+    cur=-1;currentLoadedId='';items=[];chunks=[];spans=[];view.hidden=true;
+    save();saveResume(0);renderList(false);
+  }
+};
 $('play').onclick=start;
 $('pause').onclick=pause;
 $('back2').onclick=back2;
 $('skip').onclick=skip;
 $('stop').onclick=stop;
-window.addEventListener('beforeunload',function(){saveResume();stopAudioDrivers();release()});
+window.addEventListener('beforeunload',function(){saveResume(idx);stopAudioDrivers();release()});
 
-// Downloads v14
+// Downloads v15
 function saveLocal(filename, data, type){
   var b=new Blob([data],{type:type});
   var a=document.createElement('a');
@@ -2993,7 +3454,7 @@ function saveLocal(filename, data, type){
 }
 
 $('btn-dl-index').onclick=function(){
-  fetch(location.pathname.endsWith('lectura-v14.html') ? 'lectura-v14.html' : 'index.html')
+  fetch(location.pathname.endsWith('lectura-v15.html') ? 'lectura-v15.html' : 'index.html')
     .then(function(r){ return r.text(); })
     .then(function(t){
       var cleanHtml=t.replace(/<script[^>]*_aistudio-iframe\.js[^>]*><\/script>/gi,'');
@@ -3016,7 +3477,7 @@ $('btn-dl-sw').onclick=function(){
   });
 };
 
-// X21: Restaurare completă la pornire / reactivare (Stivă implicită + Articol N + propoziție)
+// X21: Restaurare completă la pornire / reactivare
 (function restoreResume(){
   if(openedFromShare)return;
   try{
@@ -3032,7 +3493,8 @@ $('btn-dl-sw').onclick=function(){
       currentTitle=r.title||(cur>=0&&items[cur]?items[cur].title:'');
       currentArticleRawText=r.article||'';
       var restoredView=r.spoken||buildSpokenText(currentTitle, currentArticleRawText);
-      idx=Number(r.idx)||0;
+      var itemPos=(cur>=0&&items[cur]&&typeof items[cur].pos==='number')?items[cur].pos:0;
+      idx=Math.max(Number(r.idx)||0, itemPos);
       render(restoredView, true);
     }else{
       idx=Number(r.idx)||0;
@@ -3047,7 +3509,7 @@ view.style.height='24vh';
 renderList(false);
 renderHistory();
 
-// X272 + X26 + X27: Dacă se citește deja în altă fereastră, predă în coadă fără a întrerupe; altfel pornește articolul partajat
+// X272 + X26 + X27: Dacă se citește deja în altă fereastră (sau în aceeași fereastră Android reîncărcată), NU întrerupem articolul curent!
 if(pendingShareDynamic){
   mode=2;
   $('main-app').hidden=true;
@@ -3055,6 +3517,26 @@ if(pendingShareDynamic){
 
   var startDynamicShareLocal=function(){
     if(dynamicHandoffAcked)return;
+    // Dacă alt tab a reînnoit heartbeat-ul între timp, nu îi furăm redarea
+    var liveRemote=getActivePlayerInfo();
+    if(liveRemote && (Date.now()-liveRemote.ts)<6000 && liveRemote.state!=='idle'){
+      dynamicQueuedAcked=true;
+      $('dyn-hint').textContent='✓ „'+pendingShareDynamic.label.slice(0,60)+'” depus sus în stivă.\n\nArticolul curent continuă; noul articol așteaptă rândul.\n(Atingeți pentru a vedea stiva)';
+      return;
+    }
+
+    // Dacă Android a reîncărcat aceeași fereastră PWA peste articolul Y aflat în redare, reluăm Y de unde a rămas!
+    if(prevActiveBeforeNav){
+      var yIdx=items.findIndex(function(it){return it.id===prevActiveBeforeNav.id && !it.read && !it.err});
+      if(yIdx>=0){
+        if(!audioUnlockedByUser){
+          $('dyn-hint').textContent='✓ „'+pendingShareDynamic.label.slice(0,55)+'” pus sus în stivă.\n\n▶ Atingeți pentru a continua „'+(prevActiveBeforeNav.title||'articolul curent').slice(0,55)+'”';
+        }
+        startList(yIdx, true);
+        return;
+      }
+    }
+
     var targetShareIdx=items.findIndex(function(it){return it.id===pendingShareDynamic.newId});
     if(targetShareIdx<0)targetShareIdx=0;
     var shareItem=items[targetShareIdx];
@@ -3076,12 +3558,20 @@ if(pendingShareDynamic){
     startList(targetShareIdx, false);
   };
 
-  if(bc && isAnotherPlayerActive()){
+  if(bc){
     try{
       bc.postMessage({type:'dynamic_share_handoff',itemId:pendingShareDynamic.newId,sender:INSTANCE_ID});
     }catch(e){}
-    setTimeout(startDynamicShareLocal, 420);
-  }else if(settings.dynamicShareMode){
+    setTimeout(function(){
+      if(dynamicHandoffAcked)return;
+      if(settings.dynamicShareMode || prevActiveBeforeNav){
+        startDynamicShareLocal();
+      }else{
+        $('dynamic-blank').hidden=true;
+        $('main-app').hidden=false;
+      }
+    }, 700);
+  }else if(settings.dynamicShareMode || prevActiveBeforeNav){
     startDynamicShareLocal();
   }else{
     $('dynamic-blank').hidden=true;
