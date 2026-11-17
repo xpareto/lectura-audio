@@ -1,4 +1,4 @@
-var CACHE = 'lectura-articole-v22';
+var CACHE = 'lectura-articole-v23';
 var FILES = [
   './',
   './index.html',

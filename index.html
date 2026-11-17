@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="referrer" content="no-referrer">
-<title>Lectură audio v22</title>
+<title>Lectură audio v23</title>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#059669">
 <meta name="apple-mobile-web-app-title" content="Lectură">
@@ -677,6 +677,7 @@
   }
   .list-item {
     position: relative;
+    flex-shrink: 0;
     overflow: hidden;
     border-radius: 9px;
     border: 1px solid var(--line);
@@ -705,6 +706,7 @@
     align-items: center;
     justify-content: space-between;
     gap: 7px;
+    min-height: 42px;
     padding: 8px 10px;
     background: var(--card);
     transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1);
@@ -1142,11 +1144,11 @@
 </div>
 
 <main id="main-app">
-  <!-- Antet v22 (X274: număr elemente în listă lângă versiune, X17: fără download pe ecran principal) -->
+  <!-- Antet v23 (X274: număr elemente în listă lângă versiune, X17: fără download pe ecran principal) -->
   <header>
     <div class="title-group">
       <div class="app-icon">▶</div>
-      <h1>Lectură audio <span class="v-badge-green">v22</span> <span id="hdr-count" class="hdr-count" title="Elemente în stivă (necitite / total)">(0)</span></h1>
+      <h1>Lectură audio <span class="v-badge-green">v23</span> <span id="hdr-count" class="hdr-count" title="Elemente în stivă (necitite / total)">(0)</span></h1>
     </div>
     <div class="header-actions">
       <button id="settings-btn" type="button" class="btn-sm" aria-expanded="false" title="Setări, Sunete, Salvare/Restaurare, Memorie, Sleep Timer, Download &amp; Istoric">
@@ -1161,7 +1163,7 @@
   <!-- Settings generale, Sunet tranziție, Salvare/Restaurare JSON, Download (X17), Sleep Timer, Memorie (X286) & Istoric -->
   <div id="settingsbox" class="panel-box" hidden>
     <h2>
-      <span>⚙ Setări aplicație (v22)</span>
+      <span>⚙ Setări aplicație (v23)</span>
       <button id="settings-close" type="button" class="hist-btn">Închide ✕</button>
     </h2>
 
@@ -1277,13 +1279,13 @@
     <!-- X17: Panou Descărcare mutată EXCLUSIV în Settings -->
     <div id="dl-panel" class="dl-panel">
       <div class="dl-header">
-        <span>📥 Descarcă pentru GitHub (v22):</span>
+        <span>📥 Descarcă pentru GitHub (v23):</span>
         <button id="btn-force-update" type="button" class="hist-btn" style="font-size:0.68rem;" title="Șterge cache-ul browserului/SW și reîncarcă imediat cea mai nouă versiune">🔄 Forțează actualizarea</button>
       </div>
       <div class="dl-grid">
-        <button id="btn-dl-index" type="button" class="dl-btn full" title="Descarcă index.html v22">📥 Descarcă index.html (v22)</button>
+        <button id="btn-dl-index" type="button" class="dl-btn full" title="Descarcă index.html v23">📥 Descarcă index.html (v23)</button>
         <button id="btn-dl-manifest" type="button" class="dl-btn sec" title="Descarcă manifest.json">📥 manifest.json</button>
-        <button id="btn-dl-sw" type="button" class="dl-btn gray" title="Descarcă sw.js v22">📥 sw.js (v22)</button>
+        <button id="btn-dl-sw" type="button" class="dl-btn gray" title="Descarcă sw.js v23">📥 sw.js (v23)</button>
       </div>
     </div>
 
@@ -1298,12 +1300,12 @@
     <div id="hist-items"></div>
   </div>
 
-  <!-- Help General v22 -->
+  <!-- Help General v23 -->
   <div id="helpbox" class="panel-box" hidden>
-    <h2>Noutăți &amp; Instrucțiuni (v22)</h2>
+    <h2>Noutăți &amp; Instrucțiuni (v23)</h2>
     <ol>
-      <li><b>Buton „Rezumat” în bara de control &amp; glisare stânga/dreapta în stivă (v22)</b>: butonul rapid <b>✨ Rezumat</b> trece imediat în modul rezumat (sau revine la text integral); în stivă, glisați cu degetul un rând la stânga sau la dreapta pentru <b>📤 Share</b> și <b>📋 Text curat</b>, lăsând mai mult spațiu pentru titlu.</li>
-      <li><b>Versiune vizibilă &amp; actualizare automată (v21)</b>: eticheta verde de lângă titlu (<b>v22</b>) confirmă instant versiunea activă pe ecran; Service Worker-ul ocolește cache-ul HTTP și se reîncarcă automat când apare o versiune nouă (există și butonul <i>🔄 Forțează actualizarea</i> în Settings).</li>
+      <li><b>Buton „Rezumat” în bara de control &amp; glisare stânga/dreapta în stivă (v22–v23)</b>: butonul rapid <b>✨ Rezumat</b> trece imediat în modul rezumat (sau revine la text integral); în stivă, glisați cu degetul un rând la stânga sau la dreapta pentru <b>📤 Share</b> și <b>📋 Text curat</b>, lăsând mai mult spațiu pentru titlu.</li>
+      <li><b>Versiune vizibilă &amp; actualizare automată (v21)</b>: eticheta verde de lângă titlu (<b>v23</b>) confirmă instant versiunea activă pe ecran; Service Worker-ul ocolește cache-ul HTTP și se reîncarcă automat când apare o versiune nouă (există și butonul <i>🔄 Forțează actualizarea</i> în Settings).</li>
       <li><b>Share silențios fără întrerupere &amp; fără voci suprapuse</b>: la Share în timpul citirii unui articol, lectura curentă continuă direct de unde era fără anunț „Reiau” sau ferestre inutile; anunțurile folosesc canalul audio unic.</li>
       <li><b>Sunet natural &amp; anunț clar (v20)</b>: 5 sunete ambientale (1.5s–15s) înaintea articolelor noi, „Reiau [titlu]” la reluările manuale, „Rezumatul pentru [titlu]”, „Facebook” pentru linkurile FB și linkul sursă pe primul rând în Clipboard.</li>
     </ol>
@@ -1652,10 +1654,10 @@ function checkMemoryQuota(manualTrigger){
     return false;
   }
   lastAutoCleanTs=Date.now();
-  var fname='stiva-lectura-v22-'+datedBackupSuffix()+'.json';
+  var fname='stiva-lectura-v23-'+datedBackupSuffix()+'.json';
   var backupPayload={
     app:'Lectură audio',
-    version:'v22',
+    version:'v23',
     reason:'auto_memory_cleanup',
     exportedAt:new Date().toISOString(),
     usefulBytesBefore:m.usefulBytes,
@@ -4562,12 +4564,12 @@ $('stack-add-btn').onclick=function(){
 function exportStackBackupJson(){
   var payload={
     app:'Lectură audio',
-    version:'v22',
+    version:'v23',
     exportedAt:new Date().toISOString(),
     items:items,
     history:historyList
   };
-  saveLocal('stiva-lectura-v22-'+datedBackupSuffix()+'.json', JSON.stringify(payload, null, 2), 'application/json;charset=utf-8');
+  saveLocal('stiva-lectura-v23-'+datedBackupSuffix()+'.json', JSON.stringify(payload, null, 2), 'application/json;charset=utf-8');
   say('Stiva ('+items.length+' rânduri cu text, rezumate & highlights) a fost salvată în fișier .json.');
 }
 function triggerRestoreJson(){
@@ -4878,7 +4880,7 @@ $('skip').onclick=skip;
 $('stop').onclick=stop;
 window.addEventListener('beforeunload',function(){saveResume(idx);stopAudioDrivers();release()});
 
-// Downloads v22
+// Downloads v23
 function saveLocal(filename, data, type){
   var b=new Blob([data],{type:type});
   var a=document.createElement('a');
@@ -4890,7 +4892,7 @@ function saveLocal(filename, data, type){
 }
 
 $('btn-dl-index').onclick=function(){
-  fetch(location.pathname.endsWith('lectura-v22.html') ? 'lectura-v22.html' : 'index.html', {cache:'no-store'})
+  fetch(location.pathname.endsWith('lectura-v23.html') ? 'lectura-v23.html' : 'index.html', {cache:'no-store'})
     .then(function(r){ return r.text(); })
     .then(function(t){
       var cleanHtml=t.replace(/<script[^>]*_aistudio-iframe\.js[^>]*><\/script>/gi,'');
