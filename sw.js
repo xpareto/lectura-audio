@@ -1,4 +1,4 @@
-var CACHE = 'lectura-articole-v20';
+var CACHE = 'lectura-articole-v21';
 var FILES = [
   './',
   './index.html',
@@ -47,10 +47,11 @@ self.addEventListener('fetch', function(e) {
   if (
     e.request.mode === 'navigate' ||
     e.request.url.endsWith('manifest.json') ||
-    e.request.url.endsWith('index.html')
+    e.request.url.endsWith('index.html') ||
+    e.request.url.endsWith('/')
   ) {
     e.respondWith(
-      fetch(e.request).then(function(resp) {
+      fetch(new Request(e.request.url, { cache: 'no-store' })).then(function(resp) {
         if (resp && resp.status === 200) {
           var clone = resp.clone();
           caches.open(CACHE).then(function(cache) {
