@@ -1,4 +1,4 @@
-var CACHE = 'lectura-articole-v30';
+var CACHE = 'lectura-articole-v31';
 var FILES = [
   './',
   './index.html',
@@ -28,6 +28,29 @@ self.addEventListener('activate', function(e) {
   self.clients.claim();
 });
 
+function fetchWithTimeout(req, ms) {
+  return new Promise(function(resolve, reject) {
+    var done = false;
+    var timer = setTimeout(function() {
+      if (!done) {
+        done = true;
+        reject(new Error('sw_net_timeout'));
+      }
+    }, ms);
+    fetch(new Request(req.url, { cache: 'no-store' })).then(function(resp) {
+      if (done) return;
+      done = true;
+      clearTimeout(timer);
+      resolve(resp);
+    }).catch(function(err) {
+      if (done) return;
+      done = true;
+      clearTimeout(timer);
+      reject(err);
+    });
+  });
+}
+
 self.addEventListener('fetch', function(e) {
   // Ignoră cererile externe (API-uri, TTS audio, traducere, proxy-uri)
   if (
@@ -43,7 +66,30 @@ self.addEventListener('fetch', function(e) {
     return;
   }
 
-  // Network-First pentru navigare, HTML și manifest.json ca să primească imediat actualizările
+  // X295: La Share Target (?url= / ?text= / ?title=) servim INSTANT din cache (<5ms) ca să nu înghețe pe iconul aplicației
+  var isShareNav = e.request.mode === 'navigate' && /[?&](?:url|text|title)=/i.test(e.request.url);
+  if (isShareNav) {
+    e.respondWith(
+      caches.match('./index.html').then(function(cachedIdx) {
+        if (cachedIdx) return cachedIdx;
+        return caches.match(e.request, { ignoreSearch: true }).then(function(cachedAny) {
+          if (cachedAny) return cachedAny;
+          return fetchWithTimeout(e.request, 2500).then(function(resp) {
+            if (resp && resp.status === 200) {
+              var cl = resp.clone();
+              caches.open(CACHE).then(function(cache) { cache.put('./index.html', cl); });
+            }
+            return resp;
+          });
+        });
+      }).catch(function() {
+        return caches.match('./index.html') || caches.match(e.request, { ignoreSearch: true });
+      })
+    );
+    return;
+  }
+
+  // Network-First cu timeout scurt (2.5s) pentru navigare normală, HTML și manifest.json
   if (
     e.request.mode === 'navigate' ||
     e.request.url.endsWith('manifest.json') ||
@@ -51,11 +97,12 @@ self.addEventListener('fetch', function(e) {
     e.request.url.endsWith('/')
   ) {
     e.respondWith(
-      fetch(new Request(e.request.url, { cache: 'no-store' })).then(function(resp) {
+      fetchWithTimeout(e.request, 2500).then(function(resp) {
         if (resp && resp.status === 200) {
           var clone = resp.clone();
+          var cacheKey = e.request.mode === 'navigate' ? './index.html' : e.request;
           caches.open(CACHE).then(function(cache) {
-            cache.put(e.request, clone);
+            cache.put(cacheKey, clone);
           });
         }
         return resp;
