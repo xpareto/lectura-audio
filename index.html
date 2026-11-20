@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="referrer" content="no-referrer">
-<title>Lectură audio v29</title>
+<title>Lectură audio v30</title>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#059669">
 <meta name="apple-mobile-web-app-title" content="Lectură">
@@ -1316,11 +1316,11 @@
 </div>
 
 <main id="main-app">
-  <!-- Antet v29 (X274: număr elemente în listă lângă versiune, X17: fără download pe ecran principal) -->
+  <!-- Antet v30 (X274: număr elemente în listă lângă versiune, X17: fără download pe ecran principal) -->
   <header>
     <div class="title-group">
       <div class="app-icon">▶</div>
-      <h1>Lectură audio <span class="v-badge-green">v29</span> <span id="hdr-count" class="hdr-count" title="Elemente în stivă (necitite / total)">(0)</span></h1>
+      <h1>Lectură audio <span class="v-badge-green">v30</span> <span id="hdr-count" class="hdr-count" title="Elemente în stivă (necitite / total)">(0)</span></h1>
     </div>
     <div class="header-actions">
       <button id="settings-btn" type="button" class="btn-sm" aria-expanded="false" title="Setări, Sunete, Salvare/Restaurare, Memorie, Sleep Timer, Download &amp; Istoric">
@@ -1335,7 +1335,7 @@
   <!-- Settings generale, Sunet tranziție, Salvare/Restaurare JSON, Download (X17), Sleep Timer, Memorie (X286) & Istoric -->
   <div id="settingsbox" class="panel-box" hidden>
     <h2>
-      <span>⚙ Setări aplicație (v29)</span>
+      <span>⚙ Setări aplicație (v30)</span>
       <button id="settings-close" type="button" class="hist-btn">Închide ✕</button>
     </h2>
 
@@ -1455,13 +1455,13 @@
     <!-- X17: Panou Descărcare mutată EXCLUSIV în Settings -->
     <div id="dl-panel" class="dl-panel">
       <div class="dl-header">
-        <span>📥 Descarcă pentru GitHub (v29):</span>
+        <span>📥 Descarcă pentru GitHub (v30):</span>
         <button id="btn-force-update" type="button" class="hist-btn" style="font-size:0.68rem;" title="Șterge cache-ul browserului/SW și reîncarcă imediat cea mai nouă versiune">🔄 Forțează actualizarea</button>
       </div>
       <div class="dl-grid">
-        <button id="btn-dl-index" type="button" class="dl-btn full" title="Descarcă index.html v29">📥 Descarcă index.html (v29)</button>
+        <button id="btn-dl-index" type="button" class="dl-btn full" title="Descarcă index.html v30">📥 Descarcă index.html (v30)</button>
         <button id="btn-dl-manifest" type="button" class="dl-btn sec" title="Descarcă manifest.json">📥 manifest.json</button>
-        <button id="btn-dl-sw" type="button" class="dl-btn gray" title="Descarcă sw.js v29">📥 sw.js (v29)</button>
+        <button id="btn-dl-sw" type="button" class="dl-btn gray" title="Descarcă sw.js v30">📥 sw.js (v30)</button>
       </div>
     </div>
 
@@ -1476,14 +1476,14 @@
     <div id="hist-items"></div>
   </div>
 
-  <!-- Help General v29 -->
+  <!-- Help General v30 -->
   <div id="helpbox" class="panel-box" hidden>
-    <h2>Noutăți &amp; Instrucțiuni (v29)</h2>
+    <h2>Noutăți &amp; Instrucțiuni (v30)</h2>
     <ol>
-      <li><b>Pornire automată &amp; ordine sus→jos (v29)</b>: la lansare pornește automat lectura de la ultimul articol citit, urcă spre vârful stivei și apoi coboară spre bază citind fiecare rând nebifat; rândul activ rămâne permanent vizibil în stivă la activarea ferestrei.</li>
-      <li><b>Fără repetarea titlului &amp; pauză minimă la Share (v29)</b>: titlul duplicat la începutul textului este detectat și eliminat automat; la Share în timpul citirii, reluarea este aproape instantanee.</li>
+      <li><b>Pornire automată &amp; ordine sus→jos (v30)</b>: la lansare pornește automat lectura de la ultimul articol citit, urcă spre vârful stivei și apoi coboară spre bază citind fiecare rând nebifat; rândul activ rămâne permanent vizibil în stivă la activarea ferestrei.</li>
+      <li><b>Share stabil, titluri Facebook &amp; fără repetare titlu (v30)</b>: la Share, lectura curentă și fereastra albicioasă nu mai sunt oprite prematur; postările Facebook afișează titlul real în stivă în locul adresei URL.</li>
       <li><b>Grupuri Audio &amp; Mod + Mod Silent (v25)</b>: butoanele principale sunt organizate în grupul <b>Audio</b> (<i>Start, Pauză, Stop, Skip</i>) și grupul <b>Mod</b> (<i>Rezumat, Silent</i>); în modul <b>🔇 Silent</b>, la Share articolul se adaugă doar în stivă, fără citire audio.</li>
-      <li><b>Citire stabilă, Preferințe &amp; Etichete <code>#</code> &amp; versiune vizibilă</b>: glisează un rând stânga/dreapta pentru <b>📤 Share</b> și <b>📋 Text</b>; eticheta verde (<b>v29</b>) confirmă versiunea activă.</li>
+      <li><b>Citire stabilă, Preferințe &amp; Etichete <code>#</code> &amp; versiune vizibilă</b>: glisează un rând stânga/dreapta pentru <b>📤 Share</b> și <b>📋 Text</b>; eticheta verde (<b>v30</b>) confirmă versiunea activă.</li>
     </ol>
   </div>
 
@@ -1642,7 +1642,7 @@ var chunks=[],spans=[],idx=0,token=0,state='idle',roVoice=null,wake=null,mode=2,
 var utterStart=0,bgWorker=null,bgTimerFallback=null,lockResolver=null;
 var currentArticleRawText='',currentTitle='',lastAddedId='',sleepMode='off',sleepEndTs=0;
 var chunkStarted=false,chunksSpokenInItem=0,lastCompletedChunkIdx=-1,ttsErrStreak=0,activeDriver='audio';
-var lastStartStamp=0,heartbeatTimer=null,searchQuery='',tagSuggestionPicked=false,lastShareSyncTs=0;
+var lastStartStamp=0,heartbeatTimer=null,searchQuery='',tagSuggestionPicked=false,lastShareSyncTs=0,lastAutoPauseTs=0,userPausedManually=false;
 var lastFbUrl='',lastFbItemId='',summaryRawText='',summaryCleanText='',summarySourceUrl='',summarySourceTitle='',pendingShareDynamic=null;
 var INSTANCE_ID='inst_'+Date.now()+'_'+Math.random().toString(36).slice(2,7);
 var TAB_ID=(function(){
@@ -1925,10 +1925,10 @@ function checkMemoryQuota(manualTrigger){
     return false;
   }
   lastAutoCleanTs=Date.now();
-  var fname='stiva-lectura-v29-'+datedBackupSuffix()+'.json';
+  var fname='stiva-lectura-v30-'+datedBackupSuffix()+'.json';
   var backupPayload={
     app:'Lectură audio',
-    version:'v29',
+    version:'v30',
     reason:'auto_memory_cleanup',
     exportedAt:new Date().toISOString(),
     usefulBytesBefore:m.usefulBytes,
@@ -2041,6 +2041,84 @@ function saveResume(overrideIdx){
   }catch(e){}
 }
 
+function isFacebookUrl(u){
+  try{return /(^|\.)(facebook\.com|fb\.com|fb\.watch)$/i.test(new URL(u).hostname)}catch(e){return /^(?:https?:\/\/)?(?:[\w-]+\.)*(?:facebook\.com|fb\.com|fb\.watch)(?:\/|\?|$)/i.test((u||'').trim())}
+}
+function isFacebookTitleOrUrl(t){
+  var s=(t||'').trim();
+  if(!s)return false;
+  if(/^(?:https?:\/\/)?(?:[\w-]+\.)*(?:facebook\.com|fb\.com|fb\.watch)(?:\/|\?|$)/i.test(s))return true;
+  if(/^https?:\/\//i.test(s) && isFacebookUrl(s))return true;
+  return false;
+}
+function isBadOrPlaceholderTitle(t, url){
+  var s=(t||'').replace(/\s+/g,' ').trim();
+  if(!s)return true;
+  if(url && s===url.trim())return true;
+  if(isFacebookTitleOrUrl(s))return true;
+  if(/^https?:\/\//i.test(s))return true;
+  if(/^(facebook|postare facebook|articol|element salvat|log in|log into facebook|conecteaz[aă]-te|see more|vezi mai mult|error|just a moment|attention required|redirecting)$/i.test(s))return true;
+  return false;
+}
+function cleanFacebookMetaTitle(rawTitle){
+  var s=(rawTitle||'').replace(/\s+/g,' ').trim();
+  s=s.replace(/\s*(?:\||-|–|—)\s*facebook\s*$/i,'')
+     .replace(/\s+(?:on|pe)\s+facebook\s*$/i,'')
+     .replace(/\s+/g,' ').trim();
+  if(isBadOrPlaceholderTitle(s))return '';
+  return s;
+}
+function extractFbUrlFallbackLabel(u){
+  try{
+    var cleanU=unwrapUrl(u||'');
+    var p=new URL(cleanU);
+    var segs=p.pathname.split('/').filter(Boolean);
+    var generic=['share','reel','watch','photo','photos','video','videos','story.php','permalink.php','plugins','posts','p','r','v','l.php'];
+    if(segs.length && generic.indexOf(segs[0].toLowerCase())<0){
+      if(segs[0].toLowerCase()==='groups' && segs[1] && !/^\d+$/.test(segs[1])){
+        return 'Facebook · '+decodeURIComponent(segs[1]).replace(/[._-]+/g,' ').slice(0,48);
+      }
+      if(!/^\d+$/.test(segs[0])){
+        return 'Facebook · '+decodeURIComponent(segs[0]).replace(/[._-]+/g,' ').slice(0,48);
+      }
+    }
+  }catch(e){}
+  return 'Postare Facebook';
+}
+function deriveTitleFromContent(text, authorHint){
+  var hint=cleanFacebookMetaTitle(authorHint||'');
+  var lines=(text||'').replace(/\r/g,'').split('\n').map(function(l){return l.replace(/\s+/g,' ').trim()}).filter(Boolean);
+  var junkRe=/^(?:https?:\/\/\S+|\d+\s*(?:h|ore?|m|min|z|zile|s|sec)\b.*|acum\s+\d+.*|public|prieteni|urm[aă]re[șs]te|follow|sponsored|sponsorizat|reel|video|foto|\d+)$/i;
+  var firstLine='';
+  var secondLine='';
+  for(var i=0;i<lines.length;i++){
+    var ln=lines[i];
+    if(isFacebookTitleOrUrl(ln) || /^https?:\/\//i.test(ln) || junkRe.test(ln))continue;
+    if(ln.length<4)continue;
+    if(!firstLine)firstLine=ln;
+    else if(!secondLine){secondLine=ln;break;}
+  }
+  function clipTitle(s, maxLen){
+    s=(s||'').replace(/\s+/g,' ').trim();
+    if(s.length<=maxLen)return s;
+    var cut=s.slice(0, maxLen);
+    var sp=cut.lastIndexOf(' ');
+    if(sp>Math.floor(maxLen*0.55))cut=cut.slice(0, sp);
+    return cut.replace(/[.,;:\-–—\s]+$/,'')+'…';
+  }
+  if(hint && firstLine){
+    if(firstLine.toLowerCase()===hint.toLowerCase()){
+      return secondLine ? clipTitle(hint+' — '+secondLine, 82) : clipTitle(hint, 82);
+    }
+    if(hint.length<=28 && firstLine.toLowerCase().indexOf(hint.toLowerCase())!==0){
+      return clipTitle(hint+' — '+firstLine, 82);
+    }
+    return clipTitle(hint.length>firstLine.length?hint:firstLine, 82);
+  }
+  if(firstLine)return clipTitle(firstLine, 82);
+  return clipTitle(hint, 82);
+}
+
 function loadList(){
   try{
     var raw=JSON.parse(localStorage.getItem('cc_list')||'[]');
@@ -2048,12 +2126,24 @@ function loadList(){
       var txtVal=it.text||'';
       var computedWords=Number(it.words)||(txtVal?countWordsStr(txtVal):0);
       var rowId=it.id||('it_'+i+'_'+Date.now());
+      var rowUrl=it.url||'';
+      var rawTtl=(it.title||'').trim();
+      if(isFacebookUrl(rowUrl) && isBadOrPlaceholderTitle(rawTtl, rowUrl)){
+        var srcForTtl=txtVal;
+        if(!srcForTtl){
+          var cHit=getArticleCache(rowId);
+          if(cHit && cHit.text)srcForTtl=cHit.text;
+        }
+        rawTtl=srcForTtl ? deriveTitleFromContent(srcForTtl, '') : '';
+      }else if(!rawTtl && !isFacebookUrl(rowUrl)){
+        rawTtl=rowUrl||'Articol';
+      }
       return {
         id: rowId,
         type: it.type || (it.text && !it.url ? 'text' : 'link'),
-        url: it.url || '',
+        url: rowUrl,
         text: txtVal,
-        title: it.title || it.url || 'Articol',
+        title: rawTtl,
         summary: it.summary || '',
         highlights: it.highlights || '',
         highlightIdx: Array.isArray(it.highlightIdx) ? it.highlightIdx.map(Number).filter(function(n){return !isNaN(n)&&n>=0}) : [],
@@ -2191,11 +2281,15 @@ function addItemWithId(u, title, textContent, sourceTag, skipRender){
     return {id:newId, title:itemTitle};
   }
   u=unwrapUrl(u.replace(/[)\].,;]+$/,''));
-  var linkTitle=(title||'').trim()||u.replace(/^https?:\/\/(www\.)?/,'').slice(0,60);
+  var isFbLink=isFacebookUrl(u);
+  var cleanedInputTitle=(title||'').trim();
+  if(isFbLink && isBadOrPlaceholderTitle(cleanedInputTitle, u))cleanedInputTitle='';
+  var linkTitle=cleanedInputTitle || (isFbLink ? extractFbUrlFallbackLabel(u) : u.replace(/^https?:\/\/(www\.)?/,'').slice(0,60));
   var existingIdx=items.findIndex(function(it){return it.url===u});
   if(existingIdx>=0){
     var ex=items.splice(existingIdx,1)[0];
-    if(title && !ex.title)ex.title=title;
+    if(cleanedInputTitle && isBadOrPlaceholderTitle(ex.title, u))ex.title=cleanedInputTitle;
+    if(isFbLink && isBadOrPlaceholderTitle(ex.title, u) && ex.text)ex.title=deriveTitleFromContent(ex.text, '');
     if(ex.read)ex.pos=0;
     ex.read=false;ex.err=false;ex.errMsg='';
     ex.addedAt=Date.now();
@@ -2206,7 +2300,7 @@ function addItemWithId(u, title, textContent, sourceTag, skipRender){
     }
     newId=ex.id;
   }else{
-    items.unshift({id:newId,type:'link',url:u,title:title||'',text:'',summary:'',highlights:'',highlightIdx:[],preferinte:false,tags:'',read:false,err:false,errMsg:'',pos:0,words:0,addedAt:Date.now()});
+    items.unshift({id:newId,type:'link',url:u,title:cleanedInputTitle,text:'',summary:'',highlights:'',highlightIdx:[],preferinte:false,tags:'',read:false,err:false,errMsg:'',pos:0,words:0,addedAt:Date.now()});
     if(cur>=0)cur++;
   }
   save(!!skipRender);
@@ -2218,7 +2312,7 @@ function addItemWithId(u, title, textContent, sourceTag, skipRender){
   return {id:newId, title:linkTitle};
 }
 
-// X272 + X8 + X26 + X27: Captură Share; dacă alt articol Y era în redare (alt tab SAU același tab Android reîncărcat), nu îl întrerupe!
+// X272 + X8 + X26 + X27 + v30: Captură Share fără a opri lectura în curs și fără a închide abuziv #dynamic-blank!
 var openedFromShare=false;
 var shareSkipNextTransition=false;
 var dynamicHandoffAcked=false;
@@ -2250,7 +2344,10 @@ var pendingTapResume=false;
     activeRowId=navPrev.curId;
     savedIdxFromPrev=Number(navPrev.idx)||0;
     prevTitleFromNav=navPrev.title||'';
-  }else if(!otherTabActive && prevResume && prevResume.curId && prevResume.wasPlaying && prevResume.ts && (Date.now()-prevResume.ts)<300000){
+  }else if(otherTabActive && prevActive && prevActive.curId){
+    activeRowId=prevActive.curId;
+    savedIdxFromPrev=Number(prevActive.idx)||0;
+  }else if(prevResume && prevResume.curId && prevResume.wasPlaying && prevResume.ts && (Date.now()-prevResume.ts)<300000){
     activeRowId=prevResume.curId;
     savedIdxFromPrev=Number(prevResume.idx)||0;
     prevTitleFromNav=prevResume.title||'';
@@ -2283,7 +2380,7 @@ var pendingTapResume=false;
     sameTabPrevActive=false;
   }
 
-  // v25 + v29: Mod Silent activ — la Share face DOAR completarea în stivă, fără citire audio și fără a întrerupe alt tab!
+  // v25 + v30: Mod Silent activ — la Share face DOAR completarea în stivă, fără citire audio și fără a opri alt tab!
   if(settings.silentShareOnly){
     if(bc){
       try{bc.postMessage({type:'sync_list',sender:INSTANCE_ID,itemId:added.id})}catch(e){}
@@ -2293,21 +2390,23 @@ var pendingTapResume=false;
       $('main-app').hidden=true;
       try{window.close()}catch(e){}
       setTimeout(function(){
-        if(history.length>1){try{history.back()}catch(e){}}
-      },30);
-      setTimeout(function(){
         if(!document.hidden){
           if(otherTabActive){
             $('share-mini').hidden=true;
-            $('main-app').hidden=false;
-            renderList(false);
-            scrollCurrentRowIntoView(true);
+            if(settings.dynamicShareMode){
+              $('dynamic-blank').hidden=false;
+              $('dyn-hint').textContent='✓ Adăugat silențios sus în stivă — lectura continuă.\n\n(Dublu-tap pentru a intra în aplicație)';
+            }else{
+              $('main-app').hidden=false;
+              renderList(false);
+              scrollCurrentRowIntoView(true);
+            }
           }else{
             $('share-mini-title').textContent=added.title;
             $('share-mini').hidden=false;
           }
         }
-      },180);
+      },220);
     }else{
       mode=2;
       schedulePrefetch();
@@ -2316,51 +2415,15 @@ var pendingTapResume=false;
     return;
   }
 
-  // v27 + v29: Dacă alt tab redă activ Y (<25s), predăm imediat și închidem tabul Share în câteva ms ca pauza să fie minimă!
-  if(otherTabActive && otherTabActiveAge<25000){
-    mode=2;
-    if(bc){
-      try{bc.postMessage({type:'dynamic_share_handoff',itemId:added.id,sender:INSTANCE_ID})}catch(e){}
-    }
-    try{localStorage.setItem('cc_share_ping', String(Date.now()))}catch(e){}
-    if(prevActive && prevActive.curId){
-      var liveYIdx=items.findIndex(function(it){return it.id===prevActive.curId});
-      if(liveYIdx>=0){cur=liveYIdx;currentLoadedId=items[cur].id;listRun=true;}
-    }
-    $('main-app').hidden=true;
-    try{window.close()}catch(e){}
-    setTimeout(function(){
-      if(history.length>1){try{history.back()}catch(e){}}
-    },30);
-    setTimeout(function(){
-      if(!document.hidden){
-        $('dyn-hint').textContent='';
-        $('dynamic-blank').hidden=true;
-        $('main-app').hidden=false;
-        renderList(false);
-        scrollCurrentRowIntoView(true);
-        say('Adăugat sus în stivă — lectura curentă continuă.');
-      }
-    },180);
-    return;
-  }
-
-  if(prevActiveBeforeNav && !settings.dynamicShareMode && !otherTabActive){
-    mode=2;
-    pendingShareDynamic={
-      newId:added.id,
-      label:added.title
-    };
-    return;
-  }
-
+  // v30: Dacă modul dinamic e activ, păstrăm fereastra albicioasă vizibilă imediat și verificăm REAL prin BroadcastChannel (nu închidem orb!)
   if(settings.dynamicShareMode || otherTabActive || prevActiveBeforeNav){
     mode=2;
-    if(settings.dynamicShareMode && !otherTabActive){
+    if(settings.dynamicShareMode){
       $('main-app').hidden=true;
       $('dynamic-blank').hidden=false;
       $('dyn-hint').textContent='';
-    }else if(otherTabActive){
+    }
+    if(otherTabActive){
       try{localStorage.setItem('cc_share_ping', String(Date.now()))}catch(e){}
     }
     pendingShareDynamic={
@@ -2374,8 +2437,10 @@ var pendingTapResume=false;
     $('main-app').hidden=true;
     try{window.close()}catch(e){}
     setTimeout(function(){
-      $('share-mini-title').textContent=added.title;
-      $('share-mini').hidden=false;
+      if(!document.hidden){
+        $('share-mini-title').textContent=added.title;
+        $('share-mini').hidden=false;
+      }
     },180);
   }else{
     mode=2;
@@ -2464,9 +2529,15 @@ $('dynamic-blank').onclick=function(){
   }
 };
 
-// X272 + v29: BroadcastChannel & storage sync — audio este prioritizat imediat (0ms), fără rebuild redundant de listă!
+// X272 + v30: BroadcastChannel & storage sync — audio este prioritizat imediat (0ms) și susținut la reluare fără a închide #dynamic-blank!
 function nudgeActivePlayback(aggressive){
   if(state==='playing'||state==='loading')startKeepAliveAudio();
+  if(state==='paused' && !userPausedManually && (pendingTapResume || (Date.now()-lastAutoPauseTs)<8000)){
+    pendingTapResume=false;
+    state='playing';
+    $('pause').querySelector('span:last-child').textContent='Pauză';
+    writeActiveOwner();
+  }
   if(state!=='playing')return;
   var doKick=function(){
     if(state!=='playing')return;
@@ -2482,6 +2553,8 @@ function nudgeActivePlayback(aggressive){
     setTimeout(doKick, 45);
     setTimeout(doKick, 140);
     setTimeout(doKick, 320);
+    setTimeout(doKick, 650);
+    setTimeout(doKick, 1200);
   }
 }
 if(bc){
@@ -2502,24 +2575,28 @@ if(bc){
       }
       try{window.close()}catch(e){}
       setTimeout(function(){
-        if(history.length>1)try{history.back()}catch(e){}
-      },30);
-      setTimeout(function(){
         if(!document.hidden){
-          $('dyn-hint').textContent='';
-          $('dynamic-blank').hidden=true;
-          $('main-app').hidden=false;
-          renderList(false);
-          scrollCurrentRowIntoView(true);
-          say('Adăugat sus în stivă.');
+          if(settings.dynamicShareMode){
+            $('main-app').hidden=true;
+            $('dynamic-blank').hidden=false;
+            $('dyn-hint').textContent='✓ Adăugat sus în stivă — lectura curentă continuă.\n\n(Dublu-tap pentru a intra în aplicație)';
+          }else{
+            $('dyn-hint').textContent='';
+            $('dynamic-blank').hidden=true;
+            $('main-app').hidden=false;
+            renderList(false);
+            scrollCurrentRowIntoView(true);
+            say('Adăugat sus în stivă — lectura curentă continuă.');
+          }
         }
       },180);
       return;
     }
     if(ev.data.type==='dynamic_share_handoff' && ev.data.sender!==INSTANCE_ID){
-      if(state!=='playing' && state!=='loading' && !(state==='paused' && pendingTapResume))return;
-      nudgeActivePlayback(true);
+      var canKeepAlive=(state==='playing' || state==='loading' || (state==='paused' && !userPausedManually && (pendingTapResume || (Date.now()-lastAutoPauseTs)<8000)));
+      if(!canKeepAlive)return;
       lastShareSyncTs=Date.now();
+      nudgeActivePlayback(true);
       var oldPlayingId=(cur>=0&&items[cur])?items[cur].id:currentLoadedId;
       var savedCurIdx=idx;
       try{bc.postMessage({type:'dynamic_share_ack',itemId:ev.data.itemId,owner:INSTANCE_ID,queued:true,curId:oldPlayingId,curIdx:savedCurIdx})}catch(e){}
@@ -2532,8 +2609,8 @@ if(bc){
         }
       }
       listRun=true;
-      renderList(false);
-      setTimeout(schedulePrefetch, 650);
+      setTimeout(function(){renderList(false)}, 90);
+      setTimeout(schedulePrefetch, 850);
       return;
     }
     if(ev.data.type==='claim_play' && ev.data.owner!==INSTANCE_ID){
@@ -2541,17 +2618,17 @@ if(bc){
       return;
     }
     if(ev.data.type==='sync_list' && ev.data.sender!==INSTANCE_ID){
-      nudgeActivePlayback(true);
-      if(Date.now()-lastShareSyncTs<280)return;
       lastShareSyncTs=Date.now();
+      nudgeActivePlayback(true);
+      if(Date.now()-lastShareSyncTs<280 && items.length && ev.data.itemId && items[0] && items[0].id===ev.data.itemId)return;
       var oldCurId=(cur>=0&&items[cur])?items[cur].id:currentLoadedId;
       loadList();
       if(oldCurId){
         var found=items.findIndex(function(it){return it.id===oldCurId});
         if(found>=0)cur=found;
       }
-      renderList(false);
-      setTimeout(schedulePrefetch, 650);
+      setTimeout(function(){renderList(false)}, 90);
+      setTimeout(schedulePrefetch, 850);
       try{historyList=JSON.parse(localStorage.getItem('cc_history')||'[]');renderHistory()}catch(e){}
     }
   };
@@ -2566,17 +2643,19 @@ window.addEventListener('storage',function(e){
     }catch(err){}
   }
   if(e.key==='cc_list' || e.key==='cc_share_ping'){
+    var nowS=Date.now();
+    var withinDedupe=(nowS-lastShareSyncTs<280);
+    lastShareSyncTs=nowS;
     nudgeActivePlayback(true);
-    if(Date.now()-lastShareSyncTs<280)return;
-    lastShareSyncTs=Date.now();
+    if(withinDedupe)return;
     var oldCurId=(cur>=0&&items[cur])?items[cur].id:currentLoadedId;
     loadList();
     if(oldCurId){
       var found=items.findIndex(function(it){return it.id===oldCurId});
       if(found>=0)cur=found;
     }
-    renderList(false);
-    setTimeout(schedulePrefetch, 650);
+    setTimeout(function(){renderList(false)}, 90);
+    setTimeout(schedulePrefetch, 850);
   }
   if(e.key==='cc_history'){try{historyList=JSON.parse(e.newValue||'[]');renderHistory()}catch(err){}}
 });
@@ -2934,10 +3013,6 @@ async function fetchYoutubeTranscript(u){
   throw new Error('yt_failed');
 }
 
-function isFacebookUrl(u){
-  try{return /(^|\.)(facebook\.com|fb\.com|fb\.watch)$/i.test(new URL(u).hostname)}catch(e){return false}
-}
-
 function isFacebookLoginWall(raw){
   if(!raw)return false;
   if(/Final URL:\s*https:\/\/www\.facebook\.com\/login/i.test(raw))return true;
@@ -2974,8 +3049,7 @@ function extractFbHtmlPost(html){
   try{
     var doc=new DOMParser().parseFromString(html,'text/html');
     var titleEl=doc.querySelector('meta[property="og:title"]');
-    var tCandidate=((titleEl&&titleEl.content)||doc.title||'').trim();
-    if(/^(facebook|log in|log into facebook|error|conecta)/i.test(tCandidate))tCandidate='';
+    var tCandidate=cleanFacebookMetaTitle((titleEl&&titleEl.content)||doc.title||'');
 
     var ogDesc=(doc.querySelector('meta[property="og:description"]')||{}).content||'';
     var metaDesc=(doc.querySelector('meta[name="description"]')||{}).content||'';
@@ -3004,7 +3078,7 @@ function extractFbHtmlPost(html){
     });
     best=best.replace(/(^|\s)#[\wăâîșțĂÂÎȘȚ-]+/g,'$1').trim();
     if(best.length>=30 && !isFacebookLoginWall(best) && !/sorry, something went wrong|log into facebook/i.test(best)){
-      return {text:best, title:tCandidate};
+      return {text:best, title:deriveTitleFromContent(best, tCandidate)};
     }
   }catch(e){}
   return null;
@@ -3032,9 +3106,12 @@ async function fetchFacebookPost(u, onAttempt, myToken){
         var raw1=await r.text();
         if(isFacebookLoginWall(raw1))sawLoginWall=true;
         else{
+          var tm1=raw1.match(/^Title:\s*(.+)$/m);
+          var metaTitle1=cleanFacebookMetaTitle(tm1?tm1[1]:'');
+          if(metaTitle1 && !authorTitle)authorTitle=metaTitle1;
           var txt1=cleanFacebookText(raw1);
           if(txt1.length>=30 && !/sorry, something went wrong/i.test(txt1)){
-            return {text:txt1,title:authorTitle};
+            return {text:txt1,title:deriveTitleFromContent(txt1, metaTitle1||authorTitle)};
           }
         }
       }
@@ -3052,9 +3129,10 @@ async function fetchFacebookPost(u, onAttempt, myToken){
         if(isFacebookLoginWall(raw2))sawLoginWall=true;
         else{
           var tm=raw2.match(/^Title:\s*(.+)$/m);
-          if(tm && !/^(facebook|log in|error)/i.test(tm[1].trim()))authorTitle=tm[1].trim();
+          var metaTitle2=cleanFacebookMetaTitle(tm?tm[1]:'');
+          if(metaTitle2)authorTitle=metaTitle2;
           var txt2=cleanFacebookText(raw2);
-          if(txt2.length>=30)return {text:txt2,title:authorTitle};
+          if(txt2.length>=30)return {text:txt2,title:deriveTitleFromContent(txt2, authorTitle)};
         }
       }
     }catch(e){if(e&&e.message==='FB_LOGIN_REQUIRED')sawLoginWall=true}
@@ -3074,7 +3152,7 @@ async function fetchFacebookPost(u, onAttempt, myToken){
         if(r3.ok){
           var html=await r3.text();
           var parsedFb=extractFbHtmlPost(html);
-          if(parsedFb)return {text:parsedFb.text, title:parsedFb.title||authorTitle};
+          if(parsedFb)return {text:parsedFb.text, title:parsedFb.title||deriveTitleFromContent(parsedFb.text, authorTitle)};
           if(/log in|login_form/i.test(html))sawLoginWall=true;
         }
       }catch(e){}
@@ -3228,13 +3306,6 @@ function splitForHighlights(t){
   return zones;
 }
 
-function isFacebookTitleOrUrl(t){
-  var s=(t||'').trim();
-  if(!s)return false;
-  if(/^(?:https?:\/\/)?(?:[\w-]+\.)*(?:facebook\.com|fb\.com|fb\.watch)(?:\/|\?|$)/i.test(s))return true;
-  if(/^https?:\/\//i.test(s) && isFacebookUrl(s))return true;
-  return false;
-}
 function getSpokenTitle(title){
   var clean=(title||'').trim();
   if(!clean)return '';
@@ -3429,6 +3500,7 @@ function updateMediaMeta(){
 
 function handleTtsBlocked(reason){
   if(state!=='playing')return;
+  lastAutoPauseTs=Date.now();
   token++;
   stopAudioDrivers();
   stopKeepAliveAudio();
@@ -3842,12 +3914,17 @@ function speakViaAudio(textChunk, my, useAlt, curChunkIdx, retryStage){
       if(my!==token)return;
       var en=(err&&err.name)||'',em=(err&&err.message)||'';
       if(en==='NotAllowedError'||/not allowed|interact|gesture|autoplay/i.test(em)){
+        if(((Date.now()-lastShareSyncTs)<5000 || (document.visibilityState==='hidden' && chunksSpokenInItem>0)) && abortRetries<5){
+          abortRetries++;
+          setTimeout(tryPlayAudio, 250*abortRetries);
+          return;
+        }
         handleTtsBlocked('Browserul necesită o atingere pe ecran pentru a porni sunetul.');
         return;
       }
       if((en==='AbortError'||/abort|interrupt/i.test(em)) && abortRetries<5){
         abortRetries++;
-        setTimeout(tryPlayAudio, 80*abortRetries);
+        setTimeout(tryPlayAudio, 100*abortRetries);
         return;
       }
       if(!useAlt)speakViaAudio(textChunk, my, true, curChunkIdx, stage);
@@ -3945,6 +4022,7 @@ function start(){
   var nowTs=Date.now();
   if(nowTs-lastStartStamp<350 && state==='playing')return;
   lastStartStamp=nowTs;
+  userPausedManually=false;
 
   readDirection='up';
   if(cur>=0 && items[cur] && !items[cur].read){
@@ -3958,10 +4036,12 @@ function start(){
 
 function pause(){
   if(state==='playing'){
+    userPausedManually=true;
     token++;pendingTapResume=false;clearNavPrevPlay();stopAudioDrivers();stopKeepAliveAudio();clearPlaybackOwnership();state='paused';saveResume(idx);updateMediaMeta();
     $('pause').querySelector('span:last-child').textContent='Reia';say('În pauză (propoziția '+(idx+1)+').');
   }
   else if(state==='paused'){
+    userPausedManually=false;
     pendingTapResume=false;token++;ttsErrStreak=0;stopAudioDrivers();
     $('pause').querySelector('span:last-child').textContent='Pauză';hold();
     if(chunks.length>0){speak()}
@@ -4294,7 +4374,9 @@ async function runPrefetchWorker(){
         if(liveIt && fetched && fetched.text && fetched.text.trim().length>=40){
           liveIt.text=fetched.text.slice(0,35000);
           liveIt.words=countWordsStr(fetched.text);
-          if((!liveIt.title || /^https?:\/\//i.test(liveIt.title)) && fetched.title)liveIt.title=fetched.title;
+          if(isBadOrPlaceholderTitle(liveIt.title, liveIt.url)){
+            liveIt.title=(!isBadOrPlaceholderTitle(fetched.title, liveIt.url)?fetched.title:'') || deriveTitleFromContent(fetched.text, '') || liveIt.title;
+          }
           saveArticleCache(liveIt.id, fetched.text, liveIt.title||fetched.title||'');
           save();
           renderList(false);
@@ -4313,25 +4395,37 @@ async function resolveItemCleanText(it){
   if(!it)return {text:'',title:''};
   if(it.text && it.text.trim()){
     var savedClean=it.type==='text'?it.text.replace(/(^|\s)#[\wăâîșțĂÂÎȘȚ-]+/g,'$1').trim():it.text.trim();
+    if(isFacebookUrl(it.url||'') && isBadOrPlaceholderTitle(it.title, it.url)){
+      it.title=deriveTitleFromContent(savedClean, '');
+      save();renderList(false);
+    }
     return {text:savedClean, title:it.title||''};
   }
   if(it.id===currentLoadedId && currentArticleRawText && currentArticleRawText.trim()){
     it.text=currentArticleRawText.slice(0,35000);
+    if(isFacebookUrl(it.url||'') && isBadOrPlaceholderTitle(it.title, it.url)){
+      it.title=deriveTitleFromContent(currentArticleRawText, '');
+    }
     save();
     return {text:currentArticleRawText, title:currentTitle||it.title||''};
   }
   var cached=getArticleCache(it.id);
   if(cached && cached.text && cached.text.trim()){
     it.text=cached.text.slice(0,35000);
+    if(isBadOrPlaceholderTitle(it.title, it.url)){
+      it.title=(!isBadOrPlaceholderTitle(cached.title, it.url)?cached.title:'') || deriveTitleFromContent(cached.text, '');
+    }
     save();
     return {text:cached.text, title:it.title||cached.title||''};
   }
   if(!it.url)return {text:'',title:it.title||''};
-  say('Se preia textul pentru „'+(it.title||it.url).slice(0,40)+'”…');
-  var res=await getText(it.url, it.title||'');
+  say('Se preia textul pentru „'+(it.title||extractFbUrlFallbackLabel(it.url)).slice(0,40)+'”…');
+  var res=await getText(it.url, isBadOrPlaceholderTitle(it.title, it.url)?'':it.title);
   it.text=(res.text||'').slice(0,35000);
   it.words=countWordsStr(res.text);
-  if(!it.title && res.title)it.title=res.title;
+  if(isBadOrPlaceholderTitle(it.title, it.url)){
+    it.title=(!isBadOrPlaceholderTitle(res.title, it.url)?res.title:'') || deriveTitleFromContent(res.text, '');
+  }
   saveArticleCache(it.id, res.text, it.title);
   save();
   dur();
@@ -4825,9 +4919,15 @@ function renderList(scrollTopOnAdd){
 
     var t=document.createElement('div');
     t.className='list-item-title';
-    var label=it.title||(it.type==='text'?it.text.slice(0,60):it.url.replace(/^https?:\/\/(www\.)?/,'').slice(0,60));
     var isYt=!!extractYoutubeId(it.url||'');
     var isFb=isFacebookUrl(it.url||'');
+    var label=it.title||'';
+    if(isFb && isBadOrPlaceholderTitle(label, it.url)){
+      label=(it.text||it.summary) ? deriveTitleFromContent(it.text||it.summary, '') : extractFbUrlFallbackLabel(it.url||'');
+    }
+    if(!label){
+      label=(it.type==='text'?it.text.slice(0,60):(isFb?extractFbUrlFallbackLabel(it.url||''):it.url.replace(/^https?:\/\/(www\.)?/,'').slice(0,60)));
+    }
     var badgeType=isYt?'YT':isFb?'FB':(it.type==='text'?'Text':'Link');
     if(isCurrent){
       var nowSp=document.createElement('span');
@@ -5087,6 +5187,7 @@ async function playItem(i, resumeSavedPos, silentResume){
   var my=token;
   var it=items[i];
   if(!it){cur=-1;playNext();return}
+  userPausedManually=false;
 
   // X288: Capturăm identitatea anterior încărcată ÎNAINTE de a schimba cur/currentLoadedId, ca vechiul idx să nu corupă articolul nou!
   var wasSameLoaded=!!(currentLoadedId && currentLoadedId===it.id);
@@ -5109,20 +5210,25 @@ async function playItem(i, resumeSavedPos, silentResume){
     var cachedIt=getArticleCache(it.id);
     if(cachedIt && cachedIt.text && cachedIt.text.trim().length>=40){
       it.text=cachedIt.text.slice(0,35000);
-      if(!it.title && cachedIt.title)it.title=cachedIt.title;
+      if(isBadOrPlaceholderTitle(it.title, it.url)){
+        it.title=(!isBadOrPlaceholderTitle(cachedIt.title, it.url)?cachedIt.title:'') || deriveTitleFromContent(cachedIt.text, '');
+      }
       save();
     }
   }
   if(it.type==='text' || (it.text && it.text.trim().length>=40)){
     var rawBody=it.text||'';
-    var trTxt=await maybeTranslateToRo(rawBody, it.title||'', my);
+    var cleanKnownT=isBadOrPlaceholderTitle(it.title, it.url)?'':it.title;
+    var trTxt=await maybeTranslateToRo(rawBody, cleanKnownT, my);
     if(my!==token)return;
-    currentTitle=trTxt.title||it.title||'';
+    var derivedTtl=(!isBadOrPlaceholderTitle(trTxt.title, it.url)?trTxt.title:'') || (!isBadOrPlaceholderTitle(it.title, it.url)?it.title:'') || (isFacebookUrl(it.url||'')?deriveTitleFromContent(trTxt.text, ''):'');
+    if(isBadOrPlaceholderTitle(it.title, it.url) && derivedTtl)it.title=derivedTtl;
+    currentTitle=derivedTtl||it.title||'';
     currentArticleRawText=trTxt.text;
     it.text=trTxt.text.slice(0,35000);
     it.words=countWordsStr(trTxt.text);
     saveArticleCache(it.id, trTxt.text, currentTitle);
-    save();
+    save();renderList(false);
 
     var textToSpeak=trTxt.text;
     if(settings.summaryOnlyMode){
@@ -5160,7 +5266,7 @@ async function playItem(i, resumeSavedPos, silentResume){
   note('Se încarcă articolul…');
   var res;
   try{
-    res=await getText(it.url, it.title||'', my);
+    res=await getText(it.url, isBadOrPlaceholderTitle(it.title, it.url)?'':it.title, my);
   }catch(e){
     if(my!==token || (e&&e.message==='CANCELLED'))return;
     var reason=describeError(e);
@@ -5184,7 +5290,9 @@ async function playItem(i, resumeSavedPos, silentResume){
     playNext();return;
   }
   if(my!==token)return;
-  if(!it.title && res.title){it.title=res.title}
+  if(isBadOrPlaceholderTitle(it.title, it.url)){
+    it.title=(!isBadOrPlaceholderTitle(res.title, it.url)?res.title:'') || deriveTitleFromContent(res.text||'', '');
+  }
   // X279: Păstrăm textul imediat după preluare și traducere chiar pe rând
   it.text=(res.text||'').slice(0,35000);
   it.words=countWordsStr(res.text);
@@ -5336,12 +5444,12 @@ $('stack-add-btn').onclick=function(){
 function exportStackBackupJson(){
   var payload={
     app:'Lectură audio',
-    version:'v29',
+    version:'v30',
     exportedAt:new Date().toISOString(),
     items:items,
     history:historyList
   };
-  saveLocal('stiva-lectura-v29-'+datedBackupSuffix()+'.json', JSON.stringify(payload, null, 2), 'application/json;charset=utf-8');
+  saveLocal('stiva-lectura-v30-'+datedBackupSuffix()+'.json', JSON.stringify(payload, null, 2), 'application/json;charset=utf-8');
   say('Stiva ('+items.length+' rânduri cu text, rezumate & highlights) a fost salvată în fișier .json.');
 }
 function triggerRestoreJson(){
@@ -5669,7 +5777,7 @@ window.addEventListener('beforeunload',function(){
   release();
 });
 
-// Downloads v29
+// Downloads v30
 function saveLocal(filename, data, type){
   var b=new Blob([data],{type:type});
   var a=document.createElement('a');
@@ -5681,7 +5789,7 @@ function saveLocal(filename, data, type){
 }
 
 $('btn-dl-index').onclick=function(){
-  fetch(location.pathname.endsWith('lectura-v29.html') ? 'lectura-v29.html' : 'index.html', {cache:'no-store'})
+  fetch(location.pathname.endsWith('lectura-v30.html') ? 'lectura-v30.html' : 'index.html', {cache:'no-store'})
     .then(function(r){ return r.text(); })
     .then(function(t){
       var cleanHtml=t.replace(/<script[^>]*_aistudio-iframe\.js[^>]*><\/script>/gi,'');
@@ -5819,9 +5927,9 @@ document.addEventListener('click', function(ev){
   pause();
 }, true);
 
-// X272 + X26 + X27 + v27: Verificăm via BroadcastChannel dacă există cu adevărat alt tab activ; altfel pornim lectura / #dynamic-blank fără pauze lungi sau blocaje!
+// X272 + X26 + X27 + v30: Confirmăm via BroadcastChannel dacă alt tab chiar citește activ; altfel reluăm Y / pornim X și păstrăm #dynamic-blank!
 if(pendingShareDynamic && !settings.silentShareOnly){
-  if(settings.dynamicShareMode && !otherTabActive){
+  if(settings.dynamicShareMode){
     mode=2;
     $('main-app').hidden=true;
     $('dynamic-blank').hidden=false;
@@ -5837,9 +5945,15 @@ if(pendingShareDynamic && !settings.silentShareOnly){
           var rIdx=items.findIndex(function(it){return it.id===liveRemote.curId});
           if(rIdx>=0){cur=rIdx;currentLoadedId=items[cur].id;listRun=true;renderList(false);}
         }
-        $('dyn-hint').textContent='';
-        $('dynamic-blank').hidden=true;
-        $('main-app').hidden=false;
+        if(settings.dynamicShareMode){
+          $('main-app').hidden=true;
+          $('dynamic-blank').hidden=false;
+          $('dyn-hint').textContent='✓ Adăugat sus în stivă — lectura curentă continuă.\n\n(Dublu-tap pentru a intra în aplicație)';
+        }else{
+          $('dyn-hint').textContent='';
+          $('dynamic-blank').hidden=true;
+          $('main-app').hidden=false;
+        }
         return;
       }
     }
@@ -5847,23 +5961,52 @@ if(pendingShareDynamic && !settings.silentShareOnly){
       try{localStorage.removeItem('cc_active_player')}catch(e){}
     }
 
-    // Dacă Android a reîncărcat aceeași fereastră PWA peste articolul curent aflat în redare, îl continuăm IMEDIAT fără mesajul "Reiau"!
+    var targetRunIdx=-1;
+    var resumePrevY=false;
     if(prevActiveBeforeNav){
       var yIdx=items.findIndex(function(it){return it.id===prevActiveBeforeNav.id && !it.read && !it.err});
       if(yIdx>=0){
-        try{localStorage.removeItem('cc_active_player')}catch(e){}
-        $('dyn-hint').textContent='';
-        if(!settings.dynamicShareMode){
-          $('dynamic-blank').hidden=true;
-          $('main-app').hidden=false;
-        }
-        startList(yIdx, true, true);
-        return;
+        targetRunIdx=yIdx;
+        resumePrevY=true;
       }
     }
+    if(targetRunIdx<0){
+      targetRunIdx=items.findIndex(function(it){return it.id===pendingShareDynamic.newId});
+      if(targetRunIdx<0)targetRunIdx=0;
+    }
 
-    var targetShareIdx=items.findIndex(function(it){return it.id===pendingShareDynamic.newId});
-    if(targetShareIdx<0)targetShareIdx=0;
+    var launchAfterUnlock=function(){
+      try{localStorage.removeItem('cc_active_player')}catch(e){}
+      $('dyn-hint').textContent='';
+      if(!settings.dynamicShareMode){
+        $('dynamic-blank').hidden=true;
+        $('main-app').hidden=false;
+      }
+      startList(targetRunIdx, resumePrevY, resumePrevY);
+    };
+
+    var showTapPromptOverlay=function(){
+      cur=targetRunIdx;
+      currentLoadedId=items[cur]?items[cur].id:'';
+      listRun=true;
+      state='paused';
+      pendingTapResume=true;
+      $('pause').querySelector('span:last-child').textContent='Reia';
+      renderList(false);
+      saveResume(items[cur]?(Number(items[cur].pos)||0):0);
+      if(settings.dynamicShareMode || !$('dynamic-blank').hidden){
+        $('main-app').hidden=true;
+        $('dynamic-blank').hidden=false;
+      }
+      var lbl=resumePrevY?((items[targetRunIdx]&&items[targetRunIdx].title)||pendingShareDynamic.label||''):(pendingShareDynamic.label||'');
+      if(!$('dynamic-blank').hidden){
+        $('dyn-hint').textContent='▶ Atingeți oriunde pe ecran pentru a '+(resumePrevY?'continua':'asculta')+(lbl?':\n„'+lbl.slice(0,75)+'”':'')+'\n\n(Dublu-tap pentru aplicație)';
+      }else{
+        say('▶ Atingeți ecranul sau „Reia” pentru a '+(resumePrevY?'continua':'asculta')+(lbl?' „'+lbl.slice(0,50)+'”':''));
+      }
+      schedulePrefetch();
+    };
+
     if(!audioUnlockedByUser){
       try{
         // Sondă NE-MUTATĂ (muted=false): chrome permite muted=true chiar și când audio real este blocat!
@@ -5876,25 +6019,23 @@ if(pendingShareDynamic && !settings.silentShareOnly){
             audioUnlockedByUser=true;
             try{probe.pause()}catch(e){}
             unlockAudioSync();
-            startList(targetShareIdx, false);
+            launchAfterUnlock();
           }).catch(function(err){
             var en=(err&&err.name)||'',em=(err&&err.message)||'';
-            if((en==='NotAllowedError'||/not allowed|interact|gesture|autoplay/i.test(em)) && !$('dynamic-blank').hidden){
-              $('dyn-hint').textContent='▶ Atingeți oriunde pe ecran pentru a asculta:\n„'+(pendingShareDynamic.label||'').slice(0,75)+'”';
-              schedulePrefetch();
+            if(en==='NotAllowedError'||/not allowed|interact|gesture|autoplay/i.test(em)){
+              showTapPromptOverlay();
               return;
             }
-            startList(targetShareIdx, false);
+            launchAfterUnlock();
           });
           return;
         }
       }catch(e){}
     }
-    startList(targetShareIdx, false);
+    launchAfterUnlock();
   };
 
   if(sameTabPrevActive && prevActiveBeforeNav){
-    // Acest tab tocmai a fost reîncărcat peste articolul în curs de citire — reluăm instant (0ms)
     startDynamicShareLocal(true);
   }else if(bc){
     try{
@@ -5902,27 +6043,31 @@ if(pendingShareDynamic && !settings.silentShareOnly){
     }catch(e){}
     setTimeout(function(){
       if(dynamicHandoffAcked)return;
-      // Niciun alt tab nu a confirmat prin BroadcastChannel -> verificăm liveRemote înainte de a porni
       if(settings.dynamicShareMode || prevActiveBeforeNav || (settings.autoPlay && !settings.shareSilent)){
-        startDynamicShareLocal(false);
+        startDynamicShareLocal(true);
       }else{
         $('dynamic-blank').hidden=true;
         $('main-app').hidden=false;
         renderList(false);
       }
-    }, otherTabActive ? 1000 : 250);
+    }, otherTabActive ? 260 : 120);
   }else if(otherTabActive){
     try{window.close()}catch(e){}
-    setTimeout(function(){if(history.length>1)try{history.back()}catch(e){}},120);
     setTimeout(function(){
       if(!document.hidden){
-        $('dyn-hint').textContent='';
-        $('dynamic-blank').hidden=true;
-        $('main-app').hidden=false;
-        renderList(false);
-        say('Adăugat sus în stivă.');
+        if(settings.dynamicShareMode){
+          $('main-app').hidden=true;
+          $('dynamic-blank').hidden=false;
+          $('dyn-hint').textContent='✓ Adăugat sus în stivă — lectura curentă continuă.\n\n(Dublu-tap pentru a intra în aplicație)';
+        }else{
+          $('dyn-hint').textContent='';
+          $('dynamic-blank').hidden=true;
+          $('main-app').hidden=false;
+          renderList(false);
+          say('Adăugat sus în stivă.');
+        }
       }
-    },320);
+    },220);
   }else if(settings.dynamicShareMode || prevActiveBeforeNav || (settings.autoPlay && !settings.shareSilent)){
     startDynamicShareLocal(true);
   }else{
