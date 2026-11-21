@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="referrer" content="no-referrer">
-<title>Lectură audio v32</title>
+<title>Lectură audio v33</title>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#059669">
 <meta name="apple-mobile-web-app-title" content="Lectură">
@@ -1218,34 +1218,43 @@
   .modal-actions button.purple { background: #6d28d9; color: #fff; border-color: #6d28d9; }
   .modal-actions a.fb-btn { background: #1877f2; color: #fff; border-color: #1877f2; }
   [hidden] { display: none !important; }
-  /* v32: Fereastră albicioasă dinamică configurabilă + feed cu ultimele 3 acțiuni */
+  /* v33: Fereastră albicioasă dinamică configurabilă real (lățime + înălțime + poziție) + feed cu ultimele 3 acțiuni */
   #dynamic-blank {
     position: fixed;
     inset: 0;
     z-index: 50;
-    background: var(--bg);
+    background: rgba(243, 245, 247, 0.76);
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: flex-end;
-    padding: 12px;
+    padding: 10px;
     cursor: pointer;
     user-select: none;
   }
+  @media (prefers-color-scheme: dark) {
+    #dynamic-blank {
+      background: rgba(16, 23, 29, 0.8);
+    }
+  }
   #dyn-card {
     width: 94%;
-    max-width: 560px;
-    min-height: 112px;
+    max-width: 98vw;
+    min-height: 92px;
+    height: 38vh;
     max-height: 38vh;
     background: var(--card);
-    border: 1px solid var(--line);
+    border: 2px solid var(--acc);
     border-radius: 14px;
-    box-shadow: 0 6px 22px rgba(0,0,0,0.08);
+    box-shadow: 0 10px 28px rgba(0,0,0,0.16);
     padding: 10px 12px;
     display: flex;
     flex-direction: column;
     gap: 6px;
     overflow: hidden;
+    box-sizing: border-box;
   }
   .dyn-help-line {
     font-size: 0.74rem;
@@ -1427,11 +1436,11 @@
 </div>
 
 <main id="main-app">
-  <!-- Antet v32 (X274: număr elemente în listă lângă versiune, X17: fără download pe ecran principal) -->
+  <!-- Antet v33 (X274: număr elemente în listă lângă versiune, X17: fără download pe ecran principal) -->
   <header>
     <div class="title-group">
       <div class="app-icon">▶</div>
-      <h1>Lectură audio <span class="v-badge-green">v32</span> <span id="hdr-count" class="hdr-count" title="Elemente în stivă (necitite / total)">(0)</span></h1>
+      <h1>Lectură audio <span class="v-badge-green">v33</span> <span id="hdr-count" class="hdr-count" title="Elemente în stivă (necitite / total)">(0)</span></h1>
     </div>
     <div class="header-actions">
       <button id="settings-btn" type="button" class="btn-sm" aria-expanded="false" title="Setări, Sunete, Salvare/Restaurare, Memorie, Sleep Timer, Download &amp; Istoric">
@@ -1446,7 +1455,7 @@
   <!-- Settings generale, Sunet tranziție, Salvare/Restaurare JSON, Download (X17), Sleep Timer, Memorie (X286) & Istoric -->
   <div id="settingsbox" class="panel-box" hidden>
     <h2>
-      <span>⚙ Setări aplicație (v32)</span>
+      <span>⚙ Setări aplicație (v33)</span>
       <button id="settings-close" type="button" class="hist-btn">Închide ✕</button>
     </h2>
 
@@ -1487,7 +1496,10 @@
     <div class="dyn-cfg-box">
       <div class="dyn-cfg-row">
         <strong style="color:var(--acc);">🪟 Poziție &amp; dimensiune fereastră albicioasă</strong>
-        <button id="dyn-preview-btn" type="button" class="hist-btn" style="padding:2px 8px;font-size:0.7rem;">👁 Previzualizează</button>
+        <div style="display:flex;align-items:center;gap:6px;">
+          <button id="dyn-save-btn" type="button" class="hist-btn" style="padding:2px 8px;font-size:0.7rem;background:var(--green);color:#fff;border-color:var(--green);">💾 Salvează</button>
+          <button id="dyn-preview-btn" type="button" class="hist-btn" style="padding:2px 8px;font-size:0.7rem;">👁 Previzualizează</button>
+        </div>
       </div>
       <div class="dyn-cfg-row">
         <label for="opt-dynpos" style="font-weight:600;">Poziție panou:</label>
@@ -1500,20 +1512,29 @@
         </select>
       </div>
       <div class="dyn-cfg-row">
-        <span>Lățime: <strong id="dyn-w-lbl">94%</strong></span>
-        <input id="opt-dynwidth" type="range" min="50" max="100" step="2" value="94" style="width:150px;">
+        <span>Lățime panou: <strong id="dyn-w-lbl">94%</strong></span>
+        <input id="opt-dynwidth" type="range" min="30" max="100" step="2" value="94" style="width:150px;">
       </div>
       <div class="dyn-cfg-row">
-        <span>Înălțime max.: <strong id="dyn-h-lbl">38%</strong></span>
-        <input id="opt-dynheight" type="range" min="25" max="100" step="2" value="38" style="width:150px;">
+        <span>Înălțime panou: <strong id="dyn-h-lbl">38%</strong></span>
+        <input id="opt-dynheight" type="range" min="16" max="100" step="2" value="38" style="width:150px;">
       </div>
       <label class="dyn-cfg-row" style="cursor:pointer;">
         <span style="font-weight:600;">Încearcă și mutarea ferestrei pop-up OS (<code>moveTo</code> / <code>resizeTo</code>)</span>
         <input id="opt-dynosmove" type="checkbox" checked style="width:15px;height:15px;accent-color:var(--acc);">
       </label>
+      <div id="dyn-save-msg" style="font-size:0.68rem;color:#059669;font-weight:700;" hidden></div>
       <div style="font-size:0.68rem;color:var(--mut);line-height:1.3;">
-        Notă Android: sistemul controlează uneori automat poziția ferestrei pop-up peste browser; opțiunea „Jos” ține panoul departe de butonul Share din dreapta-sus.
+        Notă Android: sistemul de operare decide uneori dimensiunea exterioară a ferestrei pop-up la Share (blochează <code>resizeTo</code>), dar panoul alb interior respectă exact dimensiunea și poziția salvată (lățime × înălțime).
       </div>
+      <div class="dyn-cfg-row" style="padding-top:6px;border-top:1px dashed var(--line);margin-top:2px;">
+        <span style="font-weight:600;color:var(--acc);">🪵 Trace debug Share (<span id="trace-count">0</span> linii)</span>
+        <div style="display:flex;align-items:center;gap:6px;">
+          <button id="trace-copy-btn" type="button" class="hist-btn" style="padding:2px 8px;font-size:0.7rem;">📋 Copiază trace Share</button>
+          <button id="trace-clear-btn" type="button" class="hist-btn hist-btn-danger" style="padding:2px 7px;font-size:0.7rem;">🗑</button>
+        </div>
+      </div>
+      <div id="trace-copy-msg" style="font-size:0.68rem;color:#059669;font-weight:700;" hidden></div>
     </div>
     <label class="setting-toggle">
       <span>Share silențios (nu afișa fereastra completă — când Modul dinamic e oprit)</span>
@@ -1597,13 +1618,13 @@
     <!-- X17: Panou Descărcare mutată EXCLUSIV în Settings -->
     <div id="dl-panel" class="dl-panel">
       <div class="dl-header">
-        <span>📥 Descarcă pentru GitHub (v32):</span>
+        <span>📥 Descarcă pentru GitHub (v33):</span>
         <button id="btn-force-update" type="button" class="hist-btn" style="font-size:0.68rem;" title="Șterge cache-ul browserului/SW și reîncarcă imediat cea mai nouă versiune">🔄 Forțează actualizarea</button>
       </div>
       <div class="dl-grid">
-        <button id="btn-dl-index" type="button" class="dl-btn full" title="Descarcă index.html v32">📥 Descarcă index.html (v32)</button>
+        <button id="btn-dl-index" type="button" class="dl-btn full" title="Descarcă index.html v33">📥 Descarcă index.html (v33)</button>
         <button id="btn-dl-manifest" type="button" class="dl-btn sec" title="Descarcă manifest.json">📥 manifest.json</button>
-        <button id="btn-dl-sw" type="button" class="dl-btn gray" title="Descarcă sw.js v32">📥 sw.js (v32)</button>
+        <button id="btn-dl-sw" type="button" class="dl-btn gray" title="Descarcă sw.js v33">📥 sw.js (v33)</button>
       </div>
     </div>
 
@@ -1618,15 +1639,15 @@
     <div id="hist-items"></div>
   </div>
 
-  <!-- Help General v32 -->
+  <!-- Help General v33 -->
   <div id="helpbox" class="panel-box" hidden>
-    <h2>Noutăți &amp; Instrucțiuni (v32)</h2>
+    <h2>Noutăți &amp; Instrucțiuni (v33)</h2>
     <ol>
-      <li><b>Fereastră albicioasă dinamică configurabilă &amp; jurnal live (v32)</b>: în ⚙ Settings poți regla poziția (implicit <b>Jos</b>, ca să lase liber butonul Share sus-dreapta) și dimensiunea panoului; rândul 1 afișează permanent ajutorul <i>Dublu-tap oriunde deschide aplicația</i>, iar dedesubt defilează ultimele 3 acțiuni (<i>▶ Citesc…</i>, <i>📥 Notez share…</i>, <i>🔒 Ecran blocat…</i>).</li>
-      <li><b>Sugestii de etichete pe rând &amp; Share instant (v31)</b>: când introduci etichete în câmpul de pe orice rând din stivă primești lista cu etichetele existente similare (exact ca la căutarea după <code>#</code>); la Share fereastra albicioasă se încarcă instant din cache fără a bloca pe iconul aplicației.</li>
-      <li><b>Pornire automată &amp; ordine sus→jos</b>: la lansare pornește automat lectura de la ultimul articol citit, urcă spre vârful stivei și apoi coboară spre bază citind fiecare rând nebifat; rândul activ rămâne permanent vizibil în stivă la activarea ferestrei.</li>
-      <li><b>Share stabil, titluri Facebook &amp; fără repetare titlu</b>: la Share, lectura curentă și fereastra albicioasă nu mai sunt oprite prematur; postările Facebook afișează titlul real în stivă în locul adresei URL.</li>
-      <li><b>Citire stabilă, Preferințe &amp; Etichete <code>#</code> &amp; versiune vizibilă</b>: glisează un rând stânga/dreapta pentru <b>📤 Share</b> și <b>📋 Text</b>; eticheta verde (<b>v32</b>) confirmă versiunea activă.</li>
+      <li><b>Facebook Autor + Titlu, fără dubluri &amp; jurnal Share detaliat (v33)</b>: postările Facebook extrag în stivă atât <b>Autorul cât și titlul/conținutul</b>; deduplicarea URL/text previne rândurile sau titlurile dublate; la Share în fereastra albă se afișează tot ce se poate extrage (<code>FB · Autor · Titlu</code>), iar în ⚙ Settings ai butonul <b>📋 Copiază trace Share</b> pentru depanare rapidă.</li>
+      <li><b>Fereastră albicioasă redimensionabilă real &amp; jurnal live</b>: în ⚙ Settings panoul își aplică imediat și lățimea (<code>30–100%</code>) și înălțimea (<code>16–100%</code>) cu buton <b>💾 Salvează</b>; rândul 1 afișează permanent ajutorul, iar dedesubt defilează ultimele 3 acțiuni.</li>
+      <li><b>Sugestii de etichete pe rând &amp; Share instant</b>: când introduci etichete pe orice rând din stivă primești lista cu etichetele existente similare (exact ca la căutarea după <code>#</code>); la Share fereastra albicioasă se încarcă instant din cache.</li>
+      <li><b>Pornire automată &amp; ordine sus→jos</b>: la lansare pornește automat lectura de la ultimul articol citit, urcă spre vârful stivei și apoi coboară spre bază citind fiecare rând nebifat; rândul activ rămâne permanent vizibil în stivă.</li>
+      <li><b>Citire stabilă, Preferințe &amp; Etichete <code>#</code> &amp; versiune vizibilă</b>: glisează un rând stânga/dreapta pentru <b>📤 Share</b> și <b>📋 Text</b>; eticheta verde (<b>v33</b>) confirmă versiunea activă.</li>
     </ol>
   </div>
 
@@ -1776,8 +1797,8 @@
   </footer>
 </main>
 
-<!-- X295 + v32: Afișare instantanee (0ms) și poziționare imediată a ferestrei albe la Share dinamic înainte de execuția scriptului principal -->
-<script>try{var _sq=new URLSearchParams(location.search);if(_sq.has('url')||_sq.has('text')||_sq.has('title')){var _cs=JSON.parse(localStorage.getItem('cc_settings')||'{}');if(_cs.dynamicShareMode&&!_cs.silentShareOnly){document.getElementById('main-app').hidden=true;var _db=document.getElementById('dynamic-blank'),_dc=document.getElementById('dyn-card'),_dp=_cs.dynPos||'bottom',_dw=Math.max(50,Math.min(100,Number(_cs.dynWidthPct)||94)),_dh=Math.max(25,Math.min(100,Number(_cs.dynHeightPct)||38));if(_db){_db.style.justifyContent=(_dp==='top')?'flex-start':(_dp==='center'?'center':'flex-end');_db.style.alignItems=(_dp==='bottom-left')?'flex-start':(_dp==='bottom-right'?'flex-end':'center');_db.hidden=false;}if(_dc){_dc.style.width=_dw+'%';_dc.style.maxHeight=_dh+'vh';}}}}catch(e){}</script>
+<!-- X295 + v33: Afișare instantanee (0ms) și dimensionare/poziționare exactă a ferestrei albe la Share dinamic înainte de execuția scriptului principal -->
+<script>try{var _sq=new URLSearchParams(location.search);if(_sq.has('url')||_sq.has('text')||_sq.has('title')){var _cs=JSON.parse(localStorage.getItem('cc_settings')||'{}');if(_cs.dynamicShareMode&&!_cs.silentShareOnly){document.getElementById('main-app').hidden=true;var _db=document.getElementById('dynamic-blank'),_dc=document.getElementById('dyn-card'),_dp=_cs.dynPos||'bottom',_dw=Math.max(30,Math.min(100,Number(_cs.dynWidthPct)||94)),_dh=Math.max(16,Math.min(100,Number(_cs.dynHeightPct)||38));if(_db){_db.style.justifyContent=(_dp==='top')?'flex-start':(_dp==='center'?'center':'flex-end');_db.style.alignItems=(_dp==='bottom-left')?'flex-start':(_dp==='bottom-right'?'flex-end':'center');_db.hidden=false;}if(_dc){_dc.style.width=_dw+'%';_dc.style.maxWidth='98vw';_dc.style.height=_dh+'vh';_dc.style.maxHeight=_dh+'vh';_dc.style.minHeight='92px';}}}}catch(e){}</script>
 
 <script>
 (function(){
@@ -1887,8 +1908,8 @@ try{
     if(typeof st[k]==='boolean')settings[k]=st[k];
   });
   if(typeof st.dynPos==='string' && ['bottom','bottom-left','bottom-right','center','top'].indexOf(st.dynPos)>=0)settings.dynPos=st.dynPos;
-  if(typeof st.dynWidthPct==='number' && st.dynWidthPct>=50 && st.dynWidthPct<=100)settings.dynWidthPct=Math.round(st.dynWidthPct);
-  if(typeof st.dynHeightPct==='number' && st.dynHeightPct>=25 && st.dynHeightPct<=100)settings.dynHeightPct=Math.round(st.dynHeightPct);
+  if(typeof st.dynWidthPct==='number' && st.dynWidthPct>=30 && st.dynWidthPct<=100)settings.dynWidthPct=Math.round(st.dynWidthPct);
+  if(typeof st.dynHeightPct==='number' && st.dynHeightPct>=16 && st.dynHeightPct<=100)settings.dynHeightPct=Math.round(st.dynHeightPct);
   if(typeof st.memLimitKb==='number' && st.memLimitKb>=50)settings.memLimitKb=Math.round(st.memLimitKb);
   if(typeof st.transitionSound==='string' && st.transitionSound)settings.transitionSound=st.transitionSound;
   if(typeof st.transitionSec==='number' && st.transitionSec>=1 && st.transitionSec<=15)settings.transitionSec=st.transitionSec;
@@ -1897,7 +1918,48 @@ try{
 }catch(e){}
 function saveSettings(){try{localStorage.setItem('cc_settings',JSON.stringify(settings))}catch(e){}}
 
-// v32: Jurnal compact max 3 rânduri + layout configurabil pentru fereastra albicioasă (zero impact pe viteză)
+// X299: Trace ușor în memorie + localStorage pentru depanare Share/Audio fără încetinire
+var SHARE_TRACE_KEY='cc_share_trace';
+var SHARE_TRACE_MAX=120;
+var shareTraceBuf=[];
+try{
+  var _stSaved=JSON.parse(localStorage.getItem(SHARE_TRACE_KEY)||'[]');
+  if(Array.isArray(_stSaved))shareTraceBuf=_stSaved.slice(-SHARE_TRACE_MAX);
+}catch(e){shareTraceBuf=[]}
+function updateTraceCountUI(){
+  var el=$('trace-count');
+  if(el)el.textContent=String(shareTraceBuf.length);
+}
+function traceShare(tag, detail){
+  try{
+    var d=new Date();
+    var ts=String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')+':'+String(d.getSeconds()).padStart(2,'0')+'.'+String(d.getMilliseconds()).padStart(3,'0');
+    var cleanDet=String(detail||'').replace(/\s+/g,' ').trim().slice(0,180);
+    var line='['+ts+'] ['+TAB_ID.slice(-4)+'] '+tag+(cleanDet?(': '+cleanDet):'');
+    shareTraceBuf.push(line);
+    if(shareTraceBuf.length>SHARE_TRACE_MAX)shareTraceBuf=shareTraceBuf.slice(-SHARE_TRACE_MAX);
+    try{localStorage.setItem(SHARE_TRACE_KEY, JSON.stringify(shareTraceBuf))}catch(e){}
+    window.__ccShareTrace=shareTraceBuf;
+    updateTraceCountUI();
+  }catch(e){}
+}
+function buildShareTraceReport(){
+  var curIt=(cur>=0&&items[cur])?items[cur]:null;
+  var hdr=[
+    '=== Lectură audio v33 · Trace Share ===',
+    'Data: '+new Date().toISOString(),
+    'UA: '+(navigator.userAgent||''),
+    'Viewport: '+window.innerWidth+'x'+window.innerHeight+' | Outer: '+window.outerWidth+'x'+window.outerHeight+' | Avail: '+(screen.availWidth||0)+'x'+(screen.availHeight||0),
+    'Settings: dynShare='+!!settings.dynamicShareMode+' pos='+(settings.dynPos||'bottom')+' w='+(settings.dynWidthPct||94)+'% h='+(settings.dynHeightPct||38)+'% osMove='+!!settings.dynTryOsMove+' silentOnly='+!!settings.silentShareOnly+' shareSilent='+!!settings.shareSilent+' audioTts='+!!settings.useAudioTts+' autoPlay='+!!settings.autoPlay,
+    'Stare: state='+state+' cur='+cur+' idx='+idx+' items='+items.length+' curTitle="'+(curIt?(curIt.title||''):currentTitle)+'"',
+    '--- Trace ('+shareTraceBuf.length+' linii) ---'
+  ];
+  return hdr.concat(shareTraceBuf).join('\n');
+}
+updateTraceCountUI();
+traceShare('BOOT', 'v33 vis='+document.visibilityState+' search="'+(location.search||'')+'" audioUnlocked='+audioUnlockedByUser);
+
+// v33: Jurnal compact max 3 rânduri + layout configurabil real pentru fereastra albicioasă
 var dynLogs=[];
 var lastDynReadTitle='';
 var dynPreviewOnly=false;
@@ -1943,22 +2005,28 @@ function applyDynWindowLayout(){
   var db=$('dynamic-blank'), dc=$('dyn-card');
   if(!db||!dc)return;
   var p=settings.dynPos||'bottom';
+  var wp=Math.max(30,Math.min(100,Number(settings.dynWidthPct)||94));
+  var hp=Math.max(16,Math.min(100,Number(settings.dynHeightPct)||38));
   db.style.justifyContent=(p==='top')?'flex-start':(p==='center'?'center':'flex-end');
   db.style.alignItems=(p==='bottom-left')?'flex-start':(p==='bottom-right'?'flex-end':'center');
-  dc.style.width=(settings.dynWidthPct||94)+'%';
-  dc.style.maxHeight=(settings.dynHeightPct||38)+'vh';
+  dc.style.width=wp+'%';
+  dc.style.maxWidth='98vw';
+  dc.style.height=hp+'vh';
+  dc.style.maxHeight=hp+'vh';
+  dc.style.minHeight='92px';
 }
-function applyDynamicWindowGeometry(){
-  if(dynGeomApplied || !settings.dynTryOsMove)return;
+function applyDynamicWindowGeometry(forceApply){
+  if((dynGeomApplied && !forceApply) || !settings.dynTryOsMove)return;
   try{
     var aw=screen.availWidth||window.innerWidth||0;
     var ah=screen.availHeight||window.innerHeight||0;
     if(!aw||!ah)return;
     var isPopup=!!window.opener || (window.outerWidth>0 && window.outerWidth<aw*0.96) || (window.outerHeight>0 && window.outerHeight<ah*0.96);
+    traceShare('DYN_GEOM', 'pos='+(settings.dynPos||'bottom')+' w='+(settings.dynWidthPct||94)+'% h='+(settings.dynHeightPct||38)+'% isPopup='+isPopup+' inner='+window.innerWidth+'x'+window.innerHeight+' outer='+window.outerWidth+'x'+window.outerHeight);
     if(!isPopup)return;
     dynGeomApplied=true;
-    var w=Math.max(260, Math.round(aw*(Math.max(50,Math.min(100,settings.dynWidthPct||94))/100)));
-    var h=Math.max(180, Math.round(ah*(Math.max(25,Math.min(100,settings.dynHeightPct||38))/100)));
+    var w=Math.max(220, Math.round(aw*(Math.max(30,Math.min(100,settings.dynWidthPct||94))/100)));
+    var h=Math.max(140, Math.round(ah*(Math.max(16,Math.min(100,settings.dynHeightPct||38))/100)));
     var al=Number(screen.availLeft)||0, at=Number(screen.availTop)||0;
     var p=settings.dynPos||'bottom';
     var x=al+Math.max(0, Math.round((aw-w)/2));
@@ -2150,10 +2218,10 @@ function checkMemoryQuota(manualTrigger){
     return false;
   }
   lastAutoCleanTs=Date.now();
-  var fname='stiva-lectura-v32-'+datedBackupSuffix()+'.json';
+  var fname='stiva-lectura-v33-'+datedBackupSuffix()+'.json';
   var backupPayload={
     app:'Lectură audio',
-    version:'v32',
+    version:'v33',
     reason:'auto_memory_cleanup',
     exportedAt:new Date().toISOString(),
     usefulBytesBefore:m.usefulBytes,
@@ -2283,45 +2351,148 @@ function isBadOrPlaceholderTitle(t, url){
   if(isFacebookTitleOrUrl(s))return true;
   if(/^https?:\/\//i.test(s))return true;
   if(/^(facebook|postare facebook|articol|element salvat|log in|log into facebook|conecteaz[aă]-te|see more|vezi mai mult|error|just a moment|attention required|redirecting)$/i.test(s))return true;
+  if(/^(?:FB|Facebook)\s*[·\-:]\s*(?:post|reel|video|foto|photo|watch|share)?(?:\s*#?[a-z0-9_-]{3,16})?$/i.test(s))return true;
+  return false;
+}
+function needsFbTitleEnrichment(t, url){
+  if(!isFacebookUrl(url||''))return false;
+  var s=(t||'').replace(/\s+/g,' ').trim();
+  if(isBadOrPlaceholderTitle(s, url))return true;
+  if(/^(?:FB|Facebook)\s*[·\-:]/i.test(s))return true;
+  // Dacă titlul FB pare doar numele autorului (scurt, fără separator „ — ” / „: ” / „ - ”)
+  if(!/[—:|]|\s+-\s+|\s+–\s+/.test(s) && s.length<=48 && s.split(/\s+/).length<=6)return true;
   return false;
 }
 function cleanFacebookMetaTitle(rawTitle){
   var s=(rawTitle||'').replace(/\s+/g,' ').trim();
   s=s.replace(/\s*(?:\||-|–|—)\s*facebook\s*$/i,'')
      .replace(/\s+(?:on|pe)\s+facebook\s*$/i,'')
+     .replace(/^(?:postarea?\s+(?:a\s+)?lui|post\s+by)\s+/i,'')
+     .replace(/\s*·\s*(?:urm[aă]re[șs]te|follow)\s*$/i,'')
      .replace(/\s+/g,' ').trim();
   if(isBadOrPlaceholderTitle(s))return '';
   return s;
 }
-function extractFbUrlFallbackLabel(u){
+function cleanTitleDedup(title){
+  var s=(title||'').replace(/\s+/g,' ').trim();
+  if(!s)return '';
+  var m=s.match(/^(.{3,60}?)\s*(?:—|–|-|\|)\s*(.+)$/);
+  if(m){
+    var p1=m[1].trim(), p2=m[2].trim();
+    var l1=p1.toLowerCase(), l2=p2.toLowerCase();
+    if(l1===l2)return p1;
+    if(l2.indexOf(l1)===0){
+      var rest=p2.slice(p1.length).replace(/^[\s\-–—:|·,]+/,'').trim();
+      return rest ? (p1+' — '+rest) : p1;
+    }
+  }
+  return s;
+}
+function canonicalUrlKey(u){
+  var raw=unwrapUrl(String(u||'').trim());
+  if(!raw)return '';
+  try{
+    var ytId=extractYoutubeId(raw);
+    if(ytId)return 'yt:'+ytId;
+    var p=new URL(raw);
+    var host=p.hostname.toLowerCase().replace(/^(?:www\.|m\.|mbasic\.|mobile\.)+/,'');
+    if(host==='fb.com')host='facebook.com';
+    var stripParams=/^(?:utm_.*|fbclid|mibextid|ref|ref_src|rdid|share_id|s|si|feature|app|__cft__.*|__tn__.*|sfnsn|wtsid|h|_cb)$/i;
+    var kept=[];
+    p.searchParams.forEach(function(v,k){
+      if(!stripParams.test(k))kept.push([k,v]);
+    });
+    kept.sort(function(a,b){return a[0]===b[0]?a[1].localeCompare(b[1]):a[0].localeCompare(b[0])});
+    var qs=kept.map(function(kv){return kv[0]+'='+kv[1]}).join('&');
+    var pathname=p.pathname.replace(/\/+$/,'')||'/';
+    return host+pathname+(qs?('?'+qs):'');
+  }catch(e){
+    return raw.toLowerCase().replace(/#.*$/,'').replace(/\/+$/,'');
+  }
+}
+function normTextKey(t){
+  return String(t||'').replace(/\s+/g,' ').trim();
+}
+function extractFbUrlParts(u){
+  var authorSlug='', groupSlug='', kind='post', shortId='';
   try{
     var cleanU=unwrapUrl(u||'');
     var p=new URL(cleanU);
     var segs=p.pathname.split('/').filter(Boolean);
-    var generic=['share','reel','watch','photo','photos','video','videos','story.php','permalink.php','plugins','posts','p','r','v','l.php'];
-    if(segs.length && generic.indexOf(segs[0].toLowerCase())<0){
-      if(segs[0].toLowerCase()==='groups' && segs[1] && !/^\d+$/.test(segs[1])){
-        return 'Facebook · '+decodeURIComponent(segs[1]).replace(/[._-]+/g,' ').slice(0,48);
+    var generic=['share','reel','reels','watch','photo','photos','video','videos','story.php','permalink.php','plugins','posts','p','r','v','l.php'];
+    if(segs.length){
+      var s0=segs[0].toLowerCase();
+      if(s0==='groups' && segs[1] && !/^\d+$/.test(segs[1])){
+        groupSlug=decodeURIComponent(segs[1]).replace(/[._-]+/g,' ').trim().slice(0,40);
+      }else if(generic.indexOf(s0)<0 && !/^\d+$/.test(segs[0])){
+        authorSlug=decodeURIComponent(segs[0]).replace(/[._-]+/g,' ').trim().slice(0,40);
       }
-      if(!/^\d+$/.test(segs[0])){
-        return 'Facebook · '+decodeURIComponent(segs[0]).replace(/[._-]+/g,' ').slice(0,48);
+      if(segs.indexOf('reel')>=0 || segs.indexOf('reels')>=0 || (s0==='share' && segs[1]==='r'))kind='reel';
+      else if(segs.indexOf('video')>=0 || segs.indexOf('videos')>=0 || s0==='watch' || /fb\.watch$/i.test(p.hostname))kind='video';
+      else if(segs.indexOf('photo')>=0 || segs.indexOf('photos')>=0)kind='foto';
+      else if(s0==='groups')kind='grup';
+      var lastSeg=segs[segs.length-1]||'';
+      if(lastSeg && generic.indexOf(lastSeg.toLowerCase())<0 && !/\.php$/i.test(lastSeg)){
+        shortId=lastSeg.slice(-8);
+      }else if(p.searchParams.get('story_fbid')||p.searchParams.get('v')||p.searchParams.get('fbid')){
+        shortId=String(p.searchParams.get('story_fbid')||p.searchParams.get('v')||p.searchParams.get('fbid')).slice(-8);
       }
     }
   }catch(e){}
-  return 'Postare Facebook';
+  return {authorSlug:authorSlug, groupSlug:groupSlug, kind:kind, shortId:shortId};
+}
+function extractFbUrlFallbackLabel(u){
+  var info=extractFbUrlParts(u);
+  if(info.groupSlug)return 'FB · grup '+info.groupSlug;
+  if(info.authorSlug)return 'FB · '+info.authorSlug;
+  return 'FB · '+info.kind+(info.shortId?(' #'+info.shortId):'');
+}
+function formatFbShareLabel(u, rawTitle, rawText){
+  var parts=[];
+  var seen={};
+  function pushPart(val){
+    var clean=String(val||'').replace(/\s+/g,' ').trim();
+    if(!clean)return;
+    var k=clean.toLowerCase();
+    for(var prev in seen){
+      if(prev===k || prev.indexOf(k)>=0 || k.indexOf(prev)>=0){
+        if(k.length>prev.length){
+          delete seen[prev];
+          parts=parts.filter(function(x){return x.toLowerCase()!==prev});
+        }else return;
+      }
+    }
+    seen[k]=true;
+    parts.push(clean);
+  }
+  var cleanT=cleanFacebookMetaTitle(rawTitle||'');
+  var cleanTxt=String(rawText||'')
+    .replace(/https?:\/\/\S+/gi,' ')
+    .replace(/\b(?:see this post on facebook|vezi aceast[aă] postare pe facebook|watch on facebook|vezi pe facebook)\b/gi,' ')
+    .replace(/\s+/g,' ').trim();
+  if(cleanFacebookMetaTitle(cleanTxt)===cleanT)cleanTxt='';
+  var info=extractFbUrlParts(u);
+  if(info.authorSlug)pushPart(info.authorSlug);
+  else if(info.groupSlug)pushPart('grup '+info.groupSlug);
+  if(cleanT)pushPart(cleanT.slice(0,55));
+  if(cleanTxt)pushPart(cleanTxt.slice(0,65));
+  if(!parts.length)return extractFbUrlFallbackLabel(u);
+  var joined='FB · '+parts.join(' — ');
+  return joined.length>95 ? joined.slice(0,94)+'…' : joined;
 }
 function deriveTitleFromContent(text, authorHint){
-  var hint=cleanFacebookMetaTitle(authorHint||'');
+  var rawHint=(authorHint||'').replace(/^(?:FB|Facebook)\s*[·\-:]\s*/i,'').trim();
+  if(/^(?:post|reel|video|foto|grup)(?:\s*#[a-z0-9_-]+)?$/i.test(rawHint))rawHint='';
+  var hint=cleanFacebookMetaTitle(rawHint);
   var lines=(text||'').replace(/\r/g,'').split('\n').map(function(l){return l.replace(/\s+/g,' ').trim()}).filter(Boolean);
-  var junkRe=/^(?:https?:\/\/\S+|\d+\s*(?:h|ore?|m|min|z|zile|s|sec)\b.*|acum\s+\d+.*|public|prieteni|urm[aă]re[șs]te|follow|sponsored|sponsorizat|reel|video|foto|\d+)$/i;
-  var firstLine='';
-  var secondLine='';
+  var junkRe=/^(?:https?:\/\/\S+|\d+\s*(?:h|ore?|m|min|z|zile|s|sec)\b.*|acum\s+\d+.*|public|prieteni|urm[aă]re[șs]te|follow|sponsored|sponsorizat|verificat|verified(?:\s+account)?|cont\s+verificat|vezi\s+mai\s+mult|see\s+more|vezi\s+traducerea|see\s+translation|înscrie-te|sign\s+up|reel|video|foto|creator\s+digital|\d+)$/i;
+  var cleanLines=[];
   for(var i=0;i<lines.length;i++){
     var ln=lines[i];
     if(isFacebookTitleOrUrl(ln) || /^https?:\/\//i.test(ln) || junkRe.test(ln))continue;
     if(ln.length<4)continue;
-    if(!firstLine)firstLine=ln;
-    else if(!secondLine){secondLine=ln;break;}
+    cleanLines.push(ln);
+    if(cleanLines.length>=6)break;
   }
   function clipTitle(s, maxLen){
     s=(s||'').replace(/\s+/g,' ').trim();
@@ -2331,35 +2502,92 @@ function deriveTitleFromContent(text, authorHint){
     if(sp>Math.floor(maxLen*0.55))cut=cut.slice(0, sp);
     return cut.replace(/[.,;:\-–—\s]+$/,'')+'…';
   }
-  if(hint && firstLine){
-    if(firstLine.toLowerCase()===hint.toLowerCase()){
-      return secondLine ? clipTitle(hint+' — '+secondLine, 82) : clipTitle(hint, 82);
+  var contentLine='';
+  var hintNorm=hint.toLowerCase();
+  for(var j=0;j<cleanLines.length;j++){
+    var cand=cleanLines[j];
+    var candLow=cand.toLowerCase();
+    if(hintNorm){
+      if(candLow===hintNorm || candLow===hintNorm+' · urmărește' || candLow===hintNorm+' · follow')continue;
+      if(candLow.indexOf(hintNorm)===0){
+        var tail=cand.slice(hint.length).replace(/^[\s·\-–—:|,]+/,'').replace(/^(?:urm[aă]re[șs]te|follow|a\s+postat|a\s+distribuit|posted|shared)\b[\s·:\-]*/i,'').trim();
+        if(tail.length>=6 && !junkRe.test(tail)){contentLine=tail;break;}
+        continue;
+      }
     }
-    if(hint.length<=28 && firstLine.toLowerCase().indexOf(hint.toLowerCase())!==0){
-      return clipTitle(hint+' — '+firstLine, 82);
-    }
-    return clipTitle(hint.length>firstLine.length?hint:firstLine, 82);
+    contentLine=cand;
+    break;
   }
-  if(firstLine)return clipTitle(firstLine, 82);
-  return clipTitle(hint, 82);
+  if(hint && contentLine){
+    var hintContainsContent=(hintNorm.indexOf(contentLine.toLowerCase().slice(0,18))>=0);
+    if(hintContainsContent)return clipTitle(cleanTitleDedup(hint), 92);
+    var authorPart=hint.length>38 ? clipTitle(hint, 38).replace(/…$/,'') : hint;
+    return clipTitle(cleanTitleDedup(authorPart+' — '+contentLine), 92);
+  }
+  if(!hint && cleanLines.length>=2 && cleanLines[0].length<=36 && !/[.!?]$/.test(cleanLines[0]) && cleanLines[1].length>cleanLines[0].length){
+    return clipTitle(cleanTitleDedup(cleanLines[0]+' — '+cleanLines[1]), 92);
+  }
+  if(contentLine)return clipTitle(cleanTitleDedup(contentLine), 92);
+  if(cleanLines[0])return clipTitle(cleanTitleDedup(cleanLines[0]), 92);
+  return clipTitle(cleanTitleDedup(hint), 92);
+}
+
+function dedupeStackList(list){
+  if(!Array.isArray(list) || !list.length)return [];
+  var out=[];
+  var byId={}, byUrl={}, byTxt={};
+  function mergeRows(keep, dup){
+    if(needsFbTitleEnrichment(keep.title, keep.url) && !needsFbTitleEnrichment(dup.title, dup.url))keep.title=dup.title;
+    else if((!keep.title || isBadOrPlaceholderTitle(keep.title, keep.url)) && dup.title)keep.title=dup.title;
+    if((!keep.text || keep.text.length<40) && dup.text && dup.text.length>=(keep.text||'').length){
+      keep.text=dup.text;
+      keep.words=dup.words||countWordsStr(dup.text);
+    }
+    if(!keep.summary && dup.summary)keep.summary=dup.summary;
+    if(!keep.highlights && dup.highlights){
+      keep.highlights=dup.highlights;
+      if(Array.isArray(dup.highlightIdx)&&dup.highlightIdx.length)keep.highlightIdx=dup.highlightIdx;
+    }
+    if(dup.preferinte)keep.preferinte=true;
+    if(dup.tags && (!keep.tags || dup.tags.length>keep.tags.length))keep.tags=dup.tags;
+    keep.pos=Math.max(Number(keep.pos)||0, Number(dup.pos)||0);
+    if(!dup.read && keep.read && keep.pos>0)keep.read=false;
+  }
+  for(var i=0;i<list.length;i++){
+    var it=list[i];
+    if(!it)continue;
+    var uKey=(it.type!=='text' && it.url) ? canonicalUrlKey(it.url) : '';
+    var tKey=(it.type==='text' && it.text) ? normTextKey(it.text) : '';
+    var exist=byId[it.id] || (uKey && byUrl[uKey]) || (tKey && byTxt[tKey]);
+    if(exist){
+      mergeRows(exist, it);
+      continue;
+    }
+    byId[it.id]=it;
+    if(uKey)byUrl[uKey]=it;
+    if(tKey)byTxt[tKey]=it;
+    out.push(it);
+  }
+  return out;
 }
 
 function loadList(){
   try{
     var raw=JSON.parse(localStorage.getItem('cc_list')||'[]');
-    items=raw.map(function(it,i){
+    var mapped=raw.map(function(it,i){
       var txtVal=it.text||'';
       var computedWords=Number(it.words)||(txtVal?countWordsStr(txtVal):0);
       var rowId=it.id||('it_'+i+'_'+Date.now());
       var rowUrl=it.url||'';
-      var rawTtl=(it.title||'').trim();
-      if(isFacebookUrl(rowUrl) && isBadOrPlaceholderTitle(rawTtl, rowUrl)){
+      var rawTtl=cleanTitleDedup((it.title||'').trim());
+      if(isFacebookUrl(rowUrl) && needsFbTitleEnrichment(rawTtl, rowUrl)){
         var srcForTtl=txtVal;
         if(!srcForTtl){
           var cHit=getArticleCache(rowId);
           if(cHit && cHit.text)srcForTtl=cHit.text;
         }
-        rawTtl=srcForTtl ? deriveTitleFromContent(srcForTtl, '') : '';
+        if(srcForTtl)rawTtl=deriveTitleFromContent(srcForTtl, rawTtl);
+        else if(isBadOrPlaceholderTitle(rawTtl, rowUrl))rawTtl='';
       }else if(!rawTtl && !isFacebookUrl(rowUrl)){
         rawTtl=rowUrl||'Articol';
       }
@@ -2382,6 +2610,7 @@ function loadList(){
         addedAt: Number(it.addedAt)||inferTimestampFromId(rowId, Date.now())
       };
     });
+    items=dedupeStackList(mapped);
   }catch(e){items=[]}
 }
 loadList();
@@ -2475,20 +2704,22 @@ function parseInputPayload(raw){
   return {kind:'text',text:s,title:''};
 }
 
-// Adaugă SUS în stivă (vârf = index 0) și returnează {id, title}; X288: semnul de carte pornește la 0, declanșează pre-descărcare text în fundal
-function addItemWithId(u, title, textContent, sourceTag, skipRender){
+// Adaugă SUS în stivă (vârf = index 0) și returnează {id, title}; X288 + X297 + X300: fără dubluri URL/text & etichetă FB bogată
+function addItemWithId(u, title, textContent, sourceTag, skipRender, rawShareNote){
   var newId='it_'+Date.now()+'_'+Math.random().toString(36).slice(2,6);
   lastAddedId=newId;
   if(textContent && !u){
-    var itemTitle=(title||'').trim()||textContent.split('\n')[0].slice(0,60)||'Text';
-    var exTxtIdx=items.findIndex(function(it){return it.type==='text' && it.text===textContent});
+    var itemTitle=cleanTitleDedup((title||'').trim()||textContent.split('\n')[0].slice(0,60)||'Text');
+    var nTxtKey=normTextKey(textContent);
+    var exTxtIdx=items.findIndex(function(it){return it.type==='text' && normTextKey(it.text)===nTxtKey});
     if(exTxtIdx>=0){
       var exTxt=items.splice(exTxtIdx,1)[0];
       if(exTxt.read)exTxt.pos=0;
       exTxt.read=false;exTxt.err=false;exTxt.errMsg='';
       exTxt.addedAt=Date.now();
-      if(title && !exTxt.title)exTxt.title=itemTitle;
+      if(title && (!exTxt.title || isBadOrPlaceholderTitle(exTxt.title,'')))exTxt.title=itemTitle;
       items.unshift(exTxt);
+      items=dedupeStackList(items);
       if(cur>=0){
         if(cur===exTxtIdx)cur=0;
         else if(cur<exTxtIdx)cur++;
@@ -2506,24 +2737,33 @@ function addItemWithId(u, title, textContent, sourceTag, skipRender){
     return {id:newId, title:itemTitle};
   }
   u=unwrapUrl(u.replace(/[)\].,;]+$/,''));
+  var uKey=canonicalUrlKey(u);
   var isFbLink=isFacebookUrl(u);
-  var cleanedInputTitle=(title||'').trim();
+  var cleanedInputTitle=cleanTitleDedup((title||'').trim());
   if(isFbLink && isBadOrPlaceholderTitle(cleanedInputTitle, u))cleanedInputTitle='';
-  var linkTitle=cleanedInputTitle || (isFbLink ? extractFbUrlFallbackLabel(u) : u.replace(/^https?:\/\/(www\.)?/,'').slice(0,60));
-  var existingIdx=items.findIndex(function(it){return it.url===u});
+  if(isFbLink && !cleanedInputTitle && rawShareNote){
+    var noteClean=cleanFacebookMetaTitle(rawShareNote);
+    if(noteClean)cleanedInputTitle=deriveTitleFromContent(rawShareNote, cleanedInputTitle)||noteClean;
+  }
+  var linkTitle=(isFbLink ? formatFbShareLabel(u, cleanedInputTitle||title||'', rawShareNote||'') : (cleanedInputTitle || u.replace(/^https?:\/\/(www\.)?/,'').slice(0,60)));
+  var existingIdx=items.findIndex(function(it){return it.type!=='text' && (it.url===u || (uKey && canonicalUrlKey(it.url)===uKey))});
   if(existingIdx>=0){
     var ex=items.splice(existingIdx,1)[0];
-    if(cleanedInputTitle && isBadOrPlaceholderTitle(ex.title, u))ex.title=cleanedInputTitle;
-    if(isFbLink && isBadOrPlaceholderTitle(ex.title, u) && ex.text)ex.title=deriveTitleFromContent(ex.text, '');
+    if(cleanedInputTitle && (isBadOrPlaceholderTitle(ex.title, u) || (isFbLink && needsFbTitleEnrichment(ex.title, u) && !needsFbTitleEnrichment(cleanedInputTitle, u)))){
+      ex.title=cleanedInputTitle;
+    }
+    if(isFbLink && needsFbTitleEnrichment(ex.title, u) && ex.text)ex.title=deriveTitleFromContent(ex.text, ex.title);
     if(ex.read)ex.pos=0;
     ex.read=false;ex.err=false;ex.errMsg='';
     ex.addedAt=Date.now();
     items.unshift(ex);
+    items=dedupeStackList(items);
     if(cur>=0){
       if(cur===existingIdx)cur=0;
       else if(cur<existingIdx)cur++;
     }
     newId=ex.id;
+    if(ex.title && !isBadOrPlaceholderTitle(ex.title, u))linkTitle=isFbLink ? ('FB · '+ex.title.replace(/^FB\s*·\s*/i,'')) : ex.title;
   }else{
     items.unshift({id:newId,type:'link',url:u,title:cleanedInputTitle,text:'',summary:'',highlights:'',highlightIdx:[],preferinte:false,tags:'',read:false,err:false,errMsg:'',pos:0,words:0,addedAt:Date.now()});
     if(cur>=0)cur++;
@@ -2537,7 +2777,7 @@ function addItemWithId(u, title, textContent, sourceTag, skipRender){
   return {id:newId, title:linkTitle};
 }
 
-// X272 + X8 + X26 + X27 + v30: Captură Share fără a opri lectura în curs și fără a închide abuziv #dynamic-blank!
+// X272 + X8 + X26 + X27 + X299 + X300 + v33: Captură Share fără a opri lectura în curs, cu trace diagnostic & etichetă FB completă
 var openedFromShare=false;
 var shareSkipNextTransition=false;
 var dynamicHandoffAcked=false;
@@ -2589,30 +2829,36 @@ var pendingTapResume=false;
 
   var rawUrl=q.get('url')||'',rawText=q.get('text')||'',rawTitle=q.get('title')||'';
   try{history.replaceState(null,'',location.pathname)}catch(e){}
+  traceShare('SHARE_CTX', 'otherTab='+otherTabActive+' age='+(isFinite(otherTabActiveAge)?otherTabActiveAge:'inf')+' sameTab='+sameTabPrevActive+' prevNav='+(prevActiveBeforeNav?prevActiveBeforeNav.id+'@'+prevActiveBeforeNav.idx:'none')+' rawU='+(rawUrl.slice(0,48))+' rawT="'+(rawTitle.slice(0,40))+'" rawTxt="'+(rawText.slice(0,50))+'"');
 
+  // X300: Nu aruncăm rawText când rawUrl există! Extragem nota/titlul rămas după eliminarea linkului
+  var rawTextNoUrl=String(rawText||'').replace(/https?:\/\/\S+/gi,' ').replace(/\s+/g,' ').trim();
   var parsed=parseInputPayload(rawUrl ? (rawTitle?rawTitle+' ':'')+rawUrl : [rawTitle,rawText].filter(Boolean).join(' '));
   if(rawUrl && parsed.kind==='link' && !parsed.title && rawTitle)parsed.title=rawTitle.trim();
 
   var added=null;
   if(parsed.kind==='link'){
-    added=addItemWithId(parsed.url, parsed.title||rawTitle.trim(), '', 'share', true);
+    added=addItemWithId(parsed.url, parsed.title||rawTitle.trim(), '', 'share', true, rawTextNoUrl);
   }else if(rawText.trim()||rawTitle.trim()){
     added=addItemWithId('', rawTitle.trim(), rawText.trim()||rawTitle.trim(), 'share', true);
   }
   if(!added || !added.id){
+    traceShare('SHARE_EMPTY', 'Nu s-a extras niciun element');
     $('dynamic-blank').hidden=true;
     $('main-app').hidden=false;
     return;
   }
+  traceShare('SHARE_ADD', 'id='+added.id+' lbl="'+added.title+'"');
   if(prevActiveBeforeNav && prevActiveBeforeNav.id===added.id){
     prevActiveBeforeNav=null;
     sameTabPrevActive=false;
   }
 
-  // v25 + v30 + v32: Mod Silent activ — la Share face DOAR completarea în stivă, fără citire audio și fără a opri alt tab!
+  // v25 + v30 + v33: Mod Silent activ — la Share face DOAR completarea în stivă, fără citire audio și fără a opri alt tab!
   if(settings.silentShareOnly){
+    traceShare('SHARE_MODE', 'silentShareOnly otherTab='+otherTabActive);
     if(bc){
-      try{bc.postMessage({type:'sync_list',sender:INSTANCE_ID,itemId:added.id})}catch(e){}
+      try{bc.postMessage({type:'sync_list',sender:INSTANCE_ID,itemId:added.id,label:added.title})}catch(e){}
     }
     try{localStorage.setItem('cc_share_ping', String(Date.now()))}catch(e){}
     if(otherTabActive || settings.shareSilent){
@@ -2649,9 +2895,10 @@ var pendingTapResume=false;
     return;
   }
 
-  // v30 + v32: Dacă modul dinamic e activ, păstrăm fereastra albicioasă vizibilă imediat și verificăm REAL prin BroadcastChannel (nu închidem orb!)
+  // v30 + v33: Dacă modul dinamic e activ, păstrăm fereastra albicioasă vizibilă imediat și verificăm REAL prin BroadcastChannel
   if(settings.dynamicShareMode || otherTabActive || prevActiveBeforeNav){
     mode=2;
+    traceShare('SHARE_MODE', 'dynamic='+!!settings.dynamicShareMode+' otherTab='+otherTabActive+' prevNav='+(prevActiveBeforeNav?prevActiveBeforeNav.id:'none'));
     if(settings.dynamicShareMode){
       applyDynWindowLayout();
       applyDynamicWindowGeometry();
@@ -2671,6 +2918,7 @@ var pendingTapResume=false;
     return;
   }
 
+  traceShare('SHARE_MODE', 'standard shareSilent='+!!settings.shareSilent+' autoPlay='+!!settings.autoPlay);
   if(settings.shareSilent){
     $('main-app').hidden=true;
     try{window.close()}catch(e){}
@@ -2710,6 +2958,7 @@ var lastDynTapTs=0;
 $('dynamic-blank').onclick=function(){
   var nowT=Date.now();
   if(nowT-lastDynTapTs<360){
+    traceShare('TAP_ACTION', 'doubleTap -> deschid aplicația');
     dynPreviewOnly=false;
     setDynHintPrompt('');
     $('dynamic-blank').hidden=true;
@@ -2726,6 +2975,7 @@ $('dynamic-blank').onclick=function(){
   }
   unlockAudioSync();
   if(dynamicQueuedAcked){
+    traceShare('TAP_ACTION', 'singleTap queuedAcked');
     setDynHintPrompt('');
     $('dynamic-blank').hidden=true;
     $('main-app').hidden=false;
@@ -2734,6 +2984,7 @@ $('dynamic-blank').onclick=function(){
     return;
   }
   if(dynamicHandoffAcked){
+    traceShare('TAP_ACTION', 'singleTap handoffAcked');
     dynamicHandoffAcked=false;
     setDynHintPrompt('');
     var takeIdx=pendingShareDynamic?items.findIndex(function(it){return it.id===pendingShareDynamic.newId}):0;
@@ -2742,6 +2993,7 @@ $('dynamic-blank').onclick=function(){
     return;
   }
   if(state==='paused'){
+    traceShare('TAP_ACTION', 'singleTap resume state=paused idx='+idx);
     pendingTapResume=false;
     setDynHintPrompt('');
     pause();
@@ -2751,6 +3003,7 @@ $('dynamic-blank').onclick=function(){
     setDynHintPrompt('');
     var tapRemote=getActivePlayerInfo();
     if(tapRemote && tapRemote.state!=='idle' && tapRemote.tabId && tapRemote.tabId!==TAB_ID){
+      traceShare('TAP_ACTION', 'singleTap remoteActive tab='+(tapRemote.tabId||''));
       dynamicQueuedAcked=true;
       $('dynamic-blank').hidden=true;
       $('main-app').hidden=false;
@@ -2760,22 +3013,25 @@ $('dynamic-blank').onclick=function(){
     }
     if(prevActiveBeforeNav){
       var yIdx=items.findIndex(function(it){return it.id===prevActiveBeforeNav.id && !it.read && !it.err});
-      if(yIdx>=0){startList(yIdx, true, true);return}
+      if(yIdx>=0){traceShare('TAP_ACTION', 'singleTap startPrevY idx='+yIdx);startList(yIdx, true, true);return}
     }
     var targetShareIdx=pendingShareDynamic?items.findIndex(function(it){return it.id===pendingShareDynamic.newId}):0;
     if(targetShareIdx<0)targetShareIdx=0;
+    traceShare('TAP_ACTION', 'singleTap startShareIdx='+targetShareIdx);
     startList(targetShareIdx, false);
     return;
   }
   if(state==='loading'){
+    traceShare('TAP_ACTION', 'singleTap state=loading');
     pushDynLog('⏳ Se preia articolul…', 'info');
   }
 };
 
-// X272 + X295 + v32: BroadcastChannel & storage sync — audio este prioritizat imediat (0ms) și reluat curat cu handlers activi!
+// X272 + X295 + v33: BroadcastChannel & storage sync — audio este prioritizat imediat (0ms) și reluat curat cu handlers activi!
 function nudgeActivePlayback(aggressive){
   if(state==='playing'||state==='loading')startKeepAliveAudio();
   if(state==='paused' && !userPausedManually && (pendingTapResume || (Date.now()-lastAutoPauseTs)<15000)){
+    traceShare('NUDGE_RESUME', 'state=paused idx='+idx);
     pendingTapResume=false;
     token++;ttsErrStreak=0;stopAudioDrivers();
     $('pause').querySelector('span:last-child').textContent='Pauză';
@@ -2807,6 +3063,7 @@ if(bc){
   bc.onmessage=function(ev){
     if(!ev.data)return;
     if(ev.data.type==='dynamic_share_ack' && pendingShareDynamic && ev.data.itemId===pendingShareDynamic.newId){
+      traceShare('BC_RX_ACK', 'curId='+(ev.data.curId||'')+' curIdx='+ev.data.curIdx+' queued='+!!ev.data.queued);
       dynamicHandoffAcked=true;
       dynamicQueuedAcked=!!ev.data.queued;
       if(ev.data.curId){
@@ -2845,6 +3102,7 @@ if(bc){
     }
     if(ev.data.type==='dynamic_share_handoff' && ev.data.sender!==INSTANCE_ID){
       var canKeepAlive=(state==='playing' || state==='loading' || (state==='paused' && !userPausedManually && (pendingTapResume || (Date.now()-lastAutoPauseTs)<15000)));
+      traceShare('BC_RX_HANDOFF', 'itemId='+ev.data.itemId+' canKeepAlive='+canKeepAlive+' state='+state);
       if(!canKeepAlive)return;
       lastShareSyncTs=Date.now();
       nudgeActivePlayback(true);
@@ -2852,7 +3110,8 @@ if(bc){
       var oldPlayingTitle=(cur>=0&&items[cur]&&items[cur].title)||currentTitle||'';
       var savedCurIdx=idx;
       try{bc.postMessage({type:'dynamic_share_ack',itemId:ev.data.itemId,owner:INSTANCE_ID,queued:true,curId:oldPlayingId,curTitle:oldPlayingTitle,curIdx:savedCurIdx})}catch(e){}
-      pushDynLog('📥 Notez share sus în stivă', 'share');
+      traceShare('BC_TX_ACK', 'curId='+oldPlayingId+' idx='+savedCurIdx);
+      pushDynLog('📥 Notez share: '+shortDynTitle(ev.data.label||'articol nou sus în stivă'), 'share');
       loadList();
       if(oldPlayingId){
         var newPosIdx=items.findIndex(function(it){return it.id===oldPlayingId});
@@ -2867,10 +3126,12 @@ if(bc){
       return;
     }
     if(ev.data.type==='claim_play' && ev.data.owner!==INSTANCE_ID){
+      traceShare('BC_CLAIM_YIELD', 'by='+(ev.data.owner||''));
       forceYieldPlayback();
       return;
     }
     if(ev.data.type==='sync_list' && ev.data.sender!==INSTANCE_ID){
+      traceShare('BC_SYNC_LIST', 'itemId='+(ev.data.itemId||''));
       lastShareSyncTs=Date.now();
       nudgeActivePlayback(true);
       if(Date.now()-lastShareSyncTs<280 && items.length && ev.data.itemId && items[0] && items[0].id===ev.data.itemId)return;
@@ -3283,7 +3544,7 @@ function cleanFacebookText(raw){
      .replace(/https?:\/\/\S+/g,'')
      .replace(/(^|\s)#[\wăâîșțĂÂÎȘȚ-]+/g,'$1')
      .replace(/[*_`>#|~]+/g,'');
-  var fbJunk=/^(log in|log into facebook|email or phone|email or mobile number|password|forgot account\??|forgot password\??|sign up|create new account|see more on facebook|most relevant|all reactions:?|like|comment|share|send|meta ©.*|privacy.*terms.*advertising.*|explore the things you love\.?)$/i;
+  var fbJunk=/^(log in|log into facebook|email or phone|email or mobile number|password|forgot account\??|forgot password\??|sign up|create new account|see more on facebook|most relevant|all reactions:?|like|comment|share|send|meta ©.*|privacy.*terms.*advertising.*|explore the things you love\.?|urm[aă]re[șs]te|follow|verified(?:\s+account)?|cont\s+verificat|vezi\s+traducerea|see\s+translation|înscrie-te)$/i;
   var out=[];
   t.split('\n').forEach(function(l){
     l=l.replace(/\s+/g,' ').trim();
@@ -3760,6 +4021,7 @@ function handleTtsBlocked(reason){
   clearPlaybackOwnership();
   state='paused';
   var willTapResume=(!$('dynamic-blank').hidden || openedFromShare || pendingTapResume);
+  traceShare('TTS_BLOCKED', 'idx='+idx+' dynOpen='+(!$('dynamic-blank').hidden)+' willTap='+willTapResume+' reason="'+(reason||'')+'"');
   if($('dynamic-blank').hidden && (openedFromShare || pendingTapResume)){
     pendingTapResume=true;
   }
@@ -4041,6 +4303,7 @@ function release(){
 
 // X290 + X292 + X295: Când fereastra devine activă, păstrăm rândul curent citit vizibil & reluăm audio instant (inclusiv după pauză tranzitorie de Share)
 function onWindowActivated(){
+  traceShare('WIN_ACTIVE', 'vis='+document.visibilityState+' state='+state+' idx='+idx);
   if(state==='playing'||state==='loading'){
     nudgeActivePlayback(true);
     if(settings.wakeLock&&navigator.wakeLock)navigator.wakeLock.request('screen').then(function(w){wake=w}).catch(function(){});
@@ -4116,11 +4379,13 @@ function speakViaAudio(textChunk, my, useAlt, curChunkIdx, retryStage){
     if(my!==token)return;
     chunkStarted=true;
     ttsErrStreak=0;
+    if(curChunkIdx===0)traceShare('AUDIO_PLAYING', 'idx='+curChunkIdx+' alt='+!!useAlt+' title="'+(currentTitle||'').slice(0,40)+'"');
     pushDynReadLog(currentTitle||(cur>=0&&items[cur]&&items[cur].title)||'');
     setDynHintPrompt('');
     try{bgAudioPlayer.playbackRate=Number(rate.value)||1}catch(e){}
     bgAudioPlayer.onpause=function(){
       if(my!==token || state!=='playing' || activeDriver!=='audio' || !chunkStarted || bgAudioPlayer.ended)return;
+      traceShare('AUDIO_PAUSE_EVENT', 'idx='+curChunkIdx+' vis='+document.visibilityState);
       // X292 + X295: Reluare ultra-rapidă dacă Android/Share a pus temporar audio în pauză
       var resumePausedAudio=function(){
         if(my===token && state==='playing' && activeDriver==='audio' && bgAudioPlayer.paused && !bgAudioPlayer.ended){
@@ -4142,6 +4407,7 @@ function speakViaAudio(textChunk, my, useAlt, curChunkIdx, retryStage){
   bgAudioPlayer.onerror=function(){
     if(my!==token)return;
     bgAudioPlayer.onpause=null;
+    traceShare('AUDIO_ERR', 'idx='+curChunkIdx+' alt='+!!useAlt+' stage='+stage);
     if(!useAlt){
       speakViaAudio(textChunk, my, true, curChunkIdx, stage);
       return;
@@ -4173,6 +4439,7 @@ function speakViaAudio(textChunk, my, useAlt, curChunkIdx, retryStage){
     }).catch(function(err){
       if(my!==token)return;
       var en=(err&&err.name)||'',em=(err&&err.message)||'';
+      traceShare('AUDIO_PLAY_CATCH', 'idx='+curChunkIdx+' err='+en+' msg="'+em.slice(0,60)+'" retries='+abortRetries);
       if(en==='NotAllowedError'||/not allowed|interact|gesture|autoplay/i.test(em)){
         if(((Date.now()-lastShareSyncTs)<5000 || (document.visibilityState==='hidden' && chunksSpokenInItem>0)) && abortRetries<5){
           abortRetries++;
@@ -4551,8 +4818,13 @@ async function getText(u, customTitle, myToken, silent){
       if(!silent)say('Se preia postarea Facebook (încercarea '+att+'/'+total+')…');
     }, myToken);
     if(myToken!==undefined && myToken!==token)throw new Error('CANCELLED');
-    var trFb=await maybeTranslateToRo(fb.text, customTitle||fb.title, myToken, silent);
-    return {text:trFb.text, title:trFb.title};
+    // X296: Dacă customTitle e doar autor/placeholder (fără titlul postării), îl folosim ca authorHint ca să extragem Autor — Titlu!
+    var rawHintForFb=(customTitle&&customTitle.trim())||'';
+    var chosenFbTitle=fb.title || deriveTitleFromContent(fb.text, rawHintForFb);
+    if(rawHintForFb && !needsFbTitleEnrichment(rawHintForFb, u))chosenFbTitle=rawHintForFb;
+    else if(rawHintForFb && needsFbTitleEnrichment(chosenFbTitle, u))chosenFbTitle=deriveTitleFromContent(fb.text, rawHintForFb);
+    var trFb=await maybeTranslateToRo(fb.text, chosenFbTitle, myToken, silent);
+    return {text:trFb.text, title:deriveTitleFromContent(trFb.text, trFb.title||rawHintForFb)||trFb.title};
   }
   var ctl=new AbortController(),to=setTimeout(function(){ctl.abort()},28000),api='https://r.jina.ai/'+u;
   try{
@@ -4623,7 +4895,9 @@ async function runPrefetchWorker(){
         if(liveCacheHit){
           liveCacheHit.text=cachedPre.text.slice(0,35000);
           liveCacheHit.words=countWordsStr(cachedPre.text);
-          if(!liveCacheHit.title && cachedPre.title)liveCacheHit.title=cachedPre.title;
+          if(needsFbTitleEnrichment(liveCacheHit.title, liveCacheHit.url) || !liveCacheHit.title){
+            liveCacheHit.title=deriveTitleFromContent(cachedPre.text, liveCacheHit.title||cachedPre.title||'') || cachedPre.title || liveCacheHit.title;
+          }
           save();renderList(false);
         }
         continue;
@@ -4634,8 +4908,12 @@ async function runPrefetchWorker(){
         if(liveIt && fetched && fetched.text && fetched.text.trim().length>=40){
           liveIt.text=fetched.text.slice(0,35000);
           liveIt.words=countWordsStr(fetched.text);
-          if(isBadOrPlaceholderTitle(liveIt.title, liveIt.url)){
-            liveIt.title=(!isBadOrPlaceholderTitle(fetched.title, liveIt.url)?fetched.title:'') || deriveTitleFromContent(fetched.text, '') || liveIt.title;
+          if(isBadOrPlaceholderTitle(liveIt.title, liveIt.url) || needsFbTitleEnrichment(liveIt.title, liveIt.url)){
+            var oldHint=liveIt.title||'';
+            liveIt.title=(!isBadOrPlaceholderTitle(fetched.title, liveIt.url) && !needsFbTitleEnrichment(fetched.title, liveIt.url) ? fetched.title : '') || deriveTitleFromContent(fetched.text, fetched.title||oldHint) || fetched.title || liveIt.title;
+            if(!$('dynamic-blank').hidden && pendingShareDynamic && pendingShareDynamic.newId===liveIt.id && liveIt.title){
+              pushDynLog('📥 '+shortDynTitle(liveIt.title), 'share');
+            }
           }
           saveArticleCache(liveIt.id, fetched.text, liveIt.title||fetched.title||'');
           save();
@@ -4655,16 +4933,16 @@ async function resolveItemCleanText(it){
   if(!it)return {text:'',title:''};
   if(it.text && it.text.trim()){
     var savedClean=it.type==='text'?it.text.replace(/(^|\s)#[\wăâîșțĂÂÎȘȚ-]+/g,'$1').trim():it.text.trim();
-    if(isFacebookUrl(it.url||'') && isBadOrPlaceholderTitle(it.title, it.url)){
-      it.title=deriveTitleFromContent(savedClean, '');
+    if(isFacebookUrl(it.url||'') && needsFbTitleEnrichment(it.title, it.url)){
+      it.title=deriveTitleFromContent(savedClean, it.title);
       save();renderList(false);
     }
     return {text:savedClean, title:it.title||''};
   }
   if(it.id===currentLoadedId && currentArticleRawText && currentArticleRawText.trim()){
     it.text=currentArticleRawText.slice(0,35000);
-    if(isFacebookUrl(it.url||'') && isBadOrPlaceholderTitle(it.title, it.url)){
-      it.title=deriveTitleFromContent(currentArticleRawText, '');
+    if(isFacebookUrl(it.url||'') && needsFbTitleEnrichment(it.title, it.url)){
+      it.title=deriveTitleFromContent(currentArticleRawText, it.title);
     }
     save();
     return {text:currentArticleRawText, title:currentTitle||it.title||''};
@@ -4672,8 +4950,8 @@ async function resolveItemCleanText(it){
   var cached=getArticleCache(it.id);
   if(cached && cached.text && cached.text.trim()){
     it.text=cached.text.slice(0,35000);
-    if(isBadOrPlaceholderTitle(it.title, it.url)){
-      it.title=(!isBadOrPlaceholderTitle(cached.title, it.url)?cached.title:'') || deriveTitleFromContent(cached.text, '');
+    if(isBadOrPlaceholderTitle(it.title, it.url) || needsFbTitleEnrichment(it.title, it.url)){
+      it.title=(!isBadOrPlaceholderTitle(cached.title, it.url) && !needsFbTitleEnrichment(cached.title, it.url)?cached.title:'') || deriveTitleFromContent(cached.text, it.title||cached.title||'');
     }
     save();
     return {text:cached.text, title:it.title||cached.title||''};
@@ -4683,8 +4961,8 @@ async function resolveItemCleanText(it){
   var res=await getText(it.url, isBadOrPlaceholderTitle(it.title, it.url)?'':it.title);
   it.text=(res.text||'').slice(0,35000);
   it.words=countWordsStr(res.text);
-  if(isBadOrPlaceholderTitle(it.title, it.url)){
-    it.title=(!isBadOrPlaceholderTitle(res.title, it.url)?res.title:'') || deriveTitleFromContent(res.text, '');
+  if(isBadOrPlaceholderTitle(it.title, it.url) || needsFbTitleEnrichment(it.title, it.url)){
+    it.title=(!isBadOrPlaceholderTitle(res.title, it.url) && !needsFbTitleEnrichment(res.title, it.url)?res.title:'') || deriveTitleFromContent(res.text, it.title||res.title||'');
   }
   saveArticleCache(it.id, res.text, it.title);
   save();
@@ -5281,9 +5559,9 @@ function renderList(scrollTopOnAdd){
     t.className='list-item-title';
     var isYt=!!extractYoutubeId(it.url||'');
     var isFb=isFacebookUrl(it.url||'');
-    var label=it.title||'';
-    if(isFb && isBadOrPlaceholderTitle(label, it.url)){
-      label=(it.text||it.summary) ? deriveTitleFromContent(it.text||it.summary, '') : extractFbUrlFallbackLabel(it.url||'');
+    var label=cleanTitleDedup(it.title||'');
+    if(isFb && needsFbTitleEnrichment(label, it.url)){
+      label=(it.text||it.summary) ? deriveTitleFromContent(it.text||it.summary, label) : (isBadOrPlaceholderTitle(label, it.url) ? extractFbUrlFallbackLabel(it.url||'') : label);
     }
     if(!label){
       label=(it.type==='text'?it.text.slice(0,60):(isFb?extractFbUrlFallbackLabel(it.url||''):it.url.replace(/^https?:\/\/(www\.)?/,'').slice(0,60)));
@@ -5568,6 +5846,7 @@ function startList(from, resumeSavedPos, silentResume){
   readDirection='up';
   var j=(from!==undefined)?from:findNextFromBase(undefined, undefined, true);
   if(j<0){say('Toate articolele sunt bifate ca citite.');speakNotice('Toate articolele sunt bifate ca citite');return}
+  traceShare('START_LIST', 'from='+j+' resume='+!!(resumeSavedPos!==false)+' silent='+!!silentResume+' title="'+(items[j]?(items[j].title||items[j].url||''):'').slice(0,40)+'"');
   listRun=true;chunksSpokenInItem=0;lastCompletedChunkIdx=-1;ttsErrStreak=0;
   token++;stopAudioDrivers();hold();playItem(j, resumeSavedPos!==false, !!silentResume);
 }
@@ -5610,6 +5889,7 @@ async function playItem(i, resumeSavedPos, silentResume){
   idx=savedPos;
   if(!wasSameLoaded){chunks=[];spans=[]}
   writeActiveOwner();
+  traceShare('PLAY_ITEM', 'cur='+i+' id='+it.id+' pos='+savedPos+' sameLoaded='+wasSameLoaded+' hasText='+(!!(it.text&&it.text.trim().length>=40)));
   pushDynReadLog(it.title||it.url||'');
   renderList(false);saveResume(savedPos);
 
@@ -5617,8 +5897,8 @@ async function playItem(i, resumeSavedPos, silentResume){
     var cachedIt=getArticleCache(it.id);
     if(cachedIt && cachedIt.text && cachedIt.text.trim().length>=40){
       it.text=cachedIt.text.slice(0,35000);
-      if(isBadOrPlaceholderTitle(it.title, it.url)){
-        it.title=(!isBadOrPlaceholderTitle(cachedIt.title, it.url)?cachedIt.title:'') || deriveTitleFromContent(cachedIt.text, '');
+      if(isBadOrPlaceholderTitle(it.title, it.url) || needsFbTitleEnrichment(it.title, it.url)){
+        it.title=(!isBadOrPlaceholderTitle(cachedIt.title, it.url) && !needsFbTitleEnrichment(cachedIt.title, it.url)?cachedIt.title:'') || deriveTitleFromContent(cachedIt.text, it.title||cachedIt.title||'');
       }
       save();
     }
@@ -5628,8 +5908,8 @@ async function playItem(i, resumeSavedPos, silentResume){
     var cleanKnownT=isBadOrPlaceholderTitle(it.title, it.url)?'':it.title;
     var trTxt=await maybeTranslateToRo(rawBody, cleanKnownT, my);
     if(my!==token)return;
-    var derivedTtl=(!isBadOrPlaceholderTitle(trTxt.title, it.url)?trTxt.title:'') || (!isBadOrPlaceholderTitle(it.title, it.url)?it.title:'') || (isFacebookUrl(it.url||'')?deriveTitleFromContent(trTxt.text, ''):'');
-    if(isBadOrPlaceholderTitle(it.title, it.url) && derivedTtl)it.title=derivedTtl;
+    var derivedTtl=(!isBadOrPlaceholderTitle(trTxt.title, it.url) && !needsFbTitleEnrichment(trTxt.title, it.url)?trTxt.title:'') || (isFacebookUrl(it.url||'')?deriveTitleFromContent(trTxt.text, it.title||trTxt.title||''):(!isBadOrPlaceholderTitle(it.title, it.url)?it.title:''));
+    if((isBadOrPlaceholderTitle(it.title, it.url) || needsFbTitleEnrichment(it.title, it.url)) && derivedTtl)it.title=derivedTtl;
     currentTitle=derivedTtl||it.title||'';
     currentArticleRawText=trTxt.text;
     it.text=trTxt.text.slice(0,35000);
@@ -5677,6 +5957,7 @@ async function playItem(i, resumeSavedPos, silentResume){
   }catch(e){
     if(my!==token || (e&&e.message==='CANCELLED'))return;
     var reason=describeError(e);
+    traceShare('PLAY_FETCH_ERR', 'reason="'+reason+'" url='+(it.url||'').slice(0,45));
     it.err=true;it.errMsg=reason;save();renderList(false);
     say('⚠ '+reason);
     if(e&&e.message==='FB_LOGIN_REQUIRED'){
@@ -5698,8 +5979,8 @@ async function playItem(i, resumeSavedPos, silentResume){
     playNext();return;
   }
   if(my!==token)return;
-  if(isBadOrPlaceholderTitle(it.title, it.url)){
-    it.title=(!isBadOrPlaceholderTitle(res.title, it.url)?res.title:'') || deriveTitleFromContent(res.text||'', '');
+  if(isBadOrPlaceholderTitle(it.title, it.url) || needsFbTitleEnrichment(it.title, it.url)){
+    it.title=(!isBadOrPlaceholderTitle(res.title, it.url) && !needsFbTitleEnrichment(res.title, it.url)?res.title:'') || deriveTitleFromContent(res.text||'', it.title||res.title||'');
   }
   // X279: Păstrăm textul imediat după preluare și traducere chiar pe rând
   it.text=(res.text||'').slice(0,35000);
@@ -5852,12 +6133,12 @@ $('stack-add-btn').onclick=function(){
 function exportStackBackupJson(){
   var payload={
     app:'Lectură audio',
-    version:'v32',
+    version:'v33',
     exportedAt:new Date().toISOString(),
     items:items,
     history:historyList
   };
-  saveLocal('stiva-lectura-v32-'+datedBackupSuffix()+'.json', JSON.stringify(payload, null, 2), 'application/json;charset=utf-8');
+  saveLocal('stiva-lectura-v33-'+datedBackupSuffix()+'.json', JSON.stringify(payload, null, 2), 'application/json;charset=utf-8');
   say('Stiva ('+items.length+' rânduri cu text, rezumate & highlights) a fost salvată în fișier .json.');
 }
 function triggerRestoreJson(){
@@ -5912,7 +6193,7 @@ $('restore-json-input').onchange=function(ev){
           type:it.type||(txt&&!it.url?'text':'link'),
           url:it.url||'',
           text:txt,
-          title:it.title||it.url||'Articol',
+          title:cleanTitleDedup(it.title||it.url||'Articol'),
           summary:it.summary||'',
           highlights:it.highlights||'',
           highlightIdx:Array.isArray(it.highlightIdx)?it.highlightIdx.map(Number).filter(function(n){return !isNaN(n)&&n>=0}):[],
@@ -5926,10 +6207,7 @@ $('restore-json-input').onchange=function(ev){
           addedAt:Number(it.addedAt)||inferTimestampFromId(it.id, Date.now())
         };
       });
-      var existIds={};
-      normalized.forEach(function(it){existIds[it.id]=true});
-      items.forEach(function(old){if(!existIds[old.id])normalized.push(old)});
-      items=normalized;
+      items=dedupeStackList(normalized.concat(items));
       save();
       renderList(false);
       schedulePrefetch();
@@ -6054,22 +6332,70 @@ $('opt-audiotts').onchange=function(){settings.useAudioTts=this.checked;saveSett
 $('opt-autoplay').onchange=function(){settings.autoPlay=this.checked;saveSettings()};
 $('opt-autotrans').onchange=function(){settings.autoTranslate=this.checked;saveSettings()};
 $('opt-dynamicshare').onchange=function(){settings.dynamicShareMode=this.checked;saveSettings()};
-$('opt-dynpos').onchange=function(){settings.dynPos=this.value||'bottom';saveSettings();applyDynWindowLayout()};
-$('opt-dynwidth').oninput=function(){settings.dynWidthPct=Math.max(50,Math.min(100,Number(this.value)||94));$('dyn-w-lbl').textContent=settings.dynWidthPct+'%';applyDynWindowLayout()};
-$('opt-dynwidth').onchange=function(){saveSettings()};
-$('opt-dynheight').oninput=function(){settings.dynHeightPct=Math.max(25,Math.min(100,Number(this.value)||38));$('dyn-h-lbl').textContent=settings.dynHeightPct+'%';applyDynWindowLayout()};
-$('opt-dynheight').onchange=function(){saveSettings()};
-$('opt-dynosmove').onchange=function(){settings.dynTryOsMove=this.checked;saveSettings()};
+$('opt-dynpos').onchange=function(){settings.dynPos=this.value||'bottom';dynGeomApplied=false;saveSettings();applyDynWindowLayout();applyDynamicWindowGeometry(true)};
+$('opt-dynwidth').oninput=function(){settings.dynWidthPct=Math.max(30,Math.min(100,Number(this.value)||94));$('dyn-w-lbl').textContent=settings.dynWidthPct+'%';saveSettings();applyDynWindowLayout()};
+$('opt-dynwidth').onchange=function(){dynGeomApplied=false;saveSettings();applyDynWindowLayout();applyDynamicWindowGeometry(true)};
+$('opt-dynheight').oninput=function(){settings.dynHeightPct=Math.max(16,Math.min(100,Number(this.value)||38));$('dyn-h-lbl').textContent=settings.dynHeightPct+'%';saveSettings();applyDynWindowLayout()};
+$('opt-dynheight').onchange=function(){dynGeomApplied=false;saveSettings();applyDynWindowLayout();applyDynamicWindowGeometry(true)};
+$('opt-dynosmove').onchange=function(){settings.dynTryOsMove=this.checked;dynGeomApplied=false;saveSettings();applyDynamicWindowGeometry(true)};
+if($('dyn-save-btn'))$('dyn-save-btn').onclick=function(){
+  dynGeomApplied=false;
+  saveSettings();
+  applyDynWindowLayout();
+  applyDynamicWindowGeometry(true);
+  var m=$('dyn-save-msg');
+  if(m){
+    m.textContent='✓ Salvat: poziție '+(settings.dynPos||'bottom')+', '+settings.dynWidthPct+'% × '+settings.dynHeightPct+'%';
+    m.hidden=false;
+    setTimeout(function(){m.hidden=true}, 2800);
+  }
+  say('Configurația ferestrei albicioase a fost salvată ('+settings.dynWidthPct+'% × '+settings.dynHeightPct+'%).');
+};
+if($('trace-copy-btn'))$('trace-copy-btn').onclick=async function(){
+  var report=buildShareTraceReport();
+  var ok=false;
+  try{
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      await navigator.clipboard.writeText(report);
+      ok=true;
+    }
+  }catch(e){}
+  if(!ok){
+    try{
+      var ta=document.createElement('textarea');
+      ta.value=report;
+      ta.style.cssText='position:fixed;left:-9999px;top:0';
+      document.body.appendChild(ta);
+      ta.select();
+      ok=document.execCommand('copy');
+      document.body.removeChild(ta);
+    }catch(e2){}
+  }
+  var tm=$('trace-copy-msg');
+  if(tm){
+    tm.textContent=ok ? ('✓ Copiat în Clipboard ('+shareTraceBuf.length+' linii trace)!') : '⚠ Clipboard blocat de browser.';
+    tm.hidden=false;
+    setTimeout(function(){tm.hidden=true}, 3200);
+  }
+  say(ok ? 'Trace Share ('+shareTraceBuf.length+' linii) copiat în Clipboard.' : 'Nu am putut accesa Clipboard-ul.');
+};
+if($('trace-clear-btn'))$('trace-clear-btn').onclick=function(){
+  shareTraceBuf=[];
+  try{localStorage.removeItem(SHARE_TRACE_KEY)}catch(e){}
+  updateTraceCountUI();
+  var tm=$('trace-copy-msg');
+  if(tm){tm.textContent='Trace șters.';tm.hidden=false;setTimeout(function(){tm.hidden=true}, 2000);}
+};
 $('dyn-preview-btn').onclick=function(){
   applyDynWindowLayout();
   if(!dynLogs.length){
     pushDynLog('▶ Citesc: Exemplu articol activ', 'read');
-    pushDynLog('📥 Notez share: Articol nou trimis', 'share');
+    pushDynLog('📥 Notez share: FB · Autor — Titlu extras', 'share');
     pushDynLog('🔒 Ecran blocat de browser — atinge oriunde', 'blocked');
   }else{
     renderDynLogs();
   }
-  setDynHintPrompt('');
+  setDynHintPrompt('📐 Panou activ: '+settings.dynWidthPct+'% lățime × '+settings.dynHeightPct+'% înălțime ('+(settings.dynPos||'bottom')+')');
   dynPreviewOnly=true;
   $('main-app').hidden=true;
   $('dynamic-blank').hidden=false;
@@ -6211,7 +6537,7 @@ window.addEventListener('beforeunload',function(){
   release();
 });
 
-// Downloads v32
+// Downloads v33
 function saveLocal(filename, data, type){
   var b=new Blob([data],{type:type});
   var a=document.createElement('a');
@@ -6223,7 +6549,7 @@ function saveLocal(filename, data, type){
 }
 
 $('btn-dl-index').onclick=function(){
-  fetch(location.pathname.endsWith('lectura-v32.html') ? 'lectura-v32.html' : 'index.html', {cache:'no-store'})
+  fetch(location.pathname.endsWith('lectura-v33.html') ? 'lectura-v33.html' : 'index.html', {cache:'no-store'})
     .then(function(r){ return r.text(); })
     .then(function(t){
       var cleanHtml=t.replace(/<script[^>]*_aistudio-iframe\.js[^>]*><\/script>/gi,'');
@@ -6380,7 +6706,7 @@ document.addEventListener('click', function(ev){
   pause();
 }, true);
 
-// X272 + X26 + X27 + X295 + v32: Confirmăm via BroadcastChannel dacă alt tab chiar citește activ; altfel reluăm Y / pornim X fără blocaj!
+// X272 + X26 + X27 + X295 + X299 + v33: Confirmăm via BroadcastChannel dacă alt tab chiar citește activ; altfel reluăm Y / pornim X fără blocaj!
 if(pendingShareDynamic && !settings.silentShareOnly){
   if(settings.dynamicShareMode){
     mode=2;
@@ -6392,10 +6718,12 @@ if(pendingShareDynamic && !settings.silentShareOnly){
 
   var startDynamicShareLocal=function(forceTakeover){
     if(dynamicHandoffAcked)return;
+    traceShare('DYN_LOCAL_START', 'force='+!!forceTakeover+' otherTab='+otherTabActive);
     if(!forceTakeover && otherTabActive){
       var liveRemote=getActivePlayerInfo();
       if(liveRemote && liveRemote.state!=='idle' && (!liveRemote.tabId || liveRemote.tabId!==TAB_ID)){
         dynamicQueuedAcked=true;
+        traceShare('DYN_REMOTE_LIVE', 'curId='+(liveRemote.curId||'')+' state='+liveRemote.state);
         if(liveRemote.curId){
           var rIdx=items.findIndex(function(it){return it.id===liveRemote.curId});
           if(rIdx>=0){cur=rIdx;currentLoadedId=items[cur].id;listRun=true;renderList(false);}
@@ -6435,6 +6763,7 @@ if(pendingShareDynamic && !settings.silentShareOnly){
     }
 
     var launchAfterUnlock=function(){
+      traceShare('LAUNCH_UNLOCKED', 'runIdx='+targetRunIdx+' resumePrevY='+resumePrevY);
       try{localStorage.removeItem('cc_active_player')}catch(e){}
       setDynHintPrompt('');
       if(items[targetRunIdx]&&items[targetRunIdx].title)pushDynReadLog(items[targetRunIdx].title);
@@ -6446,6 +6775,7 @@ if(pendingShareDynamic && !settings.silentShareOnly){
     };
 
     var showTapPromptOverlay=function(){
+      traceShare('TAP_PROMPT_SHOWN', 'runIdx='+targetRunIdx+' resumePrevY='+resumePrevY);
       cur=targetRunIdx;
       currentLoadedId=items[cur]?items[cur].id:'';
       listRun=true;
@@ -6474,6 +6804,7 @@ if(pendingShareDynamic && !settings.silentShareOnly){
     if(!audioUnlockedByUser){
       try{
         // Sondă NE-MUTATĂ (muted=false) cu timeout 450ms ca să nu înghețe niciodată ecranul de Share!
+        traceShare('PROBE_START', 'timeoutMs=450');
         var probe=new Audio(KEEP_ALIVE_WAV_URL);
         probe.muted=false;
         probe.volume=0.01;
@@ -6481,6 +6812,7 @@ if(pendingShareDynamic && !settings.silentShareOnly){
         var ppTimer=setTimeout(function(){
           if(ppDone)return;
           ppDone=true;
+          traceShare('PROBE_TIMEOUT', 'fallback showTapPrompt');
           try{probe.pause()}catch(e){}
           showTapPromptOverlay();
         }, 450);
@@ -6490,6 +6822,7 @@ if(pendingShareDynamic && !settings.silentShareOnly){
             if(ppDone)return;
             ppDone=true;clearTimeout(ppTimer);
             audioUnlockedByUser=true;
+            traceShare('PROBE_OK', 'audio unlocked');
             try{probe.pause()}catch(e){}
             unlockAudioSync();
             launchAfterUnlock();
@@ -6497,6 +6830,7 @@ if(pendingShareDynamic && !settings.silentShareOnly){
             if(ppDone)return;
             ppDone=true;clearTimeout(ppTimer);
             var en=(err&&err.name)||'',em=(err&&err.message)||'';
+            traceShare('PROBE_ERR', en+': '+em.slice(0,60));
             if(en==='NotAllowedError'||/not allowed|interact|gesture|autoplay/i.test(em)){
               showTapPromptOverlay();
               return;
@@ -6512,13 +6846,16 @@ if(pendingShareDynamic && !settings.silentShareOnly){
   };
 
   if(sameTabPrevActive && prevActiveBeforeNav){
+    traceShare('HANDOFF_SKIP_SAME_TAB', 'prevId='+prevActiveBeforeNav.id);
     startDynamicShareLocal(true);
   }else if(bc){
     try{
-      bc.postMessage({type:'dynamic_share_handoff',itemId:pendingShareDynamic.newId,sender:INSTANCE_ID});
+      traceShare('BC_TX_HANDOFF', 'itemId='+pendingShareDynamic.newId+' waitMs='+(otherTabActive?260:120));
+      bc.postMessage({type:'dynamic_share_handoff',itemId:pendingShareDynamic.newId,label:pendingShareDynamic.label,sender:INSTANCE_ID});
     }catch(e){}
     setTimeout(function(){
       if(dynamicHandoffAcked)return;
+      traceShare('BC_HANDOFF_TIMEOUT', 'noAck dynMode='+!!settings.dynamicShareMode);
       if(settings.dynamicShareMode || prevActiveBeforeNav || (settings.autoPlay && !settings.shareSilent)){
         startDynamicShareLocal(true);
       }else{
@@ -6528,6 +6865,7 @@ if(pendingShareDynamic && !settings.silentShareOnly){
       }
     }, otherTabActive ? 260 : 120);
   }else if(otherTabActive){
+    traceShare('NO_BC_OTHER_TAB', 'try window.close');
     try{window.close()}catch(e){}
     setTimeout(function(){
       if(!document.hidden){
