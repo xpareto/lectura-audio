@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="referrer" content="no-referrer">
-<title>Lectură audio v35</title>
+<title>Lectură audio v36</title>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#059669">
 <meta name="apple-mobile-web-app-title" content="Lectură">
@@ -1218,7 +1218,7 @@
   .modal-actions button.purple { background: #6d28d9; color: #fff; border-color: #6d28d9; }
   .modal-actions a.fb-btn { background: #1877f2; color: #fff; border-color: #1877f2; }
   [hidden] { display: none !important; }
-  /* v35 (X301, X302, X304): Panou comunicare și control cu 5 mesaje pe câte 2 rânduri + buton Help (?) */
+  /* v36 (X301, X302, X304, X306): Panou comunicare și control cu contori permanenți, 5 mesaje pe câte 2 rânduri + Help (?) */
   #dynamic-blank {
     position: fixed;
     inset: 0;
@@ -1242,7 +1242,7 @@
   #dyn-card {
     width: 94%;
     max-width: 98vw;
-    min-height: 110px;
+    min-height: 150px;
     height: 44vh;
     max-height: 92vh;
     background: var(--card);
@@ -1252,15 +1252,41 @@
     padding: 10px 12px;
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 5px;
     overflow: hidden;
     box-sizing: border-box;
+  }
+  .dyn-counters {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    padding: 4px 8px;
+    border-radius: 8px;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    font-size: 0.72rem;
+    line-height: 1.28;
+    color: var(--fg);
+    flex-shrink: 0;
+  }
+  .dyn-ctr-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .dyn-ctr-row strong {
+    color: var(--acc);
+    font-weight: 800;
   }
   .dyn-help-line {
     font-size: 0.78rem;
     font-weight: 800;
     color: var(--acc);
-    padding-bottom: 5px;
+    padding-bottom: 4px;
     border-bottom: 1px dashed var(--line);
     display: flex;
     align-items: center;
@@ -1403,12 +1429,17 @@
 <!-- Input ascuns pentru restaurare JSON (folosit atât din Settings cât și din Settings local al stivei) -->
 <input id="restore-json-input" type="file" accept=".json,application/json" hidden>
 
-<!-- X26 + X301 + X302 + X304: Panou comunicare și control (5 mesaje pe 2 rânduri + ? Help) -->
+<!-- X26 + X301 + X302 + X304 + X306: Panou comunicare și control (contori permanenți + 5 mesaje pe 2 rânduri + ? Help) -->
 <div id="dynamic-blank" hidden>
   <div id="dyn-card">
     <div id="dyn-help-line" class="dyn-help-line">
       <span class="dyn-hdr-title">Panou comunicare și control</span>
       <button id="dyn-help-btn" type="button" class="dyn-help-btn" aria-expanded="false" title="Ajutor comunicare și control">?</button>
+    </div>
+    <div id="dyn-counters" class="dyn-counters">
+      <div class="dyn-ctr-row"><span>Nr. Art. necitite:</span><strong id="dyn-ctr-unread">0</strong></div>
+      <div class="dyn-ctr-row"><span>Estimare citire vizuală:</span><strong id="dyn-ctr-vis">0s</strong></div>
+      <div class="dyn-ctr-row"><span>Estimare citire audio (v = 1.5):</span><strong id="dyn-ctr-aud15">0s</strong></div>
     </div>
     <div id="dyn-help-box" class="dyn-help-box" hidden>
       <div><b>1. Comunicare:</b></div>
@@ -1540,11 +1571,11 @@
 </div>
 
 <main id="main-app">
-  <!-- Antet v35 (X274: număr elemente în listă lângă versiune, X17: fără download pe ecran principal) -->
+  <!-- Antet v36 (X274: număr elemente în listă lângă versiune, X17: fără download pe ecran principal) -->
   <header>
     <div class="title-group">
       <div class="app-icon">▶</div>
-      <h1>Lectură audio <span class="v-badge-green">v35</span> <span id="hdr-count" class="hdr-count" title="Elemente în stivă (necitite / total)">(0)</span></h1>
+      <h1>Lectură audio <span class="v-badge-green">v36</span> <span id="hdr-count" class="hdr-count" title="Elemente în stivă (necitite / total)">(0)</span></h1>
     </div>
     <div class="header-actions">
       <button id="settings-btn" type="button" class="btn-sm" aria-expanded="false" title="Setări, Sunete, Salvare/Restaurare, Memorie, Sleep Timer, Download &amp; Istoric">
@@ -1559,7 +1590,7 @@
   <!-- Settings generale, Sunet tranziție, Salvare/Restaurare JSON, Download (X17), Sleep Timer, Memorie (X286) & Istoric -->
   <div id="settingsbox" class="panel-box" hidden>
     <h2>
-      <span>⚙ Setări aplicație (v35)</span>
+      <span>⚙ Setări aplicație (v36)</span>
       <button id="settings-close" type="button" class="hist-btn">Închide ✕</button>
     </h2>
 
@@ -1723,13 +1754,13 @@
     <!-- X17: Panou descărcare mutată EXCLUSIV în Settings -->
     <div id="dl-panel" class="dl-panel">
       <div class="dl-header">
-        <span>📥 Descarcă pentru GitHub (v35):</span>
+        <span>📥 Descarcă pentru GitHub (v36):</span>
         <button id="btn-force-update" type="button" class="hist-btn" style="font-size:0.68rem;" title="Șterge cache-ul browserului/SW și reîncarcă imediat cea mai nouă versiune">🔄 Forțează actualizarea</button>
       </div>
       <div class="dl-grid">
-        <button id="btn-dl-index" type="button" class="dl-btn full" title="Descarcă index.html v35">📥 Descarcă index.html (v35)</button>
+        <button id="btn-dl-index" type="button" class="dl-btn full" title="Descarcă index.html v36">📥 Descarcă index.html (v36)</button>
         <button id="btn-dl-manifest" type="button" class="dl-btn sec" title="Descarcă manifest.json">📥 manifest.json</button>
-        <button id="btn-dl-sw" type="button" class="dl-btn gray" title="Descarcă sw.js v35">📥 sw.js (v35)</button>
+        <button id="btn-dl-sw" type="button" class="dl-btn gray" title="Descarcă sw.js v36">📥 sw.js (v36)</button>
       </div>
     </div>
 
@@ -1744,15 +1775,15 @@
     <div id="hist-items"></div>
   </div>
 
-  <!-- Help General v35 -->
+  <!-- Help General v36 -->
   <div id="helpbox" class="panel-box" hidden>
-    <h2>Noutăți &amp; Instrucțiuni (v35)</h2>
+    <h2>Noutăți &amp; Instrucțiuni (v36)</h2>
     <ol>
-      <li><b>Articole lungi încărcate &amp; citite integral (v35)</b>: textele complete (până la 300.000 de caractere) sunt păstrate separat în IndexedDB fără limitarea de 6.000 de caractere din cota <code>localStorage</code>, iar orice articol trunchiat anterior este detectat și re-descărcat automat integral.</li>
-      <li><b>Panou comunicare și control la Share (5 mesaje × 2 rânduri + ?)</b>: cardul dinamic poartă titlul <b>Panou comunicare și control</b> cu buton <b>?</b> dedicat, afișează ultimele 5 mesaje pe câte 2 rânduri fără trunchiere dreapta, și păstrează <b>1 tap</b> (reia lectura) / <b>2 tap-uri</b> (deschide aplicația).</li>
-      <li><b>Buton 📤 Share cu meniu de selecție pe rând</b>: la apăsarea <b>Share</b> pe orice rând poți alege între <i>Linkul</i>, <i>Textul</i>, <i>Text + link la început</i>, <i>Rezumatul</i> (generat automat pe loc dacă lipsește), <i>Rezumat + link la început</i> sau <i>Highlight + adresa la început</i>.</li>
-      <li><b>Facebook Autor + Titlu curat &amp; Sugestii de etichete</b>: postările Facebook extrag curat <b>Autor — Titlu/fragment</b>; etichetele pe rând propun instant etichete similare existente.</li>
-      <li><b>Pornire automată sus→jos, Preferințe &amp; versiune vizibilă</b>: la lansare pornește automat lectura de la ultimul articol citit; eticheta verde (<b>v35</b>) confirmă versiunea activă.</li>
+      <li><b>Contori permanenți în Panoul comunicare și control (v36 · X306)</b>: sub titlu sunt afișate mereu 3 rânduri cu <b>Nr. Art. necitite</b>, <b>estimarea de citire vizuală</b> și <b>estimarea de citire audio la viteza v = 1.5</b>.</li>
+      <li><b>Text curat fără comentarii/recomandări de final și fără controale video (v36 · X307, X308)</b>: lectura se oprește exclusiv înainte de <i>„Trebuie să fii autentificat pentru a publica un comentariu”</i> sau <i>„Te-ar putea interesa și:”</i> și elimină automat textele de accesibilitate/tastatură ale playerelor video integrate (YouTube / HTML5).</li>
+      <li><b>Articole lungi încărcate &amp; citite integral (X305)</b>: textele complete (până la 300.000 caractere) sunt păstrate în IndexedDB fără limitarea la 6.000/35.000 caractere.</li>
+      <li><b>Buton 📤 Share cu meniu de selecție pe rând (X303)</b>: alege între <i>Linkul</i>, <i>Textul</i>, <i>Text + link la început</i>, <i>Rezumatul</i> (generat automat dacă lipsește), <i>Rezumat + link</i> sau <i>Highlight + adresă</i>.</li>
+      <li><b>Pornire automată sus→jos &amp; versiune vizibilă</b>: eticheta verde (<b>v36</b>) confirmă versiunea activă; butonul <b>🔄 Forțează actualizarea</b> este în ⚙ Settings.</li>
     </ol>
   </div>
 
@@ -2051,7 +2082,7 @@ function traceShare(tag, detail){
 function buildShareTraceReport(){
   var curIt=(cur>=0&&items[cur])?items[cur]:null;
   var hdr=[
-    '=== Lectură audio v35 · Trace Share ===',
+    '=== Lectură audio v36 · Trace Share ===',
     'Data: '+new Date().toISOString(),
     'UA: '+(navigator.userAgent||''),
     'Viewport: '+window.innerWidth+'x'+window.innerHeight+' | Outer: '+window.outerWidth+'x'+window.outerHeight+' | Avail: '+(screen.availWidth||0)+'x'+(screen.availHeight||0),
@@ -2062,9 +2093,9 @@ function buildShareTraceReport(){
   return hdr.concat(shareTraceBuf).join('\n');
 }
 updateTraceCountUI();
-traceShare('BOOT', 'v35 vis='+document.visibilityState+' search="'+(location.search||'')+'" audioUnlocked='+audioUnlockedByUser);
+traceShare('BOOT', 'v36 vis='+document.visibilityState+' search="'+(location.search||'')+'" audioUnlocked='+audioUnlockedByUser);
 
-// v35 (X301, X302, X304): Panou comunicare și control — max 5 mesaje pe câte 2 rânduri + titlu lung
+// v36 (X301, X302, X304, X306): Panou comunicare și control — contori permanenți + max 5 mesaje pe câte 2 rânduri
 var dynLogs=[];
 var lastDynReadTitle='';
 var dynPreviewOnly=false;
@@ -2073,7 +2104,40 @@ function shortDynTitle(t){
   var s=String(t||'').replace(/\s+/g,' ').trim();
   return s.length>110 ? s.slice(0,109)+'…' : s;
 }
+function computeUnreadSummaryStats(){
+  var vis=220, tts=155, curItemId=(cur>=0&&items[cur])?items[cur].id:'';
+  var unreadItems=items.filter(function(it){return !it.read && !it.err});
+  var sumTotalWords=0, unknownLinks=0;
+  unreadItems.forEach(function(it){
+    if(it.id===curItemId && chunks.length){
+      sumTotalWords+=chunks.reduce(function(n,c){return n+c.split(/\s+/).filter(Boolean).length},0);
+    }else{
+      var rawTextSrc=(settings.summaryOnlyMode && it.summary && it.summary.trim()) ? stripMarkdownForSpeech(it.summary) : (it.text||'');
+      var iw=(settings.summaryOnlyMode && it.summary && it.summary.trim()) ? countWordsStr(rawTextSrc) : (Number(it.words)||(it.text?countWordsStr(it.text):0));
+      if(iw>0)sumTotalWords+=iw;
+      else if(it.type==='link')unknownLinks++;
+    }
+  });
+  var visSec=sumTotalWords>0?(sumTotalWords/vis*60):0;
+  var aud15Sec=sumTotalWords>0?(sumTotalWords/(tts*1.5)*60):0;
+  return {
+    count: unreadItems.length,
+    unknownLinks: unknownLinks,
+    wordsTotal: sumTotalWords,
+    visualSec: visSec,
+    audio15Sec: aud15Sec
+  };
+}
+function updateDynCountersUI(){
+  var uEl=$('dyn-ctr-unread'), vEl=$('dyn-ctr-vis'), aEl=$('dyn-ctr-aud15');
+  if(!uEl && !vEl && !aEl)return;
+  var st=computeUnreadSummaryStats();
+  if(uEl)uEl.textContent=String(st.count)+(st.unknownLinks>0 ? (' (+'+st.unknownLinks+' link)') : '');
+  if(vEl)vEl.textContent=st.wordsTotal>0 ? fmt(st.visualSec) : (st.unknownLinks>0 ? 'în preluare…' : '0s');
+  if(aEl)aEl.textContent=st.wordsTotal>0 ? fmt(st.audio15Sec) : (st.unknownLinks>0 ? 'în preluare…' : '0s');
+}
 function renderDynLogs(){
+  updateDynCountersUI();
   var box=$('dyn-log-list');
   if(!box)return;
   box.textContent='';
@@ -2107,6 +2171,7 @@ function setDynHintPrompt(txt){
   h.hidden=!clean;
 }
 function applyDynWindowLayout(){
+  updateDynCountersUI();
   var db=$('dynamic-blank'), dc=$('dyn-card');
   if(!db||!dc)return;
   var p=settings.dynPos||'bottom';
@@ -2118,7 +2183,7 @@ function applyDynWindowLayout(){
   dc.style.maxWidth='98vw';
   dc.style.height=hp+'vh';
   dc.style.maxHeight='92vh';
-  dc.style.minHeight='110px';
+  dc.style.minHeight='150px';
 }
 function updateDynOsInfoUI(){
   var el=$('dyn-os-info');
@@ -2429,10 +2494,10 @@ function checkMemoryQuota(manualTrigger){
     return false;
   }
   lastAutoCleanTs=Date.now();
-  var fname='stiva-lectura-v35-'+datedBackupSuffix()+'.json';
+  var fname='stiva-lectura-v36-'+datedBackupSuffix()+'.json';
   var backupPayload={
     app:'Lectură audio',
-    version:'v35',
+    version:'v36',
     reason:'auto_memory_cleanup',
     exportedAt:new Date().toISOString(),
     usefulBytesBefore:m.usefulBytes,
@@ -3866,7 +3931,7 @@ function cleanFacebookText(raw){
     if(l.length<3)return;
     out.push(l);
   });
-  return out.join('\n');
+  return sanitizeExtractedText(out.join('\n'));
 }
 
 function sleepMs(ms){return new Promise(function(res){setTimeout(res,ms)})}
@@ -4214,7 +4279,7 @@ function stripLeadingDuplicateTitle(cleanTitle, cleanBody){
 }
 
 function buildSpokenText(title, body, isSummary){
-  var cleanBody=(body||'').trim();
+  var cleanBody=sanitizeExtractedText(body||'');
   var cleanTitle=getSpokenTitle(title).replace(/[.!?]+$/,'');
   if(isSummary){
     if(!/^\s*rezumat(?:ul)?\b/i.test(cleanBody))return 'Rezumat.\n'+cleanBody;
@@ -4292,6 +4357,7 @@ function dur(){
     }
   }
   durEl.innerHTML=line1+line2;
+  updateDynCountersUI();
 }
 
 function mark(){
@@ -5036,14 +5102,56 @@ function note(t){
   pos.max=0;mark();
 }
 
-// X16: Curățare agresivă
+// X307 + X308: Tăiere exclusivă la markeri comentarii/recomandări + eliminare șiruri tehnice de player video
+function sanitizeExtractedText(raw){
+  var t=String(raw||'');
+  if(!t.trim())return '';
+  var cutoffPatterns=[
+    /\bTrebuie\s+s[ăa]\s+fii\s+autentificat\s+pentru\s+a\s+publica\s+un\s+comentariu\b/i,
+    /\bTe-ar\s+putea\s+interesa\s+[șs]i\s*:/i,
+    /(?:^|\n)\s*Te-ar\s+putea\s+interesa\s+[șs]i\s*(?:$|\n)/i
+  ];
+  var earliestCut=-1;
+  cutoffPatterns.forEach(function(re){
+    var m=re.exec(t);
+    if(m && (earliestCut<0 || m.index<earliestCut))earliestCut=m.index;
+  });
+  if(earliestCut>=0)t=t.slice(0, earliestCut).trim();
+
+  t=t
+    .replace(/(?:\bVolume\s+\d{1,3}%\s+)?Press\s+shift\s+(?:question\s+mark|\?)\s+to\s+access\s+a\s+list\s+of\s+keyboard\s+shortcuts\b/gi,' ')
+    .replace(/\b(?:Scurt[ăa]turi\s+Tastatur[ăa]|Keyboard\s+Shortcuts)\s*(?:Enabled\s+Disabled\s+Shortcuts)?/gi,' ')
+    .replace(/\bEnabled\s+Disabled\s+Shortcuts\b/gi,' ')
+    .replace(/\bOpen\s*\/\s*Close\s*\/?\s*or\s*\?/gi,' ')
+    .replace(/\bEcran\s+complet\/Ie[șs]i\s+din\s+modul\s+Ecran\s+complet(?:\s+[a-z])?\b/gi,' ')
+    .replace(/\bFull\s*screen\/Exit\s+full\s*screen(?:\s+[a-z])?\b/gi,' ')
+    .replace(/\bSuprimare\s+Sunet\/Activare\s+Sunet(?:\s+[a-z])?\b/gi,' ')
+    .replace(/\bMute\/Unmute(?:\s+[a-z])?\b/gi,' ')
+    .replace(/\b(?:Increase|Decrease)\s+Caption\s+Size(?:\s*[+\-＝=]\s*(?:or\b(?:\s*[-])?)?)?/gi,' ')
+    .replace(/\b(?:M[ăa]re[șs]te|Mic[șs]oreaz[ăa])\s+dimensiunea\s+subtitr[ăa]rii[^\n]{0,20}/gi,' ')
+    .replace(/\bVolume\s+\d{1,3}%\s*(?=(?:\s|$|Press|Mute|Suprimare|Ecran|Play))/gi,' ')
+    .replace(/\b(?:Your\s+browser\s+can't\s+play\s+this\s+video|An\s+error\s+occurred\s+while\s+retrieving\s+sharing\s+information|Tap\s+to\s+unmute|Watch\s+on\s+YouTube|Urm[ăa]re[șs]te\s+pe\s+YouTube)\.?/gi,' ');
+
+  var techCtrlRe=/(keyboard shortcuts|scurt[ăa]turi tastatur[ăa]|caption size|subtitles\/closed captions|picture-in-picture|seek (?:forward|backward)|playback speed|play\/pause|suprimare sunet|ecran complet\/ie[șs]i|volume\s+\d{1,3}%)/i;
+  var cleanedLines=t.split('\n').map(function(ln){return ln.replace(/[ \t]+/g,' ').trim()}).filter(function(ln){
+    if(!ln)return false;
+    if(/^Volume\s+\d{1,3}%$/i.test(ln))return false;
+    if(ln.split(/\s+/).length<=16 && techCtrlRe.test(ln))return false;
+    return true;
+  });
+  return cleanedLines.join('\n').trim();
+}
+
+// X16 + X307 + X308: Curățare agresivă
 function clean(md){
   var titleMatch=md.match(/^Title:\s*(.+)$/m);
   var extTitle=titleMatch?titleMatch[1].trim():'';
   var i=md.indexOf('Markdown Content:');if(i>=0)md=md.slice(i+17);
 
-  md=md.replace(/!\[[^\]]*\]\([^)]*\)/g,'')
-       .replace(/(^|\s)#[\wăâîșțĂÂÎȘȚ-]+/g,'$1');
+  md=sanitizeExtractedText(
+    md.replace(/!\[[^\]]*\]\([^)]*\)/g,'')
+      .replace(/(^|\s)#[\wăâîșțĂÂÎȘȚ-]+/g,'$1')
+  );
 
   var months='ianuarie|februarie|martie|aprilie|mai|iunie|iulie|august|septembrie|octombrie|noiembrie|decembrie|january|february|march|april|may|june|july|september|october|november|december';
   var reDate=new RegExp('\\b\\d{1,2}[./-]\\d{1,2}[./-]\\d{2,4}\\b|\\b\\d{1,2}\\s+('+months+')\\b|\\b('+months+')\\s+\\d{1,2},?\\s+\\d{4}|\\b\\d{1,2}:\\d{2}\\b','i');
@@ -5096,7 +5204,7 @@ function clean(md){
     if(w<4&&!/[.!?:"”]$/.test(l))return;
     out.push(l);
   });
-  return {text:out.join('\n'),title:extTitle};
+  return {text:sanitizeExtractedText(out.join('\n')),title:extTitle};
 }
 
 async function fetchHtmlFallback(u){
@@ -5109,11 +5217,11 @@ async function fetchHtmlFallback(u){
       if(!r.ok)continue;
       var html=await r.text();
       var doc=new DOMParser().parseFromString(html,'text/html');
-      doc.querySelectorAll('script,style,nav,header,footer,aside,form').forEach(function(el){el.remove()});
+      doc.querySelectorAll('script,style,nav,header,footer,aside,form,iframe,video,audio,[role="dialog"],.comments,#comments,.comment-respond,.related-posts,.ytp-popup,.vjs-control-bar,.jw-wrapper').forEach(function(el){el.remove()});
       var root=doc.querySelector('article')||doc.body;
       var ps=Array.prototype.slice.call(root.querySelectorAll('p, h1, h2, h3, blockquote')).map(function(el){return (el.textContent||'').replace(/\s+/g,' ').trim()}).filter(function(s){return s.length>25});
       var title=(doc.querySelector('meta[property="og:title"]')||{}).content||doc.title||'';
-      var joined=ps.join('\n').replace(/(^|\s)#[\wăâîșțĂÂÎȘȚ-]+/g,'$1');
+      var joined=sanitizeExtractedText(ps.join('\n').replace(/(^|\s)#[\wăâîșțĂÂÎȘȚ-]+/g,'$1'));
       if(joined.length>=80)return {text:joined,title:title.trim()};
     }catch(e){}
   }
@@ -5149,7 +5257,7 @@ async function getText(u, customTitle, myToken, silent){
         signal:ctl.signal,
         headers:{
           'X-Retain-Images':'none',
-          'X-Remove-Selector':'header, footer, nav, aside, form'
+          'X-Remove-Selector':'header, footer, nav, aside, form, iframe, video, audio, [role="dialog"], .comments, #comments, .comment-respond, .related-posts'
         }
       });
       if(r.ok){
@@ -5269,7 +5377,8 @@ async function runPrefetchWorker(){
 async function resolveItemCleanText(it){
   if(!it)return {text:'',title:''};
   if(it.text && it.text.trim() && (!isLikelyTruncatedItem(it) || !it.url || !navigator.onLine)){
-    var savedClean=it.type==='text'?it.text.replace(/(^|\s)#[\wăâîșțĂÂÎȘȚ-]+/g,'$1').trim():it.text.trim();
+    var rawClean=it.type==='text'?it.text.replace(/(^|\s)#[\wăâîșțĂÂÎȘȚ-]+/g,'$1').trim():it.text.trim();
+    var savedClean=sanitizeExtractedText(rawClean);
     if(isFacebookUrl(it.url||'') && needsFbTitleEnrichment(it.title, it.url)){
       it.title=deriveTitleFromContent(savedClean, it.title);
       save();renderList(false);
@@ -6650,12 +6759,12 @@ $('stack-add-btn').onclick=function(){
 function exportStackBackupJson(){
   var payload={
     app:'Lectură audio',
-    version:'v35',
+    version:'v36',
     exportedAt:new Date().toISOString(),
     items:items,
     history:historyList
   };
-  saveLocal('stiva-lectura-v35-'+datedBackupSuffix()+'.json', JSON.stringify(payload, null, 2), 'application/json;charset=utf-8');
+  saveLocal('stiva-lectura-v36-'+datedBackupSuffix()+'.json', JSON.stringify(payload, null, 2), 'application/json;charset=utf-8');
   say('Stiva ('+items.length+' rânduri cu text, rezumate & highlights) a fost salvată în fișier .json.');
 }
 function triggerRestoreJson(){
@@ -7058,7 +7167,7 @@ window.addEventListener('beforeunload',function(){
   release();
 });
 
-// Downloads v35
+// Downloads v36
 function saveLocal(filename, data, type){
   var b=new Blob([data],{type:type});
   var a=document.createElement('a');
@@ -7070,7 +7179,7 @@ function saveLocal(filename, data, type){
 }
 
 $('btn-dl-index').onclick=function(){
-  fetch(location.pathname.endsWith('lectura-v35.html') ? 'lectura-v35.html' : 'index.html', {cache:'no-store'})
+  fetch(location.pathname.endsWith('lectura-v36.html') ? 'lectura-v36.html' : 'index.html', {cache:'no-store'})
     .then(function(r){ return r.text(); })
     .then(function(t){
       var cleanHtml=t.replace(/<script[^>]*_aistudio-iframe\.js[^>]*><\/script>/gi,'');
