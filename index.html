@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="referrer" content="no-referrer">
-<title>Lectură audio v37</title>
+<title>Lectură audio v38</title>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#059669">
 <meta name="apple-mobile-web-app-title" content="Lectură">
@@ -1218,7 +1218,7 @@
   .modal-actions button.purple { background: #6d28d9; color: #fff; border-color: #6d28d9; }
   .modal-actions a.fb-btn { background: #1877f2; color: #fff; border-color: #1877f2; }
   [hidden] { display: none !important; }
-  /* v37 (X301, X302, X304, X306): Panou comunicare și control cu contori permanenți, 5 mesaje pe câte 2 rânduri + Help (?) */
+  /* v38 (X301, X302, X304, X306, X312): Panou comunicare și control cu contori permanenți, butoane oglindite, 5 mesaje pe câte 2 rânduri + Help (?) */
   #dynamic-blank {
     position: fixed;
     inset: 0;
@@ -1242,7 +1242,7 @@
   #dyn-card {
     width: 94%;
     max-width: 98vw;
-    min-height: 150px;
+    min-height: 184px;
     height: 44vh;
     max-height: 92vh;
     background: var(--card);
@@ -1282,6 +1282,41 @@
     color: var(--acc);
     font-weight: 800;
   }
+  .dyn-ctrl-bar {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 4px;
+    flex-shrink: 0;
+  }
+  .dyn-ctrl-btn {
+    min-height: 32px;
+    padding: 3px 2px;
+    border-radius: 7px;
+    border: 1px solid rgba(11,110,138,0.35);
+    background: #0b6e8a;
+    color: #fff;
+    font-family: inherit;
+    font-size: 0.60rem;
+    font-weight: 700;
+    line-height: 1.1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1px;
+    cursor: pointer;
+    overflow: hidden;
+  }
+  .dyn-ctrl-btn span {
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .dyn-ctrl-btn .dci { font-size: 0.72rem; line-height: 1; }
+  .dyn-ctrl-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  .dyn-ctrl-btn.mod { background: #735ca8; border-color: rgba(115,92,168,0.45); }
+  .dyn-ctrl-btn.mod.on { background: #5b21b6; border-color: #c4b5fd; box-shadow: 0 0 0 1.5px #c4b5fd; }
   .dyn-help-line {
     font-size: 0.78rem;
     font-weight: 800;
@@ -1441,13 +1476,22 @@
       <div class="dyn-ctr-row"><span>Estimare citire vizuală:</span><strong id="dyn-ctr-vis">0s</strong></div>
       <div class="dyn-ctr-row"><span>Estimare citire audio (v = 1.5):</span><strong id="dyn-ctr-aud15">0s</strong></div>
     </div>
+    <div id="dyn-ctrl-bar" class="dyn-ctrl-bar">
+      <button id="dyn-btn-start" type="button" class="dyn-ctrl-btn" title="Pornește lectura"><span class="dci">▶</span><span>Start</span></button>
+      <button id="dyn-btn-pause" type="button" class="dyn-ctrl-btn" title="Pauză sau Reia"><span class="dci">⏸</span><span>Pauză</span></button>
+      <button id="dyn-btn-stop" type="button" class="dyn-ctrl-btn" title="Oprește rândul curent și trece la următorul"><span class="dci">⏹</span><span>Stop</span></button>
+      <button id="dyn-btn-skip" type="button" class="dyn-ctrl-btn" title="Bifează articolul curent ca citit și trece la următorul"><span class="dci">⏭</span><span>Skip</span></button>
+      <button id="dyn-btn-summary" type="button" class="dyn-ctrl-btn mod" aria-pressed="false" title="Comută modul Rezumat"><span class="dci">✨</span><span>Rezumat</span></button>
+      <button id="dyn-btn-silent" type="button" class="dyn-ctrl-btn mod" aria-pressed="false" title="Comută modul Silent (la Share adaugă în stivă fără citire audio)"><span class="dci">🔇</span><span>Silent</span></button>
+    </div>
     <div id="dyn-help-box" class="dyn-help-box" hidden>
       <div><b>1. Comunicare:</b></div>
       <div>• Arată ce face aplicația acum (scrie/notează share sau citește articolul).</div>
       <div>• Dacă s-a oprit din citire: motivul probabil este o restricție a browserului; rezolvare: <b>un tap</b>.</div>
       <div style="margin-top:4px;"><b>2. Control:</b></div>
-      <div>• <b>1 tap (atingere):</b> continuă citirea întreruptă de browser.</div>
-      <div>• <b>2 tap-uri (dublu-click):</b> deschide fereastra propriu-zisă a programului (mod Rezumat, mod Silent, stivă etc.).</div>
+      <div>• <b>Butoane rapide (X312):</b> Start, Pauză/Reia, Stop, Skip, Rezumat și Silent sunt oglindite direct aici.</div>
+      <div>• <b>1 tap (în zona liberă):</b> continuă citirea întreruptă de browser.</div>
+      <div>• <b>2 tap-uri (dublu-click):</b> deschide fereastra propriu-zisă a programului (stivă, căutare, setări).</div>
     </div>
     <div id="dyn-log-list" class="dyn-log-list"></div>
     <div id="dyn-hint" hidden></div>
@@ -1571,11 +1615,11 @@
 </div>
 
 <main id="main-app">
-  <!-- Antet v37 (X274: număr elemente în listă lângă versiune, X17: fără download pe ecran principal) -->
+  <!-- Antet v38 (X274: număr elemente în listă lângă versiune, X17: fără download pe ecran principal) -->
   <header>
     <div class="title-group">
       <div class="app-icon">▶</div>
-      <h1>Lectură audio <span class="v-badge-green">v37</span> <span id="hdr-count" class="hdr-count" title="Elemente în stivă (necitite / total)">(0)</span></h1>
+      <h1>Lectură audio <span class="v-badge-green">v38</span> <span id="hdr-count" class="hdr-count" title="Elemente în stivă (necitite / total)">(0)</span></h1>
     </div>
     <div class="header-actions">
       <button id="settings-btn" type="button" class="btn-sm" aria-expanded="false" title="Setări, Sunete, Salvare/Restaurare, Memorie, Sleep Timer, Download &amp; Istoric">
@@ -1590,7 +1634,7 @@
   <!-- Settings generale, Sunet tranziție, Salvare/Restaurare JSON, Download (X17), Sleep Timer, Memorie (X286) & Istoric -->
   <div id="settingsbox" class="panel-box" hidden>
     <h2>
-      <span>⚙ Setări aplicație (v37)</span>
+      <span>⚙ Setări aplicație (v38)</span>
       <button id="settings-close" type="button" class="hist-btn">Închide ✕</button>
     </h2>
 
@@ -1754,13 +1798,13 @@
     <!-- X17: Panou descărcare mutată EXCLUSIV în Settings -->
     <div id="dl-panel" class="dl-panel">
       <div class="dl-header">
-        <span>📥 Descarcă pentru GitHub (v37):</span>
+        <span>📥 Descarcă pentru GitHub (v38):</span>
         <button id="btn-force-update" type="button" class="hist-btn" style="font-size:0.68rem;" title="Șterge cache-ul browserului/SW și reîncarcă imediat cea mai nouă versiune">🔄 Forțează actualizarea</button>
       </div>
       <div class="dl-grid">
-        <button id="btn-dl-index" type="button" class="dl-btn full" title="Descarcă index.html v37">📥 Descarcă index.html (v37)</button>
+        <button id="btn-dl-index" type="button" class="dl-btn full" title="Descarcă index.html v38">📥 Descarcă index.html (v38)</button>
         <button id="btn-dl-manifest" type="button" class="dl-btn sec" title="Descarcă manifest.json">📥 manifest.json</button>
-        <button id="btn-dl-sw" type="button" class="dl-btn gray" title="Descarcă sw.js v37">📥 sw.js (v37)</button>
+        <button id="btn-dl-sw" type="button" class="dl-btn gray" title="Descarcă sw.js v38">📥 sw.js (v38)</button>
       </div>
     </div>
 
@@ -1775,15 +1819,15 @@
     <div id="hist-items"></div>
   </div>
 
-  <!-- Help General v37 -->
+  <!-- Help General v38 -->
   <div id="helpbox" class="panel-box" hidden>
-    <h2>Noutăți &amp; Instrucțiuni (v37)</h2>
+    <h2>Noutăți &amp; Instrucțiuni (v38)</h2>
     <ol>
-      <li><b>Bifare automată la erori blocante (v37 · X310)</b>: articolele blocate (ex. eroare 403, 404, 410, lipsă text) sunt bifate automat ca citite (păstrând mesajul de eroare vizibil), pentru a nu fi reîncercate inutil la pornire sau în fundal.</li>
-      <li><b>Text curat fără comentarii, recomandări, cookie walls și controale video (v37 · X307, X308, X309)</b>: lectura se oprește exclusiv înainte de <i>„Trebuie să fii autentificat pentru a publica un comentariu”</i>, <i>„Te-ar putea interesa și:”</i> sau <i>„Noi și partenerii noștri folosim”</i> și elimină textele tehnice ale playerelor video.</li>
-      <li><b>Contori permanenți în Panoul comunicare și control (X306)</b>: sub titlu sunt afișate mereu 3 rânduri cu <b>Nr. Art. necitite</b>, <b>estimarea de citire vizuală</b> și <b>estimarea de citire audio la viteza v = 1.5</b>.</li>
-      <li><b>Buton 📤 Share cu meniu de selecție pe rând (X303)</b>: alege între <i>Linkul</i>, <i>Textul</i>, <i>Text + link la început</i>, <i>Rezumatul</i> (generat automat dacă lipsește), <i>Rezumat + link</i> sau <i>Highlight + adresă</i>.</li>
-      <li><b>Pornire automată sus→jos &amp; versiune vizibilă</b>: eticheta verde (<b>v37</b>) confirmă versiunea activă; butonul <b>🔄 Forțează actualizarea</b> este în ⚙ Settings.</li>
+      <li><b>Comenzi rapide oglindite în Panoul de control (v38 · X312)</b>: butoanele <b>Start</b>, <b>Pauză/Reia</b>, <b>Stop</b>, <b>Skip</b>, <b>Rezumat</b> și <b>Silent</b> sunt disponibile direct și pe fereastra de comunicare și control.</li>
+      <li><b>Mesaj audio la terminarea stivei (v38 · X313)</b>: la încheierea tuturor articolelor din stivă, aplicația rostește automat mesajul <i>„Am terminat lectura listei de articole”</i>.</li>
+      <li><b>Bifare automată la erori blocante (X310)</b>: articolele blocate (ex. eroare 403, 404, 410, lipsă text) sunt bifate automat ca citite (păstrând mesajul de eroare vizibil), pentru a nu fi reîncercate inutil.</li>
+      <li><b>Text curat fără comentarii, recomandări, cookie walls și controale video (X307, X308, X309)</b>: lectura se oprește exclusiv înainte de <i>„Trebuie să fii autentificat pentru a publica un comentariu”</i>, <i>„Te-ar putea interesa și:”</i> sau <i>„Noi și partenerii noștri folosim”</i>.</li>
+      <li><b>Pornire automată sus→jos &amp; versiune vizibilă</b>: eticheta verde (<b>v38</b>) confirmă versiunea activă; butonul <b>🔄 Forțează actualizarea</b> este în ⚙ Settings.</li>
     </ol>
   </div>
 
@@ -1934,7 +1978,7 @@
 </main>
 
 <!-- X295 + v33: Afișare instantanee (0ms) și dimensionare/poziționare exactă a ferestrei albe la Share dinamic înainte de execuția scriptului principal -->
-<script>try{var _sq=new URLSearchParams(location.search);if(_sq.has('url')||_sq.has('text')||_sq.has('title')){var _cs=JSON.parse(localStorage.getItem('cc_settings')||'{}');if(_cs.dynamicShareMode&&!_cs.silentShareOnly){document.getElementById('main-app').hidden=true;var _db=document.getElementById('dynamic-blank'),_dc=document.getElementById('dyn-card'),_dp=_cs.dynPos||'bottom',_dw=Math.max(30,Math.min(100,Number(_cs.dynWidthPct)||94)),_dh=Math.max(16,Math.min(100,Number(_cs.dynHeightPct)||38));if(_db){_db.style.justifyContent=(_dp==='top')?'flex-start':(_dp==='center'?'center':'flex-end');_db.style.alignItems=(_dp==='bottom-left')?'flex-start':(_dp==='bottom-right'?'flex-end':'center');_db.hidden=false;}if(_dc){_dc.style.width=_dw+'%';_dc.style.maxWidth='98vw';_dc.style.height=_dh+'vh';_dc.style.maxHeight=_dh+'vh';_dc.style.minHeight='92px';}}}}catch(e){}</script>
+<script>try{var _sq=new URLSearchParams(location.search);if(_sq.has('url')||_sq.has('text')||_sq.has('title')){var _cs=JSON.parse(localStorage.getItem('cc_settings')||'{}');if(_cs.dynamicShareMode&&!_cs.silentShareOnly){document.getElementById('main-app').hidden=true;var _db=document.getElementById('dynamic-blank'),_dc=document.getElementById('dyn-card'),_dp=_cs.dynPos||'bottom',_dw=Math.max(30,Math.min(100,Number(_cs.dynWidthPct)||94)),_dh=Math.max(16,Math.min(100,Number(_cs.dynHeightPct)||38));if(_db){_db.style.justifyContent=(_dp==='top')?'flex-start':(_dp==='center'?'center':'flex-end');_db.style.alignItems=(_dp==='bottom-left')?'flex-start':(_dp==='bottom-right'?'flex-end':'center');_db.hidden=false;}if(_dc){_dc.style.width=_dw+'%';_dc.style.maxWidth='98vw';_dc.style.height=_dh+'vh';_dc.style.maxHeight=_dh+'vh';_dc.style.minHeight='184px';}}}}catch(e){}</script>
 
 <script>
 (function(){
@@ -2082,7 +2126,7 @@ function traceShare(tag, detail){
 function buildShareTraceReport(){
   var curIt=(cur>=0&&items[cur])?items[cur]:null;
   var hdr=[
-    '=== Lectură audio v37 · Trace Share ===',
+    '=== Lectură audio v38 · Trace Share ===',
     'Data: '+new Date().toISOString(),
     'UA: '+(navigator.userAgent||''),
     'Viewport: '+window.innerWidth+'x'+window.innerHeight+' | Outer: '+window.outerWidth+'x'+window.outerHeight+' | Avail: '+(screen.availWidth||0)+'x'+(screen.availHeight||0),
@@ -2093,9 +2137,9 @@ function buildShareTraceReport(){
   return hdr.concat(shareTraceBuf).join('\n');
 }
 updateTraceCountUI();
-traceShare('BOOT', 'v37 vis='+document.visibilityState+' search="'+(location.search||'')+'" audioUnlocked='+audioUnlockedByUser);
+traceShare('BOOT', 'v38 vis='+document.visibilityState+' search="'+(location.search||'')+'" audioUnlocked='+audioUnlockedByUser);
 
-// v37 (X301, X302, X304, X306): Panou comunicare și control — contori permanenți + max 5 mesaje pe câte 2 rânduri
+// v38 (X301, X302, X304, X306, X312): Panou comunicare și control — contori permanenți + butoane oglindite + max 5 mesaje pe câte 2 rânduri
 var dynLogs=[];
 var lastDynReadTitle='';
 var dynPreviewOnly=false;
@@ -2128,7 +2172,38 @@ function computeUnreadSummaryStats(){
     audio15Sec: aud15Sec
   };
 }
+function syncDynControlButtons(){
+  var bStart=$('dyn-btn-start'), bPause=$('dyn-btn-pause'), bStop=$('dyn-btn-stop'), bSkip=$('dyn-btn-skip');
+  var bSum=$('dyn-btn-summary'), bSil=$('dyn-btn-silent');
+  if(bStart)bStart.disabled=(state==='playing');
+  if(bPause){
+    bPause.disabled=(state==='idle' || state==='loading');
+    var pIco=bPause.querySelector('.dci');
+    var pLbl=bPause.querySelector('span:last-child');
+    if(pIco)pIco.textContent=(state==='paused')?'▶':'⏸';
+    if(pLbl)pLbl.textContent=(state==='paused')?'Reia':'Pauză';
+  }
+  if(bStop)bStop.disabled=(state==='idle');
+  if(bSkip)bSkip.disabled=(!listRun && !items.length && !chunks.length);
+  if(bSum){
+    var sumOn=!!settings.summaryOnlyMode;
+    bSum.classList.toggle('on', sumOn);
+    bSum.setAttribute('aria-pressed', String(sumOn));
+    var sLbl=bSum.querySelector('span:last-child');
+    if(sLbl)sLbl.textContent=sumOn?'Rezumat ✓':'Rezumat';
+  }
+  if(bSil){
+    var silOn=!!settings.silentShareOnly;
+    bSil.classList.toggle('on', silOn);
+    bSil.setAttribute('aria-pressed', String(silOn));
+    var lIco=bSil.querySelector('.dci');
+    var lLbl=bSil.querySelector('span:last-child');
+    if(lIco)lIco.textContent=silOn?'🔕':'🔇';
+    if(lLbl)lLbl.textContent=silOn?'Silent ✓':'Silent';
+  }
+}
 function updateDynCountersUI(){
+  syncDynControlButtons();
   var uEl=$('dyn-ctr-unread'), vEl=$('dyn-ctr-vis'), aEl=$('dyn-ctr-aud15');
   if(!uEl && !vEl && !aEl)return;
   var st=computeUnreadSummaryStats();
@@ -2183,7 +2258,7 @@ function applyDynWindowLayout(){
   dc.style.maxWidth='98vw';
   dc.style.height=hp+'vh';
   dc.style.maxHeight='92vh';
-  dc.style.minHeight='150px';
+  dc.style.minHeight='184px';
 }
 function updateDynOsInfoUI(){
   var el=$('dyn-os-info');
@@ -2494,10 +2569,10 @@ function checkMemoryQuota(manualTrigger){
     return false;
   }
   lastAutoCleanTs=Date.now();
-  var fname='stiva-lectura-v37-'+datedBackupSuffix()+'.json';
+  var fname='stiva-lectura-v38-'+datedBackupSuffix()+'.json';
   var backupPayload={
     app:'Lectură audio',
-    version:'v37',
+    version:'v38',
     reason:'auto_memory_cleanup',
     exportedAt:new Date().toISOString(),
     usefulBytesBefore:m.usefulBytes,
@@ -3331,7 +3406,51 @@ if($('dyn-help-btn')){
 if($('dyn-help-box')){
   $('dyn-help-box').onclick=function(ev){ev.stopPropagation()};
 }
-$('dynamic-blank').onclick=function(){
+if($('dyn-ctrl-bar')){
+  $('dyn-ctrl-bar').onclick=function(ev){ev.stopPropagation()};
+}
+if($('dyn-btn-start'))$('dyn-btn-start').onclick=function(ev){
+  ev.stopPropagation();
+  unlockAudioSync();
+  dynPreviewOnly=false;
+  setDynHintPrompt('');
+  start();
+  syncDynControlButtons();
+};
+if($('dyn-btn-pause'))$('dyn-btn-pause').onclick=function(ev){
+  ev.stopPropagation();
+  unlockAudioSync();
+  setDynHintPrompt('');
+  pause();
+  syncDynControlButtons();
+};
+if($('dyn-btn-stop'))$('dyn-btn-stop').onclick=function(ev){
+  ev.stopPropagation();
+  unlockAudioSync();
+  stop();
+  syncDynControlButtons();
+};
+if($('dyn-btn-skip'))$('dyn-btn-skip').onclick=function(ev){
+  ev.stopPropagation();
+  unlockAudioSync();
+  skip();
+  syncDynControlButtons();
+};
+if($('dyn-btn-summary'))$('dyn-btn-summary').onclick=function(ev){
+  ev.stopPropagation();
+  unlockAudioSync();
+  toggleSummaryMode();
+  pushDynLog(settings.summaryOnlyMode?'✨ Mod Rezumat ACTIVAT':'📖 Mod text integral ACTIVAT', 'info');
+  syncDynControlButtons();
+};
+if($('dyn-btn-silent'))$('dyn-btn-silent').onclick=function(ev){
+  ev.stopPropagation();
+  toggleSilentMode();
+  pushDynLog(settings.silentShareOnly?'🔕 Mod Silent ACTIVAT':'🔊 Mod Silent DEZACTIVAT', 'info');
+  syncDynControlButtons();
+};
+$('dynamic-blank').onclick=function(ev){
+  if(ev && ev.target && ev.target.closest && ev.target.closest('button, a, input, select, .dyn-ctrl-bar, .dyn-help-box'))return;
   var nowT=Date.now();
   if(nowT-lastDynTapTs<360){
     traceShare('TAP_ACTION', 'doubleTap -> deschid aplicația');
@@ -4429,6 +4548,7 @@ function handleTtsBlocked(reason){
   renderList(false);
   updateMediaMeta();
   $('pause').querySelector('span:last-child').textContent='Reia';
+  syncDynControlButtons();
   var msgTxt=reason||'Redare pusă în pauză (atingeți ecranul sau „Reia” pentru a continua).';
   say(msgTxt);
   if(!$('dynamic-blank').hidden){
@@ -4892,6 +5012,7 @@ function speak(){
   writeActiveOwner();
   updateMediaMeta();
   $('pause').querySelector('span:last-child').textContent='Pauză';
+  syncDynControlButtons();
   say(settings.useAudioTts ? 'Citesc (Audio MP3)…' : 'Citesc…');
   if(settings.useAudioTts){
     speakViaAudio(chunks[idx], my, false, idx);
@@ -5017,30 +5138,34 @@ function back2(){
 
 function updateSummaryModeBtn(){
   var btn=$('summary-toggle');
-  if(!btn)return;
-  var on=!!settings.summaryOnlyMode;
-  btn.classList.toggle('btn-mod-on', on);
-  btn.setAttribute('aria-pressed', String(on));
-  btn.title=on
-    ? 'Modul rezumat este ACTIV — apasă pentru a reveni la textul integral'
-    : 'Treci în modul rezumat (se citesc DOAR rezumatele)';
-  var lbl=btn.querySelector('span:last-child');
-  if(lbl)lbl.textContent=on?'Rezumat ✓':'Rezumat';
+  if(btn){
+    var on=!!settings.summaryOnlyMode;
+    btn.classList.toggle('btn-mod-on', on);
+    btn.setAttribute('aria-pressed', String(on));
+    btn.title=on
+      ? 'Modul rezumat este ACTIV — apasă pentru a reveni la textul integral'
+      : 'Treci în modul rezumat (se citesc DOAR rezumatele)';
+    var lbl=btn.querySelector('span:last-child');
+    if(lbl)lbl.textContent=on?'Rezumat ✓':'Rezumat';
+  }
+  syncDynControlButtons();
 }
 
 function updateSilentModeBtn(){
   var btn=$('silent-toggle');
-  if(!btn)return;
-  var on=!!settings.silentShareOnly;
-  btn.classList.toggle('btn-mod-on', on);
-  btn.setAttribute('aria-pressed', String(on));
-  btn.title=on
-    ? 'Mod Silent ACTIV — la Share adaugă doar în stivă, fără citire audio'
-    : 'Mod Silent: la Share face doar completarea în stivă, fără citire audio';
-  var ico=btn.querySelector('.ctrl-ico');
-  var lbl=btn.querySelector('span:last-child');
-  if(ico)ico.textContent=on?'🔕':'🔇';
-  if(lbl)lbl.textContent=on?'Silent ✓':'Silent';
+  if(btn){
+    var on=!!settings.silentShareOnly;
+    btn.classList.toggle('btn-mod-on', on);
+    btn.setAttribute('aria-pressed', String(on));
+    btn.title=on
+      ? 'Mod Silent ACTIV — la Share adaugă doar în stivă, fără citire audio'
+      : 'Mod Silent: la Share face doar completarea în stivă, fără citire audio';
+    var ico=btn.querySelector('.ctrl-ico');
+    var lbl=btn.querySelector('span:last-child');
+    if(ico)ico.textContent=on?'🔕':'🔇';
+    if(lbl)lbl.textContent=on?'Silent ✓':'Silent';
+  }
+  syncDynControlButtons();
 }
 
 function toggleSilentMode(){
@@ -5104,10 +5229,13 @@ function skip(){
       playItem(nextFromBase, true);
       say('Articol bifat ca citit (Skip) — trec la următorul rând.');
     }else{
-      listRun=false;state='idle';pendingTapResume=false;clearNavPrevPlay();cur=-1;currentLoadedId='';
+      listRun=false;state='idle';pendingTapResume=false;lastDynReadTitle='';clearNavPrevPlay();cur=-1;currentLoadedId='';
       release();saveResume(0);renderList(false);
       $('pause').querySelector('span:last-child').textContent='Pauză';
-      say('Articol bifat ca citit (Skip). Nu mai există alt rând necitit în stivă.');
+      syncDynControlButtons();
+      say('Articol bifat ca citit (Skip). Am terminat lectura listei de articole.');
+      pushDynLog('🏁 Am terminat lectura listei de articole.', 'ok');
+      speakNotice('Am terminat lectura listei de articole', token);
     }
   }else if(chunks.length>0){
     var target=Math.min(chunks.length-1,idx+5);
@@ -6717,7 +6845,10 @@ function playNext(){
   if(nextIdx>=0){playItem(nextIdx, true);return}
   listRun=false;state='idle';pendingTapResume=false;lastDynReadTitle='';clearNavPrevPlay();release();saveResume();
   $('pause').querySelector('span:last-child').textContent='Pauză';renderList(false);
-  say('Lista a fost citită.');
+  syncDynControlButtons();
+  say('Am terminat lectura listei de articole.');
+  pushDynLog('🏁 Am terminat lectura listei de articole.', 'ok');
+  speakNotice('Am terminat lectura listei de articole', token);
 }
 
 function finishItem(markRead){
@@ -6819,12 +6950,12 @@ $('stack-add-btn').onclick=function(){
 function exportStackBackupJson(){
   var payload={
     app:'Lectură audio',
-    version:'v37',
+    version:'v38',
     exportedAt:new Date().toISOString(),
     items:items,
     history:historyList
   };
-  saveLocal('stiva-lectura-v37-'+datedBackupSuffix()+'.json', JSON.stringify(payload, null, 2), 'application/json;charset=utf-8');
+  saveLocal('stiva-lectura-v38-'+datedBackupSuffix()+'.json', JSON.stringify(payload, null, 2), 'application/json;charset=utf-8');
   say('Stiva ('+items.length+' rânduri cu text, rezumate & highlights) a fost salvată în fișier .json.');
 }
 function triggerRestoreJson(){
@@ -7227,7 +7358,7 @@ window.addEventListener('beforeunload',function(){
   release();
 });
 
-// Downloads v37
+// Downloads v38
 function saveLocal(filename, data, type){
   var b=new Blob([data],{type:type});
   var a=document.createElement('a');
@@ -7239,7 +7370,7 @@ function saveLocal(filename, data, type){
 }
 
 $('btn-dl-index').onclick=function(){
-  fetch(location.pathname.endsWith('lectura-v37.html') ? 'lectura-v37.html' : 'index.html', {cache:'no-store'})
+  fetch(location.pathname.endsWith('lectura-v38.html') ? 'lectura-v38.html' : 'index.html', {cache:'no-store'})
     .then(function(r){ return r.text(); })
     .then(function(t){
       var cleanHtml=t.replace(/<script[^>]*_aistudio-iframe\.js[^>]*><\/script>/gi,'');
