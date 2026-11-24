@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="referrer" content="no-referrer">
-<title>Lectură audio v39</title>
+<title>Lectură audio v40</title>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#059669">
 <meta name="apple-mobile-web-app-title" content="Lectură">
@@ -1218,10 +1218,12 @@
   .modal-actions button.purple { background: #6d28d9; color: #fff; border-color: #6d28d9; }
   .modal-actions a.fb-btn { background: #1877f2; color: #fff; border-color: #1877f2; }
   [hidden] { display: none !important; }
-  /* v39 (X301, X302, X304, X306, X312): Panou comunicare și control cu contori permanenți, butoane oglindite, 5 mesaje pe câte 2 rânduri + Help (?) */
+  /* v40 (X301, X302, X304, X306, X312): Panou comunicare și control cu contori permanenți, butoane oglindite, 5 mesaje pe câte 2 rânduri + Help (?) + Android 16 Edge-to-Edge */
   #dynamic-blank {
     position: fixed;
     inset: 0;
+    height: 100dvh;
+    max-height: 100dvh;
     z-index: 50;
     background: rgba(16, 23, 29, 0.34);
     -webkit-backdrop-filter: blur(3px);
@@ -1230,7 +1232,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: flex-end;
-    padding: 8px;
+    padding: max(8px, env(safe-area-inset-top, 8px)) max(8px, env(safe-area-inset-right, 8px)) max(12px, env(safe-area-inset-bottom, 12px)) max(8px, env(safe-area-inset-left, 8px));
     cursor: pointer;
     user-select: none;
   }
@@ -1242,9 +1244,10 @@
   #dyn-card {
     width: 94%;
     max-width: 98vw;
-    min-height: 184px;
+    min-height: 224px;
     height: 44vh;
     max-height: 92vh;
+    max-height: 92dvh;
     background: var(--card);
     border: 2px solid var(--acc);
     border-radius: 14px;
@@ -1253,7 +1256,8 @@
     display: flex;
     flex-direction: column;
     gap: 5px;
-    overflow: hidden;
+    overflow-y: auto;
+    overflow-x: hidden;
     box-sizing: border-box;
   }
   .dyn-counters {
@@ -1615,13 +1619,16 @@
 </div>
 
 <main id="main-app">
-  <!-- Antet v39 (X274: număr elemente în listă lângă versiune, X17: fără download pe ecran principal) -->
+  <!-- Antet v40 (X274: număr elemente în listă lângă versiune, X17: fără download pe ecran principal) -->
   <header>
     <div class="title-group">
       <div class="app-icon">▶</div>
-      <h1>Lectură audio <span class="v-badge-green">v39</span> <span id="hdr-count" class="hdr-count" title="Elemente în stivă (necitite / total)">(0)</span></h1>
+      <h1>Lectură audio <span class="v-badge-green">v40</span> <span id="hdr-count" class="hdr-count" title="Elemente în stivă (necitite / total)">(0)</span></h1>
     </div>
     <div class="header-actions">
+      <button id="open-dyn-btn" type="button" class="btn-sm" title="Deschide Panou comunicare și control">
+        <span>🎛</span>
+      </button>
       <button id="settings-btn" type="button" class="btn-sm" aria-expanded="false" title="Setări, Sunete, Salvare/Restaurare, Memorie, Sleep Timer, Download &amp; Istoric">
         <span>⚙ Settings</span>
       </button>
@@ -1634,7 +1641,7 @@
   <!-- Settings generale, Sunet tranziție, Salvare/Restaurare JSON, Download (X17), Sleep Timer, Memorie (X286) & Istoric -->
   <div id="settingsbox" class="panel-box" hidden>
     <h2>
-      <span>⚙ Setări aplicație (v39)</span>
+      <span>⚙ Setări aplicație (v40)</span>
       <button id="settings-close" type="button" class="hist-btn">Închide ✕</button>
     </h2>
 
@@ -1669,8 +1676,8 @@
       <input id="opt-silentmode" type="checkbox">
     </label>
     <label class="setting-toggle">
-      <span><b>Mod de lucru dinamic la Share</b> (fereastră albicioasă compactă; dacă nu se citește nimic pornește articolul trimis, iar dacă alt articol se citește îl pune în stivă)</span>
-      <input id="opt-dynamicshare" type="checkbox">
+      <span><b>Mod de lucru dinamic la Share</b> (deschide <b>Panou comunicare și control</b>; dacă nu se citește nimic pornește articolul trimis, iar dacă alt articol se citește îl pune în stivă)</span>
+      <input id="opt-dynamicshare" type="checkbox" checked>
     </label>
     <div class="dyn-cfg-box">
       <div class="dyn-cfg-row">
@@ -1798,13 +1805,13 @@
     <!-- X17 + X314: Panou descărcare mutată EXCLUSIV în Settings -->
     <div id="dl-panel" class="dl-panel">
       <div class="dl-header">
-        <span>📥 Descarcă pentru GitHub (v39):</span>
+        <span>📥 Descarcă pentru GitHub (v40):</span>
         <button id="btn-force-update" type="button" class="hist-btn" style="font-size:0.68rem;" title="Șterge cache-ul browserului/SW și reîncarcă imediat cea mai nouă versiune">🔄 Forțează actualizarea</button>
       </div>
       <div class="dl-grid">
-        <button id="btn-dl-index" type="button" class="dl-btn full" title="Descarcă index.html v39">📥 Descarcă index.html (v39)</button>
+        <button id="btn-dl-index" type="button" class="dl-btn full" title="Descarcă index.html v40">📥 Descarcă index.html (v40)</button>
         <button id="btn-dl-manifest" type="button" class="dl-btn sec" title="Descarcă manifest.json">📥 manifest.json</button>
-        <button id="btn-dl-sw" type="button" class="dl-btn gray" title="Descarcă sw.js v39">📥 sw.js (v39)</button>
+        <button id="btn-dl-sw" type="button" class="dl-btn gray" title="Descarcă sw.js v40">📥 sw.js (v40)</button>
         <button id="btn-dl-help" type="button" class="dl-btn sec" title="Descarcă help-lectura.html (Ghid utilizare)">📘 help-lectura.html</button>
         <button id="btn-dl-tech" type="button" class="dl-btn gray" title="Descarcă manual-tehnic-lectura.html (Arhitectură &amp; Soluții)">🛠 manual-tehnic.html</button>
       </div>
@@ -1821,19 +1828,19 @@
     <div id="hist-items"></div>
   </div>
 
-  <!-- Help General v39 -->
+  <!-- Help General v40 -->
   <div id="helpbox" class="panel-box" hidden>
-    <h2>Noutăți &amp; Instrucțiuni (v39)</h2>
+    <h2>Noutăți &amp; Instrucțiuni (v40)</h2>
     <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px;">
       <a href="help-lectura.html" target="_blank" rel="noopener noreferrer" class="hist-btn" style="text-decoration:none;font-weight:700;color:var(--acc);padding:5px 10px;">📘 Deschide Ghid utilizare (Help HTML)</a>
       <a href="manual-tehnic-lectura.html" target="_blank" rel="noopener noreferrer" class="hist-btn" style="text-decoration:none;font-weight:700;color:var(--ok);padding:5px 10px;">🛠 Deschide Manual Tehnic HTML</a>
     </div>
     <ol>
-      <li><b>Documentație completă în 2 fișiere HTML (v39 · X314)</b>: <b>help-lectura.html</b> explică modul de lucru cu rafale de linkuri, Silent, viteza 1.5×, modul Rezumat și revenire/bifare; <b>manual-tehnic-lectura.html</b> detaliază toate soluțiile tehnice (audio background, reluare, Share Target, fereastra plutitoare) pentru proiecte viitoare.</li>
-      <li><b>Titluri clare pentru Perplexity (v39 · X315)</b>: titlurile generice de tip <i>„Încearcă Perplexity”</i> sunt înlocuite automat cu <b>Perplexity. &lt;subiectul articolului…&gt;</b> folosind lățimea maximă a liniei din stivă.</li>
+      <li><b>Panou comunicare și control activ implicit la Share (v40)</b>: pe orice instalare nouă (inclusiv Android 16), Share afișează automat <b>Panou comunicare și control</b> (respectând zona sigură Edge-to-Edge); îl poți deschide oricând și din antet (butonul <b>🎛</b>).</li>
+      <li><b>Documentație completă în 2 fișiere HTML (X314)</b>: <b>help-lectura.html</b> explică modul de lucru cu rafale de linkuri, Silent, viteza 1.5×, modul Rezumat și revenire/bifare; <b>manual-tehnic-lectura.html</b> detaliază toate soluțiile tehnice pentru proiecte viitoare.</li>
+      <li><b>Titluri clare pentru Perplexity (X315)</b>: titlurile generice de tip <i>„Încearcă Perplexity”</i> sunt înlocuite automat cu <b>Perplexity. &lt;subiectul articolului…&gt;</b> folosind lățimea maximă a liniei din stivă.</li>
       <li><b>Comenzi rapide oglindite în Panoul de control (X312)</b>: butoanele <b>Start</b>, <b>Pauză/Reia</b>, <b>Stop</b>, <b>Skip</b>, <b>Rezumat</b> și <b>Silent</b> sunt disponibile direct și pe fereastra de comunicare și control.</li>
-      <li><b>Mesaj audio la terminarea stivei (X313)</b>: la încheierea tuturor articolelor din stivă, aplicația rostește automat mesajul <i>„Am terminat lectura listei de articole”</i>.</li>
-      <li><b>Pornire automată sus→jos &amp; versiune vizibilă</b>: eticheta verde (<b>v39</b>) confirmă versiunea activă; butonul <b>🔄 Forțează actualizarea</b> este în ⚙ Settings.</li>
+      <li><b>Mesaj audio la terminarea stivei (X313) &amp; versiune vizibilă</b>: rostește <i>„Am terminat lectura listei de articole”</i> la final; eticheta verde (<b>v40</b>) confirmă versiunea activă.</li>
     </ol>
   </div>
 
@@ -1983,8 +1990,8 @@
   </footer>
 </main>
 
-<!-- X295 + v33: Afișare instantanee (0ms) și dimensionare/poziționare exactă a ferestrei albe la Share dinamic înainte de execuția scriptului principal -->
-<script>try{var _sq=new URLSearchParams(location.search);if(_sq.has('url')||_sq.has('text')||_sq.has('title')){var _cs=JSON.parse(localStorage.getItem('cc_settings')||'{}');if(_cs.dynamicShareMode&&!_cs.silentShareOnly){document.getElementById('main-app').hidden=true;var _db=document.getElementById('dynamic-blank'),_dc=document.getElementById('dyn-card'),_dp=_cs.dynPos||'bottom',_dw=Math.max(30,Math.min(100,Number(_cs.dynWidthPct)||94)),_dh=Math.max(16,Math.min(100,Number(_cs.dynHeightPct)||38));if(_db){_db.style.justifyContent=(_dp==='top')?'flex-start':(_dp==='center'?'center':'flex-end');_db.style.alignItems=(_dp==='bottom-left')?'flex-start':(_dp==='bottom-right'?'flex-end':'center');_db.hidden=false;}if(_dc){_dc.style.width=_dw+'%';_dc.style.maxWidth='98vw';_dc.style.height=_dh+'vh';_dc.style.maxHeight=_dh+'vh';_dc.style.minHeight='184px';}}}}catch(e){}</script>
+<!-- X295 + v40: Afișare instantanee (0ms) și dimensionare/poziționare exactă a ferestrei de control la Share dinamic înainte de execuția scriptului principal -->
+<script>try{var _sq=new URLSearchParams(location.search);if(_sq.has('url')||_sq.has('text')||_sq.has('title')){var _cs=JSON.parse(localStorage.getItem('cc_settings')||'{}');var _dynOn=(_cs.dynamicShareMode!==false)&&!_cs.silentShareOnly;if(_dynOn){document.getElementById('main-app').hidden=true;var _db=document.getElementById('dynamic-blank'),_dc=document.getElementById('dyn-card'),_dp=_cs.dynPos||'bottom',_dw=Math.max(30,Math.min(100,Number(_cs.dynWidthPct)||94)),_dh=Math.max(16,Math.min(100,Number(_cs.dynHeightPct)||38));if(_db){_db.style.justifyContent=(_dp==='top')?'flex-start':(_dp==='center'?'center':'flex-end');_db.style.alignItems=(_dp==='bottom-left')?'flex-start':(_dp==='bottom-right'?'flex-end':'center');_db.hidden=false;}if(_dc){_dc.style.width=_dw+'%';_dc.style.maxWidth='98vw';_dc.style.height=_dh+'vh';_dc.style.maxHeight='92vh';_dc.style.minHeight='224px';}}}}catch(e){}</script>
 
 <script>
 (function(){
@@ -2086,8 +2093,8 @@ function unlockAudioSync(){
 }
 var bc=(typeof BroadcastChannel!=='undefined')?new BroadcastChannel('lectura_audio_sync'):null;
 
-// Settings (X17, X23, X286, X287 + v25 Silent Share + v32 Poziție/Dimensiune fereastră dinamică)
-var settings={useAudioTts:true,autoPlay:true,autoTranslate:true,shareSilent:true,dynamicShareMode:false,dynPos:'bottom',dynWidthPct:94,dynHeightPct:38,dynTryOsMove:true,summaryOnlyMode:false,silentShareOnly:false,autoCleanMem:false,memLimitKb:2048,transitionSound:'parau',transitionSec:3,showDlInSettings:true,wakeLock:false};
+// Settings (X17, X23, X286, X287 + v25 Silent Share + v40 Panou comunicare și control activ implicit)
+var settings={useAudioTts:true,autoPlay:true,autoTranslate:true,shareSilent:true,dynamicShareMode:true,dynPos:'bottom',dynWidthPct:94,dynHeightPct:38,dynTryOsMove:true,summaryOnlyMode:false,silentShareOnly:false,autoCleanMem:false,memLimitKb:2048,transitionSound:'parau',transitionSec:3,showDlInSettings:true,wakeLock:false};
 try{
   var st=JSON.parse(localStorage.getItem('cc_settings')||'{}');
   ['useAudioTts','autoPlay','autoTranslate','shareSilent','dynamicShareMode','dynTryOsMove','summaryOnlyMode','silentShareOnly','autoCleanMem','wakeLock'].forEach(function(k){
@@ -2132,7 +2139,7 @@ function traceShare(tag, detail){
 function buildShareTraceReport(){
   var curIt=(cur>=0&&items[cur])?items[cur]:null;
   var hdr=[
-    '=== Lectură audio v39 · Trace Share ===',
+    '=== Lectură audio v40 · Trace Share ===',
     'Data: '+new Date().toISOString(),
     'UA: '+(navigator.userAgent||''),
     'Viewport: '+window.innerWidth+'x'+window.innerHeight+' | Outer: '+window.outerWidth+'x'+window.outerHeight+' | Avail: '+(screen.availWidth||0)+'x'+(screen.availHeight||0),
@@ -2143,9 +2150,9 @@ function buildShareTraceReport(){
   return hdr.concat(shareTraceBuf).join('\n');
 }
 updateTraceCountUI();
-traceShare('BOOT', 'v39 vis='+document.visibilityState+' search="'+(location.search||'')+'" audioUnlocked='+audioUnlockedByUser);
+traceShare('BOOT', 'v40 vis='+document.visibilityState+' search="'+(location.search||'')+'" audioUnlocked='+audioUnlockedByUser);
 
-// v39 (X301, X302, X304, X306, X312, X315): Panou comunicare și control — contori permanenți + butoane oglindite + max 5 mesaje pe câte 2 rânduri
+// v40 (X301, X302, X304, X306, X312, X315): Panou comunicare și control — contori permanenți + butoane oglindite + max 5 mesaje pe câte 2 rânduri
 var dynLogs=[];
 var lastDynReadTitle='';
 var dynPreviewOnly=false;
@@ -2264,7 +2271,7 @@ function applyDynWindowLayout(){
   dc.style.maxWidth='98vw';
   dc.style.height=hp+'vh';
   dc.style.maxHeight='92vh';
-  dc.style.minHeight='184px';
+  dc.style.minHeight='224px';
 }
 function updateDynOsInfoUI(){
   var el=$('dyn-os-info');
@@ -2575,10 +2582,10 @@ function checkMemoryQuota(manualTrigger){
     return false;
   }
   lastAutoCleanTs=Date.now();
-  var fname='stiva-lectura-v39-'+datedBackupSuffix()+'.json';
+  var fname='stiva-lectura-v40-'+datedBackupSuffix()+'.json';
   var backupPayload={
     app:'Lectură audio',
-    version:'v39',
+    version:'v40',
     reason:'auto_memory_cleanup',
     exportedAt:new Date().toISOString(),
     usefulBytesBefore:m.usefulBytes,
@@ -3373,14 +3380,15 @@ var pendingTapResume=false;
       try{window.close()}catch(e){}
       setTimeout(function(){
         if(!document.hidden){
-          if(otherTabActive){
+          if(otherTabActive || settings.dynamicShareMode){
             $('share-mini').hidden=true;
             if(settings.dynamicShareMode){
               applyDynWindowLayout();
               applyDynamicWindowGeometry();
               if(prevActiveBeforeNav&&prevActiveBeforeNav.title)pushDynReadLog(prevActiveBeforeNav.title);
               pushDynLog('🔇 Notez silențios share: '+shortDynTitle(added.title), 'share');
-              pushDynLog('✓ Lectura curentă continuă', 'ok');
+              if(otherTabActive)pushDynLog('✓ Lectura curentă continuă', 'ok');
+              else pushDynLog('ℹ Mod Silent activ — apasă Silent sau Start', 'info');
               setDynHintPrompt('');
               $('dynamic-blank').hidden=false;
               setTimeout(schedulePrefetch, 220);
@@ -3398,7 +3406,16 @@ var pendingTapResume=false;
     }else{
       mode=2;
       schedulePrefetch();
-      say('Adăugat silențios sus în stivă: „'+added.title+'”.');
+      if(settings.dynamicShareMode){
+        applyDynWindowLayout();
+        applyDynamicWindowGeometry();
+        pushDynLog('🔇 Notez silențios share: '+shortDynTitle(added.title), 'share');
+        setDynHintPrompt('');
+        $('main-app').hidden=true;
+        $('dynamic-blank').hidden=false;
+      }else{
+        say('Adăugat silențios sus în stivă: „'+added.title+'”.');
+      }
     }
     return;
   }
@@ -7046,12 +7063,12 @@ $('stack-add-btn').onclick=function(){
 function exportStackBackupJson(){
   var payload={
     app:'Lectură audio',
-    version:'v39',
+    version:'v40',
     exportedAt:new Date().toISOString(),
     items:items,
     history:historyList
   };
-  saveLocal('stiva-lectura-v39-'+datedBackupSuffix()+'.json', JSON.stringify(payload, null, 2), 'application/json;charset=utf-8');
+  saveLocal('stiva-lectura-v40-'+datedBackupSuffix()+'.json', JSON.stringify(payload, null, 2), 'application/json;charset=utf-8');
   say('Stiva ('+items.length+' rânduri cu text, rezumate & highlights) a fost salvată în fișier .json.');
 }
 function triggerRestoreJson(){
@@ -7301,20 +7318,33 @@ if($('trace-clear-btn'))$('trace-clear-btn').onclick=function(){
   var tm=$('trace-copy-msg');
   if(tm){tm.textContent='Trace șters.';tm.hidden=false;setTimeout(function(){tm.hidden=true}, 2000);}
 };
-$('dyn-preview-btn').onclick=function(){
+function openControlPanelOverlay(isPreviewOnly){
   applyDynWindowLayout();
   if(!dynLogs.length){
-    pushDynLog('▶ Citesc: Exemplu articol activ', 'read');
-    pushDynLog('📥 Notez share: FB · Autor — Titlu extras', 'share');
-    pushDynLog('🔒 Ecran blocat de browser — atinge oriunde', 'blocked');
+    if(cur>=0 && items[cur] && (state==='playing'||state==='loading'||state==='paused')){
+      pushDynReadLog(items[cur].title||currentTitle||'Articol curent');
+    }else if(isPreviewOnly){
+      pushDynLog('▶ Citesc: Exemplu articol activ', 'read');
+      pushDynLog('📥 Notez share: FB · Autor — Titlu extras', 'share');
+      pushDynLog('🔒 Ecran blocat de browser — atinge oriunde', 'blocked');
+    }else{
+      var nextIdx=findNextFromBase(cur>=0?cur:undefined, cur>=0?cur:undefined, true);
+      if(nextIdx>=0 && items[nextIdx]){
+        pushDynLog('📋 Pregătit în stivă: '+shortDynTitle(items[nextIdx].title||items[nextIdx].url||'Articol'), 'info');
+      }else{
+        pushDynLog('ℹ Panou comunicare și control activ', 'info');
+      }
+    }
   }else{
     renderDynLogs();
   }
-  setDynHintPrompt('📐 Panou activ: '+settings.dynWidthPct+'% lățime × '+settings.dynHeightPct+'% înălțime ('+(settings.dynPos||'bottom')+')');
-  dynPreviewOnly=true;
+  setDynHintPrompt(isPreviewOnly ? ('📐 Panou activ: '+settings.dynWidthPct+'% lățime × '+settings.dynHeightPct+'% înălțime ('+(settings.dynPos||'bottom')+')') : '');
+  dynPreviewOnly=!!isPreviewOnly;
   $('main-app').hidden=true;
   $('dynamic-blank').hidden=false;
-};
+}
+$('dyn-preview-btn').onclick=function(){openControlPanelOverlay(true)};
+if($('open-dyn-btn'))$('open-dyn-btn').onclick=function(){openControlPanelOverlay(false)};
 $('opt-summarymode').onchange=function(){settings.summaryOnlyMode=this.checked;saveSettings();updateSummaryModeBtn();dur()};
 if($('opt-silentmode'))$('opt-silentmode').onchange=function(){settings.silentShareOnly=this.checked;saveSettings();updateSilentModeBtn();dur()};
 $('opt-sharesilent').onchange=function(){settings.shareSilent=this.checked;saveSettings()};
@@ -7454,7 +7484,7 @@ window.addEventListener('beforeunload',function(){
   release();
 });
 
-// Downloads v39
+// Downloads v40
 function saveLocal(filename, data, type){
   var b=new Blob([data],{type:type});
   var a=document.createElement('a');
@@ -7466,7 +7496,7 @@ function saveLocal(filename, data, type){
 }
 
 $('btn-dl-index').onclick=function(){
-  fetch(location.pathname.endsWith('lectura-v39.html') ? 'lectura-v39.html' : 'index.html', {cache:'no-store'})
+  fetch(location.pathname.endsWith('lectura-v40.html') ? 'lectura-v40.html' : 'index.html', {cache:'no-store'})
     .then(function(r){ return r.text(); })
     .then(function(t){
       var cleanHtml=t.replace(/<script[^>]*_aistudio-iframe\.js[^>]*><\/script>/gi,'');
