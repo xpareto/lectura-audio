@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manual Tehnic &amp; Arhitectură · Lectură audio (v39)</title>
+<style>
+  :root {
+    --bg: #f3f5f8;
+    --card: #ffffff;
+    --text: #131f29;
+    --muted: #4f606f;
+    --accent: #0b6e8a;
+    --accent-soft: #e6f3f7;
+    --emerald: #059669;
+    --emerald-soft: #ecfdf5;
+    --warn: #b45309;
+    --warn-soft: #fffbeb;
+    --code-bg: #111922;
+    --code-fg: #e2edf5;
+    --border: #d5dde3;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0d1319;
+      --card: #162029;
+      --text: #e6edf2;
+      --muted: #98aab8;
+      --accent: #4cb8d6;
+      --accent-soft: #102833;
+      --emerald: #34d399;
+      --emerald-soft: #09261d;
+      --warn: #fbbf24;
+      --warn-soft: #2a1e08;
+      --code-bg: #090e14;
+      --code-fg: #dbe8f3;
+      --border: #2a3945;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 20px 14px 56px;
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.58;
+  }
+  .wrap { max-width: 920px; margin: 0 auto; }
+  header.hero {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-top: 5px solid var(--emerald);
+    border-radius: 16px;
+    padding: 22px;
+    margin-bottom: 16px;
+  }
+  .badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 800;
+    background: var(--accent);
+    color: #fff;
+    margin-left: 8px;
+  }
+  h1 { margin: 0 0 8px; font-size: 1.5rem; }
+  .subtitle { margin: 0; color: var(--muted); font-size: 0.96rem; }
+  nav.toc {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 14px 18px;
+    margin-bottom: 16px;
+  }
+  nav.toc strong { color: var(--accent); display: block; margin-bottom: 6px; }
+  nav.toc ol { margin: 0; padding-left: 20px; columns: 2; column-gap: 24px; }
+  @media (max-width: 640px) { nav.toc ol { columns: 1; } }
+  nav.toc a { color: var(--text); font-weight: 600; text-decoration: none; font-size: 0.9rem; }
+  nav.toc a:hover { color: var(--accent); text-decoration: underline; }
+  section.card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 18px 20px;
+    margin-bottom: 14px;
+  }
+  h2 {
+    margin: 0 0 10px;
+    font-size: 1.18rem;
+    color: var(--accent);
+    border-bottom: 1px dashed var(--border);
+    padding-bottom: 6px;
+  }
+  h3 { margin: 14px 0 6px; font-size: 1rem; }
+  p { margin: 0 0 10px; }
+  ul, ol { margin: 0 0 10px; padding-left: 20px; }
+  li { margin-bottom: 5px; }
+  pre {
+    background: var(--code-bg);
+    color: var(--code-fg);
+    padding: 12px 14px;
+    border-radius: 10px;
+    overflow-x: auto;
+    font-size: 0.82rem;
+    line-height: 1.45;
+    margin: 8px 0 12px;
+    border: 1px solid var(--border);
+  }
+  code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 0.88em;
+    background: var(--accent-soft);
+    padding: 1px 5px;
+    border-radius: 4px;
+  }
+  pre code { background: none; padding: 0; font-size: inherit; }
+  .prob-sol {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin: 10px 0;
+  }
+  @media (max-width: 680px) { .prob-sol { grid-template-columns: 1fr; } }
+  .box {
+    border-radius: 10px;
+    padding: 12px 14px;
+    border: 1px solid var(--border);
+    font-size: 0.92rem;
+  }
+  .box.prob { background: var(--warn-soft); border-left: 4px solid var(--warn); }
+  .box.sol { background: var(--emerald-soft); border-left: 4px solid var(--emerald); }
+  .box strong.lbl { display: block; margin-bottom: 4px; font-size: 0.85rem; text-transform: uppercase; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 10px 0;
+    font-size: 0.88rem;
+  }
+  th, td {
+    border: 1px solid var(--border);
+    padding: 7px 10px;
+    text-align: left;
+    vertical-align: top;
+  }
+  th { background: var(--accent-soft); color: var(--accent); }
+  footer {
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-top: 24px;
+  }
+  @media print {
+    body { background: #fff; color: #000; padding: 0; }
+    section.card, header.hero, nav.toc { box-shadow: none; break-inside: avoid; }
+    pre { white-space: pre-wrap; }
+  }
+</style>
+<script src="/_aistudio-iframe.js?v=29045eb3"></script></head>
+<body>
+<div class="wrap">
+  <header class="hero">
+    <h1>Manual Tehnic &amp; Arhitectură · Lectură audio <span class="badge">v39</span></h1>
+    <p class="subtitle">Document de transfer tehnic: probleme reale întâlnite pe Android PWA, Web Audio/TTS și Share Target, împreună cu soluțiile validate și reținute în codul final — gata de refolosit în orice chat sau proiect similar care vorbește intermitent în background.</p>
+  </header>
+
+  <nav class="toc">
+    <strong>Cuprins tehnic</strong>
+    <ol>
+      <li><a href="#audio">1. Rezolvarea Audio TTS, Background &amp; Deblocare Autoplay</a></li>
+      <li><a href="#resume">2. Persistența stării exacte &amp; Reluarea după întreruperi</a></li>
+      <li><a href="#share-burst">3. Rafală de Share-uri, Service Worker &amp; Handoff multi-tab</a></li>
+      <li><a href="#panou-tech">4. Fereastra plutitoare de comunicare și control &amp; Trace</a></li>
+      <li><a href="#extractie">5. Pipeline extracție conținut, Titluri (FB/Perplexity) &amp; Erori</a></li>
+      <li><a href="#memorie">6. Separare Memorie (Program vs. Date), IndexedDB &amp; Quota</a></li>
+      <li><a href="#reteta">7. Rețetă / Spec de refolosit în alt chat sau aplicație similară</a></li>
+    </ol>
+  </nav>
+
+  <section class="card" id="audio">
+    <h2>1. Rezolvarea Audio TTS, Background Playback &amp; Deblocare Autoplay</h2>
+    <div class="prob-sol">
+      <div class="box prob">
+        <strong class="lbl">Probleme reale întâlnite</strong>
+        <ul>
+          <li><code>window.speechSynthesis</code> pe Android Chrome se blochează silențios după ~15–20 secunde sau la stingerea ecranului și nu mai emite evenimentul <code>onend</code>.</li>
+          <li>La lansarea prin <em>Share Target</em> sau la pornire automată, browserul refuză redarea (<code>NotAllowedError</code>) fără gest explicit al utilizatorului.</li>
+          <li>Între două propoziții/fragmente, sistemul de operare poate suspenda procesul audio dacă există pauze de tăcere.</li>
+        </ul>
+      </div>
+      <div class="box sol">
+        <strong class="lbl">Soluții reținute în v39</strong>
+        <ul>
+          <li><strong>Motor dual</strong>: driver principal bazat pe element HTML5 <code>&lt;audio&gt;</code> (<code>bgAudioPlayer</code>) alimentat cu segmente TTS de max. 180 caractere + pre-încărcare (prefetch) a segmentului următor; fallback pe <code>SpeechSynthesis</code> cu timer watchdog.</li>
+          <li><strong>Keep-Alive Audio Loop</strong>: un al doilea <code>&lt;audio&gt;</code> (<code>keepAliveAudio</code>) redă un WAV aproape silențios în buclă (<code>volume = 0.01</code>, <code>loop = true</code>) pe toată durata sesiunii de citire, menținând canalul media viu între segmente și în fundal.</li>
+          <li><strong>MediaSession + WakeLock</strong>: înregistrare <code>navigator.mediaSession.setActionHandler</code> pentru butoane hardware/lockscreen + <code>navigator.wakeLock.request('screen')</code> cât timp redarea este activă.</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>Protocolul de deblocare sincronă (Audio Probe + Pending Tap)</h3>
+    <p>Orice gest al utilizatorului (click pe buton, tap pe panoul de comunicare) apelează sincron <code>unlockAudioSync()</code>, care pornește un WAV mut/slab pe ambele elemente <code>&lt;audio&gt;</code> în interiorul aceluiași tick de eveniment. Dacă la pornirea automată <code>probe.play()</code> este respins de browser (timeout ~450 ms sau <code>catch</code>), aplicația <strong>nu pierde poziția și nu dă eroare</strong>:</p>
+<pre><code>// Stare sigură când browserul blochează autoplay-ul:
+state = 'paused';
+pendingTapResume = true;
+pushDynLog('🔇 Ecran/audio blocat de browser — atingeți oriunde (1 tap) pentru a continua', 'blocked');
+// La primul tap al utilizatorului -> unlockAudioSync() + resume() exact din currentIndex!</code></pre>
+    <p>În plus, fiecare utterance/segment folosește un contor monotonic <code>token++</code>. Orice callback asincron vechi verifică <code>if (myToken !== token) return;</code>, eliminând complet suprapunerile de voci.</p>
+  </section>
+
+  <section class="card" id="resume">
+    <h2>2. Persistența stării exacte &amp; Reluarea după întreruperi („Unde am rămas și ce urmează”)</h2>
+    <div class="prob-sol">
+      <div class="box prob">
+        <strong class="lbl">Probleme reale întâlnite</strong>
+        <ul>
+          <li>Întreruperile (apel telefonic, Share nou, kill de memorie pe Android, schimbare tab) puteau reseta articolul la început sau pierde lista cu ce a fost deja citit.</li>
+          <li>Navigarea Android Share Target poate reîncărca aplicația în același tab, ștergând variabilele din RAM înainte să apuce să se salveze pauza.</li>
+        </ul>
+      </div>
+      <div class="box sol">
+        <strong class="lbl">Soluții reținute în v39</strong>
+        <ul>
+          <li><strong>Bookmark la nivel de propoziție</strong>: fiecare rând are <code>pos</code> (indexul propoziției), actualizat sincron la fiecare propoziție terminată, la <code>pause</code>, <code>stop</code>, <code>visibilitychange</code> și <code>pagehide</code>.</li>
+          <li><strong>Triplă ancorare</strong>: <code>cc_list</code> (stiva persistentă), <code>cc_resume</code> (cursor global cu <code>curId</code>, <code>idx</code>, <code>wasPlaying</code>) și <code>sessionStorage['cc_nav_prev_play']</code> (supraviețuiește reîncărcării Share în același tab).</li>
+          <li><strong>Algoritm determinist de parcurgere</strong>: <code>findNextFromBase(anchor)</code> urcă de la ultimul articol citit spre vârful stivei (nou-sosite), apoi coboară spre bază; când nu mai există niciun rând necitit (<code>nextIdx &lt; 0</code>), eliberează audio și rostește <em>„Am terminat lectura listei de articole”</em>.</li>
+        </ul>
+      </div>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Cheie Storage</th>
+          <th>Rol exact</th>
+          <th>Când se scrie / citește</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>localStorage['cc_list']</code></td>
+          <td>Stiva completă de articole: <code>id, url, title, read, err, pos, words, tags, preferinte, summary, highlights, addedAt</code></td>
+          <td>Scriere sigură (<code>writeListSafe</code>) cu fallback automat la compactare dacă se apropie limita de 5 MB.</td>
+        </tr>
+        <tr>
+          <td><code>localStorage['cc_resume']</code></td>
+          <td>Ultima poziție activă: <code>{ curId, idx, article, wasPlaying, listRun, ts }</code></td>
+          <td>Actualizată la fiecare chunk vorbit și la pierderea vizibilității. Folosită la repornire automată.</td>
+        </tr>
+        <tr>
+          <td><code>sessionStorage['cc_nav_prev_play']</code></td>
+          <td>Ancoră intra-tab pentru Share Target: <code>{ curId, idx, title, ts }</code></td>
+          <td>Salvată continuu cât <code>state === 'playing' | 'loading'</code>; prioritară după o navigare <code>?url=</code> în același tab.</td>
+        </tr>
+        <tr>
+          <td><code>IndexedDB (articles)</code> + <code>cc_article_cache</code></td>
+          <td>Textele integrale netrunchiate (pentru citire completă, rezumat și export offline).</td>
+          <td>Salvare asincronă paralelă pentru orice articol ≥ 40 caractere; refăcută automat dacă rândul din <code>cc_list</code> a fost compactat.</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="card" id="share-burst">
+    <h2>3. Rafală de Share-uri, Service Worker &amp; Handoff multi-tab</h2>
+    <div class="prob-sol">
+      <div class="box prob">
+        <strong class="lbl">Probleme reale întâlnite</strong>
+        <ul>
+          <li><strong>Blocaj pe ecranul alb cu iconul aplicației (X295)</strong>: la Share, PWA-ul cerea URL-ul cu query <code>?url=...</code> de la rețea; pe conexiune slabă, Service Worker-ul aștepta timeout-ul și aplicația rămânea blocată pe splash screen.</li>
+          <li><strong>Conflict multi-instanță</strong>: două tab-uri deschise simultan de Share porneau două voci în paralel sau opreau articolul în curs fără să reia de unde a rămas.</li>
+        </ul>
+      </div>
+      <div class="box sol">
+        <strong class="lbl">Soluții reținute în v39</strong>
+        <ul>
+          <li><strong>Service Worker Instant Share Hit</strong>: orice navigare cu <code>[?&amp;](url|text|title)=</code> primește <code>./index.html</code> din cache în &lt; 5 ms (ignorând query string-ul), iar JavaScript-ul parsează <code>location.search</code> instant.</li>
+          <li><strong>BroadcastChannel + Lock de Ownership (<code>cc_active_player</code>)</strong>: noul tab adaugă linkul sus în stivă (<code>dedupeStackList</code> + <code>canonicalUrlKey</code>), trimite <code>dynamic_share_handoff</code> către tab-ul care citește deja (timeout 120 ms). Dacă primește ACK, tab-ul activ notează noutatea fără să piardă propoziția; dacă nu există alt tab activ, tab-ul curent reia lectura de la <code>prevActiveBeforeNav</code> (articolul anterior nefinalizat).</li>
+        </ul>
+      </div>
+    </div>
+
+<pre><code>// Flux Service Worker (sw.js) pentru Share instant (&lt; 5ms):
+var isShareNav = e.request.mode === 'navigate' &amp;&amp; /[?&amp;](?:url|text|title)=/i.test(e.request.url);
+if (isShareNav) {
+  e.respondWith(caches.match('./index.html').then(c =&gt; c || caches.match(e.request, { ignoreSearch: true }) || fetchWithTimeout(e.request, 2500)));
+  return;
+}</code></pre>
+  </section>
+
+  <section class="card" id="panou-tech">
+    <h2>4. Fereastra plutitoare de comunicare și control &amp; Trace</h2>
+    <p>Când utilizatorul lucrează în alte aplicații (browser, Facebook, split-screen) și trimite linkuri prin Share, fereastra completă cu zeci de butoane ar acoperi ecranul sau ar încurca butonul de Share. De aceea există <strong>Panoul comunicare și control</strong> (<code>#dynamic-blank</code> / <code>#dyn-card</code>):</p>
+    <ul>
+      <li><strong>Afișare timpurie (Zero-Flash Bootstrap)</strong>: un mic script sincron înainte de restul aplicației detectează parametrii de Share sau modul dinamic și aplică imediat geometria salvată (<code>dynPos</code>, <code>dynWidthPct</code>, <code>dynHeightPct</code>) + apel opțional <code>window.resizeTo/moveTo</code> pentru ferestre popup/desktop.</li>
+      <li><strong>Comunicare compactă fără lag</strong>:
+        <ul>
+          <li>3 rânduri permanente cu contori: <em>Nr. Art. necitite</em>, <em>Estimare citire vizuală</em>, <em>Estimare citire audio (v = 1.5)</em>.</li>
+          <li>Coadă rotativă cu ultimele <strong>5 mesaje</strong> afișate pe câte <strong>2 rânduri</strong> (<code>Notez share: …</code>, <code>Citesc: …</code>, alerte de blocaj browser, confirmare final stivă).</li>
+        </ul>
+      </li>
+      <li><strong>Control hibrid sigur</strong>:
+        <ul>
+          <li>Bara cu 6 butoane rapide oglindite (<code>Start</code>, <code>Pauză/Reia</code>, <code>Stop</code>, <code>Skip</code>, <code>Rezumat</code>, <code>Silent</code>) folosește <code>ev.stopPropagation()</code> și gardă <code>ev.target.closest('.dyn-ctrl-bar, button, ...')</code>.</li>
+          <li><strong>1 tap</strong> pe zona liberă = deblocare audio + reluare instantanee; <strong>2 tap-uri (&lt; 360 ms)</strong> = ieșire în aplicația completă.</li>
+        </ul>
+      </li>
+      <li><strong>Ring-buffer de diagnostic (<code>cc_share_trace_v1</code>)</strong>: salvează ultimele 120 de evenimente timestampate (<code>BOOT</code>, <code>DYN_GEOM</code>, <code>BC_TX_HANDOFF</code>, <code>PROBE_OK/FAIL</code>, <code>AUDIO_PLAYING</code>, <code>PREFETCH_ERR_READ</code>) cu buton de copiere în clipboard din Settings — esențial pentru depanare pe telefon real fără USB debugging.</li>
+    </ul>
+  </section>
+
+  <section class="card" id="extractie">
+    <h2>5. Pipeline extracție conținut, Titluri (FB/Perplexity) &amp; Erori blocante</h2>
+    <ul>
+      <li><strong>Pipeline rezilient</strong>: <code>r.jina.ai</code> (cu <code>X-Remove-Selector</code> pentru header/footer/nav/comentarii/video) → reîncercare raw fără selectori → fallback HTML prin proxy CORS (<code>codetabs</code> / <code>allorigins</code> + <code>DOMParser</code>).</li>
+      <li><strong>Tăiere zgomot semantic</strong>: textul util se oprește exclusiv înainte de delimitatori de comentarii/recomandări/consent walls (<em>„Trebuie să fii autentificat pentru a publica un comentariu”</em>, <em>„Te-ar putea interesa și:”</em>, <em>„Noi și partenerii noștri folosim”</em>) și curăță stringuri tehnice de playere video (ex. <em>„Scurtături Tastatură / Increase Caption Size”</em>).</li>
+      <li><strong>Normalizare titluri informative</strong>:
+        <ul>
+          <li><em>Facebook</em>: extrage autorul + prima frază relevantă din postare (<code>FB · Autor — Titlu</code>), ignorând <code>'s post</code> și UI-ul Facebook.</li>
+          <li><em>Perplexity</em>: detectează URL-urile <code>perplexity.ai</code> sau titlurile generice (<em>„Încearcă Perplexity”</em> / <em>„Try Perplexity”</em>) și construiește titlul <code>Perplexity. &lt;subiectul real din text&gt;</code> până la limita afișabilă pe linia de stivă.</li>
+        </ul>
+      </li>
+      <li><strong>Auto-bifare erori blocante (X310)</strong>: erorile irecuperabile (<code>HTTP 403/404/410</code>, bot-block, <code>FB_LOGIN_REQUIRED</code>, <code>gol</code>) marchează <code>err = true</code>, <code>read = true</code>, <code>pos = 0</code>, păstrând mesajul de eroare vizibil, ca stiva să nu se blocheze în reîncercări infinite.</li>
+    </ul>
+  </section>
+
+  <section class="card" id="memorie">
+    <h2>6. Separare Memorie (Program vs. Date), IndexedDB &amp; Quota</h2>
+    <ul>
+      <li>Afișare separată în Settings între <strong>Memoria de program</strong> (HTML + Cache API PWA) și <strong>Memoria utilă</strong> (<code>cc_list + cc_history + cc_article_cache + cc_resume + cc_settings</code>).</li>
+      <li>Prevenire trunchiere (<code>MAX_ARTICLE_CHARS = 500000</code>) prin stocarea textelor complete în <strong>IndexedDB</strong>, în timp ce <code>localStorage</code> primește compactări graduale doar dacă depășește cota browserului (marcând flag-ul <code>truncated</code> ca să reîncarce automat din IDB la redare).</li>
+      <li>Auto-curățare configurabilă (implicit prag 2048 KB, elemente mai vechi de 2 zile) cu descărcare automată de backup JSON datat înainte de curățare.</li>
+    </ul>
+  </section>
+
+  <section class="card" id="reteta">
+    <h2>7. Rețetă pentru un alt chat / proiect: „Program care vorbește intermitent în background fără să piardă evidența”</h2>
+    <p>Dacă vei crea un alt program (asistent de notificări, cititor periodic de alerte, antrenor vocal, monitor RSS) care trebuie să vorbească din când în când în fundal și să știe exact unde a rămas, cere-i chatului respectiv să implementeze următoarele <strong>7 invariante arhitecturale</strong>:</p>
+<pre><code>1. AUDIO DUAL + KEEP-ALIVE:
+   - Nu te baza doar pe window.speechSynthesis (moare în background pe mobil).
+   - Folosește &lt;audio&gt; HTML5 pentru segmente TTS scurte (&lt;=180 chars) + buclă keep-alive la volum 0.01 + MediaSession + WakeLock.
+   - Adaugă token monotonic per redare (if (myToken !== token) return) pentru a preveni suprapunerea vocilor.
+
+2. GESTURE UNLOCK + RETRY NON-DESTRUCTIV:
+   - La orice interacțiune apelează sincron unlockAudioSync().
+   - Dacă redarea automată e respinsă (NotAllowedError), NU reseta coada: setează pendingTapResume=true, păstrează currentId/chunkIdx și reia la primul tap.
+
+3. STARE PERSISTENTĂ ATOMICĂ (3 NIVELURI):
+   - Coadă ordonată cu { id, status: 'pending'|'done'|'error', posChunk, updatedAt }.
+   - Cursor global { curId, chunkIdx, wasActive, ts } salvat la fiecare propoziție + visibilitychange/pagehide.
+   - sessionStorage snapshot pentru a supraviețui reload-ului intra-tab.
+
+4. MULTI-TAB OWNERSHIP &amp; HANDOFF:
+   - BroadcastChannel + lock în localStorage cu heartbeat ts.
+   - Dacă un tab nou adaugă un mesaj/articol, îl predă prin ACK tab-ului activ fără să întrerupă definitiv redarea curentă; altfel preia coada din punctul salvat.
+
+5. MOD SILENT + PRIORITIZARE DETERMINISTĂ:
+   - Flag persistent silentMode: permite acumularea item-urilor noi fără a întrerupe alt audio extern.
+   - Regula de selecție: termină item-ul început (curId @ posChunk) → preia noutățile din vârf → continuă restul → la final emite confirmare clară și eliberează lock-urile.
+
+6. PANOU PLUTITOR MINIMAL + DIAGNOSTIC TRACE:
+   - Overlay compact cu status curent, ultimele 5 acțiuni, 1-tap resume, 2-tap full UI și butoane rapide cu stopPropagation().
+   - Ring-buffer cu ultimele 120 de evenimente exportabil în clipboard pentru debugging real pe mobil.
+
+7. CACHE-FIRST PENTRU LANSĂRI DIN EXTERIOR:
+   - În sw.js, rutele de Share/Deep-Link cu query params servesc instant shell-ul din cache (&lt;5ms) fără blocaj de rețea.</code></pre>
+  </section>
+
+  <footer>
+    Lectură audio · Manual Tehnic &amp; Arhitectură (v39) · Document HTML autonom
+  </footer>
+</div>
+</body>
+</html>
