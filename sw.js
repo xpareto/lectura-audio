@@ -1,4 +1,4 @@
-var CACHE = 'lectura-articole-v42';
+var CACHE = 'lectura-articole-v43';
 var FILES = [
   './',
   './index.html',
@@ -52,8 +52,10 @@ function fetchWithTimeout(req, ms) {
 }
 
 self.addEventListener('fetch', function(e) {
-  // Ignoră cererile externe (API-uri, TTS audio, traducere, proxy-uri)
+  // Ignoră cererile externe și rutele API dinamice
   if (
+    e.request.method !== 'GET' ||
+    e.request.url.includes('/api/') ||
     e.request.url.includes('google') ||
     e.request.url.includes('r.jina.ai') ||
     e.request.url.includes('piped') ||
@@ -61,7 +63,10 @@ self.addEventListener('fetch', function(e) {
     e.request.url.includes('codetabs') ||
     e.request.url.includes('corsproxy') ||
     e.request.url.includes('lingva') ||
-    e.request.url.includes('puter.com')
+    e.request.url.includes('puter.com') ||
+    e.request.url.includes('transcribeyoutube') ||
+    e.request.url.includes('invidious') ||
+    e.request.url.includes('inv.nadeko')
   ) {
     return;
   }
